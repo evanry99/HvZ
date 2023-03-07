@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --green: #698362;
+    --purple: #84414D;
+    --light-grey: #D9D9D9;
+    --grey: #9F9F9F;
+}
+
+body{
+    min-height: 100vh;
+    background-color: var(--light-grey);
+}
+
+.seeThrough{
+    background: transparent;
+}
+
+.seeThrough:hover{
+    background: rgba(0, 0, 0, 0.1);
+}
