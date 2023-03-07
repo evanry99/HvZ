@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
+import { LandingPage } from './pages/landing/landing.page';
 
 const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/landing'
+  },
   {
     path: 'game-detail',
     component: GameDetailPage,
   },
+  {
+    path: 'landing',
+    component: LandingPage,
+  }
 ];
 
 @NgModule({

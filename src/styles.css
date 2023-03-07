@@ -18,3 +18,15 @@ body{
 .seeThrough:hover{
     background: rgba(0, 0, 0, 0.1);
 }
+
+.mainGreen {
+    background-color: var(--green);
+}
+
+.greyButton {
+    background: var(--light-grey);
+}
+
+.greyButton:hover {
+    background: var(--grey);
+}
