@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/3ed79149-07b3-4ede-84e6-0a00a99f1f78/resourceGroups/HumanVSZombies/providers/Microsoft.Web/sites/HvZWebApp",
+    "appService.deploySubpath": "."
+}
