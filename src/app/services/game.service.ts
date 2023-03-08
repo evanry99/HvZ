@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
 
-const { apiUrl, apiUrl2 } = environment
+const { apiUrl2 } = environment
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,22 @@ const { apiUrl, apiUrl2 } = environment
 export class GameService {
 
   private _games: Game[] = [];
-  private _game?:Game
+  private _game?:Game;
   private _error = ""
+  private _loading = false;
 
 
   set game(g: Game){
     this._game = g;
   }
+
+  get game(){
+    if(!this._game){
+      throw new Error("No game")
+    }
+    return this._game;
+  }
+
   get games(){
     return this._games
   }
@@ -39,6 +48,8 @@ export class GameService {
   }
 
   public getGameById(id:number){
-    return this._games.filter((game:Game) => game.id === id)
+    //Todo, fix when real Api works
+    //return this._games.filter((game:Game) => game.id === id)
+    return this._games[id-1];
   }
 }
