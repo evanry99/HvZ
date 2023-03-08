@@ -1,4 +1,5 @@
 export interface Game {
+    id: number;
     name: string;
     game_state: string;
     nw_lat: number;
