@@ -13,8 +13,7 @@ export class LandingPageListComponent {
     private readonly gameService: GameService,
     private readonly router: Router){}
 
-  goToGame(){
-    this.gameService.getGame(2)
+  async goToGame(){
     this.router.navigateByUrl("/game-detail")
   }
 }
