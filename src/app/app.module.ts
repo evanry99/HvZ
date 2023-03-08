@@ -12,6 +12,7 @@ import { GameDescriptionComponent } from './components/game-description/game-des
 import { GameRulesComponent } from './components/game-rules/game-rules.component';
 import { MapComponent } from './components/map/map.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
