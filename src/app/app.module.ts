@@ -8,6 +8,7 @@ import { LandingPage } from './pages/landing/landing.page';
 import { LandingPageListComponent } from './components/landing-page-list/landing-page-list.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { GameDescriptionComponent } from './components/game-description/game-description.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     LandingPage,
     LandingPageListComponent,
     GameDetailPage,
-    NavBarComponent
+    NavBarComponent,
+    GameDescriptionComponent
   ],
   imports: [
     BrowserModule,
