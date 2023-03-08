@@ -1,6 +1,6 @@
 variables:
   API_TOKEN: $DEPLOYMENT_TOKEN
-  APP_PATH: '$CI_PROJECT_DIR/src/app'
+  APP_PATH: '$CI_PROJECT_DIR/src'
   OUTPUT_PATH: '$CI_PROJECT_DIR/dist/angular-basic'
 
 deploy:
