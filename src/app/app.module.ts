@@ -10,6 +10,7 @@ import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
 import { GameRulesComponent } from './components/game-rules/game-rules.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { GameRulesComponent } from './components/game-rules/game-rules.component
     GameDetailPage,
     NavBarComponent,
     GameDescriptionComponent,
-    GameRulesComponent
+    GameRulesComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
