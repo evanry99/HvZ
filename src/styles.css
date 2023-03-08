@@ -23,6 +23,10 @@ body{
     background-color: var(--green);
 }
 
+.mainPurple {
+    background-color: var(--purple);
+}
+
 .greyButton {
     background: var(--light-grey);
 }

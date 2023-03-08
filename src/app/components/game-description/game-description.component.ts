@@ -13,6 +13,6 @@ export class GameDescriptionComponent {
   constructor(private readonly gameService: GameService){}
 
   ngOnInit(){
-    this._description = "Temp" //game.description
+    this._description = "Temp tmp  tmp tmp tmp mtpm tmpm tmp" //game.description
   }
 }
