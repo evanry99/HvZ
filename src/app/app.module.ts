@@ -9,6 +9,7 @@ import { LandingPageListComponent } from './components/landing-page-list/landing
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
+import { GameRulesComponent } from './components/game-rules/game-rules.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { GameDescriptionComponent } from './components/game-description/game-des
     LandingPageListComponent,
     GameDetailPage,
     NavBarComponent,
-    GameDescriptionComponent
+    GameDescriptionComponent,
+    GameRulesComponent
   ],
   imports: [
     BrowserModule,
