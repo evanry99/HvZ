@@ -20,13 +20,8 @@ export class GameDetailPage {
   }
 
   setGame(id: number){
-    this._game = this.gameService.getGameById(id)[0]
+    this._game = this.gameService.game;
     this._title = this._game.name;
-    this.gameService.game = this._game;
-     
-      error: (error: HttpErrorResponse) => {
-        console.log(error.message);
-      }
     }
   }
 
