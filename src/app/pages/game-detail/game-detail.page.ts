@@ -11,6 +11,7 @@ import { GameService } from 'src/app/services/game.service';
 export class GameDetailPage {
 
   _title?: string;
+  _game? : Game
 
   constructor(private readonly gameService: GameService){}
 
@@ -19,20 +20,15 @@ export class GameDetailPage {
   }
 
   setGame(id: number){
-    this.gameService.getGame(id)
-    .subscribe({
-      next: (game: Game) => {
-        this._title = game.name;
-        this.gameService.game = game;
-      },
+    this._game = this.gameService.getGameById(id)[0]
+    this._title = this._game.name;
+    this.gameService.game = this._game;
+     
       error: (error: HttpErrorResponse) => {
         console.log(error.message);
       }
-    })
+    }
   }
 
-  showDescription(){
-    
-  }
 
-}
+

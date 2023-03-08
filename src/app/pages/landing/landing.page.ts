@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { PlayerService } from "src/app/services/player.service";
+import { Game } from "src/app/models/game.model";
+import { GameService } from "src/app/services/game.service";
 
 @Component({
   selector: 'app-landing',
@@ -8,8 +9,14 @@ import { PlayerService } from "src/app/services/player.service";
 })
 export class LandingPage implements OnInit{
   constructor(
+    readonly gameService:GameService
   ){}
+  
+  get games():Game[]{
+    return this.gameService.games
+  }
+
   ngOnInit(): void {
-    
+    this.gameService.getGames()
   }
 }

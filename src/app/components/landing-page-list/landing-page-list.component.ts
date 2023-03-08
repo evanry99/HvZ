@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Game } from "src/app/models/game.model";
 import { GameService } from "src/app/services/game.service";
 
 @Component({
@@ -7,13 +8,17 @@ import { GameService } from "src/app/services/game.service";
   templateUrl: './landing-page-list.component.html',
   styleUrls: ['./landing-page-list.component.css']
 })
-export class LandingPageListComponent {
-
+export class LandingPageListComponent implements OnInit{
+  @Input() games: Game[] = []
   constructor(
     private readonly gameService: GameService,
     private readonly router: Router){}
 
   async goToGame(){
     this.router.navigateByUrl("/game-detail")
+  }
+
+  ngOnInit(): void {
+      this.gameService.getGames();
   }
 }
