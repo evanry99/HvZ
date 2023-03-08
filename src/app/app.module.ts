@@ -11,6 +11,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
 import { GameRulesComponent } from './components/game-rules/game-rules.component';
 import { MapComponent } from './components/map/map.component';
+import { BiteCodeFormComponent } from './components/bite-code-form/bite-code-form.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,12 +24,14 @@ import { MapComponent } from './components/map/map.component';
     NavBarComponent,
     GameDescriptionComponent,
     GameRulesComponent,
-    MapComponent
+    MapComponent,
+    BiteCodeFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
