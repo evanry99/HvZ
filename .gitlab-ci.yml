@@ -1,19 +1,32 @@
+image: node:14
+
+stages:
+  - build
+  - deploy
+
+variables:
+  AZURE_STATIC_WEB_APP_NAME: "HumanVSZombies"
+  AZURE_STATIC_WEB_APP_BRANCH: "main"
+  AZURE_STATIC_WEB_APP_LOCATION: "westeurope"
+  AZURE_STATIC_WEB_APP_SKU: "Free_F1"
+
+  # Azure credentials
+  AZURE_SUBSCRIPTION_ID: "${SUBSCRIPTION_ID}"
+  AZURE_TENANT_ID: "${TENANT_ID}"
+  AZURE_CLIENT_ID: "${CLIENT_ID}"
+  AZURE_CLIENT_SECRET: "${CLIENT_SECRET}"
 
 build:
   stage: build
-  image: node:lts
   script:
     - npm install
-    - npm run build
-    - echo "Build is complete"
-
-variables:
-  API_TOKEN: $DEPLOYMENT_TOKEN
-  APP_PATH: '$CI_PROJECT_DIR/src'
-  OUTPUT_PATH: '$CI_PROJECT_DIR/dist/angular-basic'
+    - ng build --prod
 
 deploy:
   stage: deploy
-  image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+  dependencies:
+    - build
   script:
-    - echo "App deployed successfully."
+    - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+    - az account set --subscription "$AZURE_SUBSCRIPTION_ID"
+    - az staticwebapp create --name "$AZURE_STATIC_WEB_APP_NAME" --location "$AZURE_STATIC_WEB_APP_LOCATION" --sku "$AZURE_STATIC_WEB_APP_SKU" --branch "$AZURE_STATIC_WEB_APP_BRANCH" --api-location "api" --app-location "dist/<app-name>" --output json --dryrun false
