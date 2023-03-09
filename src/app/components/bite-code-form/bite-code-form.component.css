@@ -1,0 +1,25 @@
+.modal-content{
+    background-color: var(--purple);
+    color: white;
+}
+
+button{
+    background-color: var(--green);
+    border: none;
+}
+
+button:hover{
+    background-color: grey;
+    border: none;
+}
+
+label{
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+.btn-close{
+    background-color: white;
+}
+#biteCodeHelp{
+    color:white;
+}
