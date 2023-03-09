@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
+import { storageRead, storageSave } from '../utils/storage.util';
+import { gameKey } from '../variables/storage-keys';
 
 const { apiUrl2 } = environment
 
@@ -19,9 +20,11 @@ export class GameService {
 
   set game(g: Game){
     this._game = g;
+    storageSave<Game>(gameKey, g);
   }
 
   get game(){
+    this._game = storageRead(gameKey);
     if(!this._game){
       throw new Error("No game")
     }
