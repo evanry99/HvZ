@@ -23,3 +23,12 @@ label{
 #biteCodeHelp{
     color:white;
 }
+
+form button{
+    background-color: var(--green);
+    margin-left: auto;
+    margin-right: auto;
+}
+#descriptionHelp{
+    color: white;
+}
