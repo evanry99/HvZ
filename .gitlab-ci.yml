@@ -36,7 +36,7 @@ build_image:
 
 push-gitlab-registry:
   image: docker:latest
-  stage: publish
+  stage: build
   only:
     - master
   script:
