@@ -1,21 +1,18 @@
-trigger:
-- main
-pool:
-  vmImage: ubuntu-latest
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
-- task: AzureStaticWebApp@0
-  inputs:
-      app_location: "/" 
-      api_location: "api"
-      output_location: "dist/hvz"
-  env:
-      azure_static_web_apps_api_token: $(deployment_token)
+variables:
+  API_TOKEN: $DEPLOYMENT_TOKEN
+  APP_PATH: '$CI_PROJECT_DIR/src'
+  OUTPUT_PATH: '$CI_PROJECT_DIR/dist/angular-basic'
+
+build:
+  stage: build
+  image: node:lts
+  script:
+    - npm install
+    - npm run build
+    - echo "Build is complete"
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+  script:
+    - echo "App deployed successfully."
