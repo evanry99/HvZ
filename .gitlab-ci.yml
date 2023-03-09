@@ -34,8 +34,17 @@ build_image:
       - node_modules
     policy: pull
 
+push-gitlab-registry:
+  image: docker:latest
+  stage: publish
+  only:
+    - master
+  script:
+    - docker build -t registry.gitlab.com/SondreEftedal/hv-z .
+    - docker login -u SondreEftedal -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/SondreEftedal/hv-z
 deploy:
   stage: deploy
-  image: registry.gitlab.com/static-web-apps/hv-z
+  image: registry.gitlab.com/SondreEftedal/hv-z
   script:
     - echo "App deployed successfully."
