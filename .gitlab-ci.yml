@@ -1,30 +1,7 @@
-image: node:14
-
-stages:
-  - build
-  - deploy
-
-variables:
-  AZURE_STATIC_WEB_APP_NAME: "HumanVSZombies"
-  AZURE_STATIC_WEB_APP_BRANCH: "main"
-  AZURE_STATIC_WEB_APP_LOCATION: "westeurope"
-  AZURE_STATIC_WEB_APP_SKU: "Free_F1"
-
-  # Azure credentials
-  AZURE_SUBSCRIPTION_ID: "${SUBSCRIPTION_ID}"
-  AZURE_TENANT_ID: "${TENANT_ID}"
-  AZURE_CLIENT_ID: "${CLIENT_ID}"
-  AZURE_CLIENT_SECRET: "${CLIENT_SECRET}"
-
-build:
-  stage: build
-  script:
-    - npm install
-    - ng build --prod
 variables:
   API_TOKEN: $DEPLOYMENT_TOKEN
   APP_PATH: '$CI_PROJECT_DIR/src'
-  OUTPUT_PATH: '$CI_PROJECT_DIR/dist/hvz-frontend'
+  OUTPUT_PATH: '$CI_PROJECT_DIR/dist/'
 
 deploy:
   stage: deploy
