@@ -35,6 +35,7 @@ build_image:
     policy: pull
 
 push-gitlab-registry:
+  depends-on: build_image
   image: docker:latest
   stage: build
   only:
@@ -43,6 +44,8 @@ push-gitlab-registry:
     - docker build -t registry.gitlab.com/SondreEftedal/hv-z .
     - docker login -u SondreEftedal -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker push registry.gitlab.com/SondreEftedal/hv-z
+  services:
+    - docker:dind
 deploy:
   stage: deploy
   image: registry.gitlab.com/SondreEftedal/hv-z
