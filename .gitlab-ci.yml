@@ -18,10 +18,10 @@ install_dependencies:
       - node_modules
 
 build_image:
-  image: node:12-alpine
+  image: node:15-alpine
   stage: build
   script:
-    - npm link @angular/cli@11.2.6
+    - npm link @angular/cli@15.2.1
     - npm run build
   artifacts:
     paths:
