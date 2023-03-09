@@ -29,6 +29,14 @@ body{
     font-family: 'Gugi';
 }
 
+th {
+    font-size: min(1vmax, 20px);
+}
+
+.scalableFont {
+    font-size: min(1vmax, 20px);
+}
+
 .seeThrough{
     background: transparent;
 }
