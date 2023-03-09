@@ -8,6 +8,6 @@ import { NgForm } from '@angular/forms';
 })
 export class BiteCodeFormComponent {
   onSubmit(form:NgForm){
-    console.log(form.value)
+    console.log(form.value.description)
   }
 }
