@@ -40,9 +40,9 @@ push-gitlab-registry:
   only:
     - main
   script:
-    - docker build -t registry.gitlab.com/SondreEftedal/hv-z .
-    - docker login -u SondreEftedal -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker push registry.gitlab.com/SondreEftedal/hv-z
+    - docker build -t registry.gitlab.com/sondreeftedal/hv-z .
+    - docker login -u sondreeftedal -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/sondreeftedal/hv-z
   services:
     - docker:dind
 deploy:
