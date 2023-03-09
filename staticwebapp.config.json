@@ -1,0 +1,15 @@
+{
+    "app_location": "dist",
+    "api_location": "api",
+    "routes": [
+      {
+        "route": "/*",
+        "serve": "/index.html",
+        "statusCode": 200
+      }
+    ],
+    "build": {
+      "publish": "dist",
+      "command": "npm install && ng build --prod"
+    }
+  }
