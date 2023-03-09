@@ -5,7 +5,7 @@ variables:
 
 install_dependencies:
   image: node:15-alpine
-  stage: dependencies
+  stage: .pre
   script:
     - npm install
   only:
