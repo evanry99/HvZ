@@ -38,7 +38,7 @@ push-gitlab-registry:
   image: docker:latest
   stage: build
   only:
-    - master
+    - main
   script:
     - docker build -t registry.gitlab.com/SondreEftedal/hv-z .
     - docker login -u SondreEftedal -p $CI_BUILD_TOKEN registry.gitlab.com
