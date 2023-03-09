@@ -35,7 +35,6 @@ build_image:
     policy: pull
 
 push-gitlab-registry:
-  depends-on: build_image
   image: docker:latest
   stage: build
   only:
