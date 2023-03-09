@@ -21,12 +21,13 @@ build:
   script:
     - npm install
     - ng build --prod
+variables:
+  API_TOKEN: $DEPLOYMENT_TOKEN
+  APP_PATH: '$CI_PROJECT_DIR/src'
+  OUTPUT_PATH: '$CI_PROJECT_DIR/dist/hvz-frontend'
 
 deploy:
   stage: deploy
-  dependencies:
-    - build
+  image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
   script:
-    - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
-    - az account set --subscription "$AZURE_SUBSCRIPTION_ID"
-    - az staticwebapp create --name "$AZURE_STATIC_WEB_APP_NAME" --location "$AZURE_STATIC_WEB_APP_LOCATION" --sku "$AZURE_STATIC_WEB_APP_SKU" --branch "$AZURE_STATIC_WEB_APP_BRANCH" --api-location "api" --app-location "dist/<app-name>" --output json --dryrun false
+    - echo "App deployed successfully."
