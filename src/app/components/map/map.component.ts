@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { latLng, tileLayer, LatLngBounds, latLngBounds, map, marker, polygon, Icon, icon } from 'leaflet';
 import { Gravestone } from 'src/app/models/gravestone.model';
 import { Map } from 'src/app/models/map.model';
-import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
 import { MapService } from 'src/app/services/map.service';
 
@@ -30,6 +29,8 @@ export class MapComponent {
   gravestoneIcon = {
     icon: icon({
       iconSize:     [38, 38],
+      iconAnchor:  [19, 38],
+      popupAnchor:  [0, -39],
       iconUrl: '../../assets/images/gravestone.png',
    })
   };
@@ -38,8 +39,8 @@ export class MapComponent {
     //this._map = this.mapService.map;
     //temp
     this._map = {
-      nw_lat : -43.11,//game.nw_lat,
-      nw_lng : 5.25,//game.nw_lng,
+      nw_lat : -43.11,
+      nw_lng : 5.25,
       se_lat : 45,
       se_lng : 50
     }
@@ -67,7 +68,7 @@ export class MapComponent {
       polygon([
         [[90, -180], [90, 180], [-90, 180], [-90, -180]],
         [[ this._map.nw_lat, this._map.nw_lng ], [ this._map.nw_lat, this._map.se_lng ], [ this._map.se_lat, this._map.se_lng ], [ this._map.se_lat, this._map.nw_lng ]]
-      ]),
+      ]).setStyle({color: '#FF0000'}),
     );
 
     console.log(gravestones)
@@ -75,6 +76,8 @@ export class MapComponent {
       console.log(gravestone)
       this.layers.push(
         marker([gravestone.lat, gravestone.lng], this.gravestoneIcon)
+        .bindPopup("Ola Normann, 12.12.2012")
+        .openPopup()
       );
     }
 
