@@ -5,12 +5,8 @@
         <div class="col-sm grid me-1">
             <div class="row">
                 <button class="btn col seeThrough">Register</button>
-                <a class="col" routerLink="description">
-                  <button class="btn seeThrough">Description</button>
-                </a>
-                <a class="col" routerLink="rules">
-                  <button class="btn seeThrough">Rules</button>
-                </a>
+                <button class="btn col seeThrough" [routerLink]="'description'">Description</button>
+                <button class="btn col seeThrough" [routerLink]="'rules'">Rules</button>
             </div>
         </div>
     </div>
@@ -20,14 +16,13 @@
               Dropdown button
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Bite code</a>
               <a class="dropdown-item" routerLink="map">Map</a>
               <a class="dropdown-item" href="#">Players (admin)</a>
             </div>
           </div>
-          <app-bite-code-form class="col"></app-bite-code-form>
+          <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
     </div>
-    <div class="mainPurple mt-3">
+    <div class="mainPurple mt-3 p-3">
       <router-outlet></router-outlet>
     </div>
 </div>
