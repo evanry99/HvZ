@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { HttpClientModule } from '@angular/common/http';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { SocialAuthServiceConfig } from '@abacritt/angularx-social-login/socialauth.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,10 @@ import { LandingPage } from './pages/landing/landing.page';
 import { LandingPageListComponent } from './components/landing-page-list/landing-page-list.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { GameDescriptionComponent } from './components/game-description/game-description.component';
+import { GameRulesComponent } from './components/game-rules/game-rules.component';
+import { MapComponent } from './components/map/map.component';
+
 
 @NgModule({
   declarations: [
@@ -16,32 +21,17 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     LandingPage,
     LandingPageListComponent,
     GameDetailPage,
-    NavBarComponent
+    NavBarComponent,
+    GameDescriptionComponent,
+    GameRulesComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              'clientId'
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
-
 export class AppModule { }

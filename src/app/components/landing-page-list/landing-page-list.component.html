@@ -9,12 +9,12 @@
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>10</td>
-            <td>State 1</td>
-            <td>10.10.2022 10:00:00</td>
-            <td scope="row"><button class="btn btn-sucess" id ="view-button">View</button></td>
+        <tr *ngFor="let game of games">
+            <th scope="row">{{game.name}}</th>
+            <td>{{game.game_state}}</td>
+            <td>{{game.se_lat}}</td>
+            <td>{{game.se_lng}}</td>
+            <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame()">View</button></td>
           </tr>
     </tbody>
   </table>
