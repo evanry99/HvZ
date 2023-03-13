@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GameDescriptionComponent } from './components/game-description/game-description.component';
-import { GameRulesComponent } from './components/game-rules/game-rules.component';
+import { GameInfoComponent } from './components/game-info/game-info.component';
 import { MapComponent } from './components/map/map.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { LandingPage } from './pages/landing/landing.page';
@@ -19,15 +18,11 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/game-detail/description'
+        redirectTo: '/game-detail/info'
       },
       {
-        path: 'description',
-        component: GameDescriptionComponent,
-      },
-      {
-        path: 'rules',
-        component: GameRulesComponent,
+        path: 'info',
+        component: GameInfoComponent,
       },
       {
         path: 'map',

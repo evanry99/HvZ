@@ -1,0 +1,9 @@
+.fragment {
+    height: 65vh;
+    overflow-y: scroll;
+    position: relative;
+}
+
+* {
+    color: white
+}
