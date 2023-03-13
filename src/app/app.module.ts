@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { GameInfoComponent } from './components/game-info/game-info.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
+import { SquadRegistrationComponent } from './components/squad-registration/squad-registration.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
     BiteCodeFormComponent,
     GameInfoComponent,
     ChatComponent,
-    ChatMessageComponent
+    ChatMessageComponent,
+    SquadRegistrationComponent
   ],
   imports: [
     BrowserModule,
