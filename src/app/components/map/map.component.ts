@@ -90,17 +90,6 @@ export class MapComponent {
         .bindPopup("Ola Normann, 12.12.2012")
         .openPopup()
       );
-
-      /*
-      const marker: Marker<any> =  marker([kill.lat, kill.lng], this.gravestoneIcon);
-      if(kill.story){
-        marker.bindPopup(`${kill.victim_id} : ${kill.story}`)
-        .openPopup()
-      }
-      */
     }
-
-
   }
-
 }

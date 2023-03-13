@@ -18,7 +18,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/game-detail/description'
+        redirectTo: '/game-detail/info'
       },
       {
         path: 'info',

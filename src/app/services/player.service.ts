@@ -9,9 +9,7 @@ const {apiUrl} = environment;
   providedIn: 'root'
 })
 export class PlayerService {
-  constructor(private http:HttpClient){
-    
-  }
+  constructor(private http:HttpClient){}
 
   private _players: Player[] = [];
   private _error: string = "";
