@@ -22,8 +22,8 @@ export class MapService {
   setMap(): void {
     const game: Game = this.gameService.game
     this._map = {
-      nw_lat : -43.11,//game.nw_lat,
-      nw_lng : 5.25,//game.nw_lng,
+      nw_lat : game.nw_lat,
+      nw_lng : game.nw_lng,
       se_lat : game.se_lat,
       se_lng : game.se_lng
     }
