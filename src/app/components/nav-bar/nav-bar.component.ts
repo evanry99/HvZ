@@ -22,4 +22,8 @@ export class NavBarComponent {
   goToLanding() {
     this.router.navigateByUrl("/landing")
   }
+
+  isNotLanding(){
+    return this.router.url !== "/landing";
+  }
 }

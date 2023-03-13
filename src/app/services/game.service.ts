@@ -1,9 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
+import { storageRead, storageSave } from '../utils/storage.util';
+import { gameKey } from '../variables/storage-keys';
 
-const { mockApiUrl, mockApiUrl2 } = environment
+const { apiUrl2 } = environment
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,24 @@ const { mockApiUrl, mockApiUrl2 } = environment
 export class GameService {
 
   private _games: Game[] = [];
-  private _game?:Game
+  private _game?:Game;
   private _error = ""
+  private _loading = false;
 
 
   set game(g: Game){
     this._game = g;
+    storageSave<Game>(gameKey, g);
   }
+
+  get game(){
+    this._game = storageRead(gameKey);
+    if(!this._game){
+      throw new Error("No game")
+    }
+    return this._game;
+  }
+
   get games(){
     return this._games
   }
@@ -38,6 +51,8 @@ export class GameService {
   }
 
   public getGameById(id:number){
-    return this._games.filter((game:Game) => game.id === id)
+    //Todo, fix when real Api works
+    //return this._games.filter((game:Game) => game.id === id)
+    return this._games[id-1];
   }
 }

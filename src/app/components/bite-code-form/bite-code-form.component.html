@@ -1,0 +1,42 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Register kill</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Register kill</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form #registerKillForm="ngForm" (ngSubmit)="onSubmit(registerKillForm)"> 
+                <div class="mb-3">
+                    <label for="inputBiteCode" class="form-label">Bite Code</label>
+                    <input type="text" class="form-control" name="biteCode" id="inputBiteCode" aria-describedby="biteCodeHelp" ngModel minlength="3" required #biteCode="ngModel">
+                    <div id="biteCodeHelp" class="form-text">Please enter the bite code of the player that killed you</div>
+                    <div *ngIf="biteCode.errors && (biteCode.dirty || biteCode.touched)">
+                        <div id="biteCodeHelp" class="form-text" *ngIf="biteCode.errors['required']">Bite code is required</div>
+                        <div id="biteCodeHelp" class="form-text" *ngIf="biteCode.errors['minlength']">Bite code is too short</div>
+                    </div>
+                        
+                </div>
+                    <div class="mb-3">
+                    <label for="inputDescription" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
+                    <div *ngIf="description.errors && (description.dirty || description.touched)">
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <label for="inputLat" class="form-label">Latitude</label>
+                    <input type="number" class="form-control" name="latitude" id="inputLat" required ngModel>
+                    <label for="inputLng" class="form-label">Longitude</label>
+                    <input type="number" class="form-control" name="longitude" id="inputLng" required ngModel>
+                </div>
+                    <button type="submit" [disabled]="registerKillForm.invalid" class="btn btn-primary">Submit Kill</button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>

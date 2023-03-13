@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
-import { SocialAuthServiceConfig } from '@abacritt/angularx-social-login/socialauth.service';
-
 import { AppRoutingModule } from './app-routing.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 import { AppComponent } from './app.component';
 import { LandingPage } from './pages/landing/landing.page';
 import { LandingPageListComponent } from './components/landing-page-list/landing-page-list.component';
@@ -13,6 +12,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
 import { GameRulesComponent } from './components/game-rules/game-rules.component';
 import { MapComponent } from './components/map/map.component';
+import { BiteCodeFormComponent } from './components/bite-code-form/bite-code-form.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,12 +25,15 @@ import { MapComponent } from './components/map/map.component';
     NavBarComponent,
     GameDescriptionComponent,
     GameRulesComponent,
-    MapComponent
+    MapComponent,
+    BiteCodeFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    LeafletModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

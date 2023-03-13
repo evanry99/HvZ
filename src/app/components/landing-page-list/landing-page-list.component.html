@@ -5,7 +5,7 @@
         <th scope="col">Number of players</th>
         <th scope="col">Game state</th>
         <th scope="col">Start date</th>
-        <th scope="col"><button class="btn btn-primary">Refresh</button></th>
+        <th scope="col"><button class="btn btn-primary scalableFont">Refresh</button></th>
       </tr>
     </thead>
     <tbody>
@@ -14,7 +14,7 @@
             <td>{{game.game_state}}</td>
             <td>{{game.se_lat}}</td>
             <td>{{game.se_lng}}</td>
-            <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame()">View</button></td>
+            <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame(game)">View</button></td>
           </tr>
     </tbody>
   </table>

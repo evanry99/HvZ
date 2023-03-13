@@ -14,7 +14,9 @@ export class LandingPageListComponent implements OnInit{
     private readonly gameService: GameService,
     private readonly router: Router){}
 
-  async goToGame(){
+  async goToGame(game: Game){
+    console.log(game)
+    this.gameService.game = game;
     this.router.navigateByUrl("/game-detail")
   }
 

@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Gugi&family=Press+Start+2P&display=swap');
+
 :root {
     --green: #698362;
     --purple: #84414D;
@@ -6,9 +8,33 @@
     --grey: #9F9F9F;
 }
 
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar{
+width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+background: rgba(0, 0, 0, 0.2);
+}
+
 body{
     min-height: 100vh;
     background-color: var(--light-grey);
+}
+
+* {
+    font-family: 'Gugi';
+}
+
+th {
+    font-size: min(1vmax, 20px);
+}
+
+.scalableFont {
+    font-size: min(1vmax, 20px);
 }
 
 .seeThrough{
@@ -33,4 +59,12 @@ body{
 
 .greyButton:hover {
     background: var(--grey);
+}
+
+.headerFont {
+    font-family: 'Press Start 2P';
+}
+
+.regularFont {
+    font-family: 'Gugi';
 }
