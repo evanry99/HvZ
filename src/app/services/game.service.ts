@@ -6,7 +6,7 @@ import { Gravestone } from '../models/gravestone.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
 
-const { apiUrl2 } = environment
+const { mockApiUrl2 } = environment
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class GameService {
   constructor(private readonly http: HttpClient) { }
 
   public getGames(){
-    return this.http.get<Game[]>(apiUrl2+"/games")
+    return this.http.get<Game[]>(mockApiUrl2+"/games")
       .subscribe({
         next: (games: Game[]) => {
           this._games = games;
