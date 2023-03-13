@@ -1,12 +1,23 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Gravestone } from '../models/gravestone.model';
+import { Kill } from '../models/kill.model';
+import { GameService } from './game.service';
+import { environment } from 'src/environments/environment.development';
+
+const {apiUrl} = environment;
 
 @Injectable({
   providedIn: 'root'
 })
 export class KillService {
 
-  constructor() { }
+  private _kills?: Kill[];
+  private _error: string = "";
+
+  constructor(
+    private readonly gameService: GameService,
+    private readonly http: HttpClient) { }
 
   getGravestones(): Gravestone[] {
     //temp
@@ -21,5 +32,19 @@ export class KillService {
     })
     return gravestones;
   }
+
+  getKills() {
+    const gameId: number = this.gameService.game.id;
+    this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`)
+      .subscribe({
+        next: (kills: Kill[]) => {
+          this._kills = kills;
+        },
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+        }
+      })
+  }
+
 
 }

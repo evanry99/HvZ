@@ -3,7 +3,8 @@ import { Player } from '../models/player.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 
 
-const {apiUrl} = environment
+const {apiUrl} = environment;
+
 import { environment } from 'src/environments/environment.development';
 @Injectable({
   providedIn: 'root'
