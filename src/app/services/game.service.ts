@@ -5,7 +5,7 @@ import { Game } from '../models/game.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
 
-const { apiUrl2 } = environment
+const { mockApiUrl2 } = environment
 
 @Injectable({
   providedIn: 'root'

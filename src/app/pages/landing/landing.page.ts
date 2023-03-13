@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Game } from "src/app/models/game.model";
 import { GameService } from "src/app/services/game.service";
-import keycloak from "src/keycloak";
 
 @Component({
   selector: 'app-landing',
@@ -18,6 +17,7 @@ export class LandingPage implements OnInit{
   get games():Game[]{
     return this.gameService.games
   }
+
   logout() {
     console.log("logged out");
   }

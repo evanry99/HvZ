@@ -1,7 +1,5 @@
-import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import keycloak from 'src/keycloak';
-
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,17 +7,14 @@ import keycloak from 'src/keycloak';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  constructor(private readonly router: Router) { }
 
-  logout() {
-    console.log("logged out");
+  constructor(private readonly router: Router){}
+
+  logout(){
+    //Todo
   }
 
-  handleLogin() {
-    keycloak.login
-  }
-
-  goToLanding() {
+  goToLanding(){
     this.router.navigateByUrl("/landing")
   }
 
