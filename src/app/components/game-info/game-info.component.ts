@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 
 @Component({
-  selector: 'app-game-description',
-  templateUrl: './game-description.component.html',
-  styleUrls: ['./game-description.component.css']
+  selector: 'app-game-info',
+  templateUrl: './game-info.component.html',
+  styleUrls: ['./game-info.component.css']
 })
-export class GameDescriptionComponent {
+export class GameInfoComponent {
 
   _description?: string;
 
@@ -15,4 +15,5 @@ export class GameDescriptionComponent {
   ngOnInit(){
     this._description = "Temp tmp  tmp tmp tmp mtpm tmpm tmp" //game.description
   }
+
 }

@@ -9,11 +9,10 @@ import { LandingPage } from './pages/landing/landing.page';
 import { LandingPageListComponent } from './components/landing-page-list/landing-page-list.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { GameDescriptionComponent } from './components/game-description/game-description.component';
-import { GameRulesComponent } from './components/game-rules/game-rules.component';
 import { MapComponent } from './components/map/map.component';
 import { BiteCodeFormComponent } from './components/bite-code-form/bite-code-form.component';
 import { FormsModule } from '@angular/forms';
+import { GameInfoComponent } from './components/game-info/game-info.component';
 
 
 @NgModule({
@@ -23,10 +22,9 @@ import { FormsModule } from '@angular/forms';
     LandingPageListComponent,
     GameDetailPage,
     NavBarComponent,
-    GameDescriptionComponent,
-    GameRulesComponent,
     MapComponent,
-    BiteCodeFormComponent
+    BiteCodeFormComponent,
+    GameInfoComponent,
   ],
   imports: [
     BrowserModule,
