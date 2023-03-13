@@ -19,6 +19,8 @@ export class MapComponent {
     se_lng: 0
   };
 
+  private _gravestones: Gravestone[] = [];
+
   constructor(private readonly mapService: MapService, private readonly killService: KillService){
   }
 
@@ -47,8 +49,18 @@ export class MapComponent {
     this.mapInit();
   }
 
+  updateGravestones(){
+    //temp
+    this.layers.push(
+      marker([20, 20], this.gravestoneIcon)
+      .bindPopup("Ola Normann, 12.12.2012")
+      .openPopup()
+    );
+  }
+
   mapInit(){
-    const gravestones: Gravestone[] = this.killService.getGravestones();
+    this._gravestones = this.killService.getGravestones();
+
     this.options = {
       layers: [
           tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
@@ -71,8 +83,7 @@ export class MapComponent {
       ]).setStyle({color: '#FF0000'}),
     );
 
-    console.log(gravestones)
-    for(let gravestone of gravestones){
+    for(let gravestone of this._gravestones){
       console.log(gravestone)
       this.layers.push(
         marker([gravestone.lat, gravestone.lng], this.gravestoneIcon)
