@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import keycloak from 'src/keycloak';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,8 +11,17 @@ export class NavBarComponent {
 
   constructor(private readonly router: Router){}
 
-  logout(){
-    //Todo
+  handleLogout(){
+    keycloak.logout()
+  }
+
+  handleLogin() {
+    keycloak.login()
+  }
+
+  handleLogToken() {
+    console.log("Keycloak token parsed: ", keycloak.tokenParsed);
+    console.log("Keycloak token: ", keycloak.token);
   }
 
   goToLanding(){

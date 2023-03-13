@@ -1,10 +1,8 @@
 {
-    "realm": "myrealm",
-    "auth-server-url": "http://localhost:8080/",
+    "realm": "HvZ",
+    "auth-server-url": "http://localhost:8080",
     "ssl-required": "external",
-    "resource": "myclient",
+    "resource": "HvZ-App",
     "public-client": true,
-    "verify-token-audience": true,
-    "use-resource-role-mappings": true,
     "confidential-port": 0
-}
+  }

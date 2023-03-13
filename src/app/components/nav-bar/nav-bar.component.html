@@ -2,6 +2,8 @@
     <h2 class="navbar-brand ms-2 headerFont">HvZ</h2>
     <div class="grid me-2">
         <button *ngIf="isNotLanding()" class="btn col me-1 greyButton" (click)="goToLanding()">Main</button>
-        <button class="btn col me-1 greyButton" (click)="logout()">Logout</button>
+        <button class="btn col me-1 greyButton" (click)="handleLogout()">Logout</button>
+        <button class="btn col me-1 greyButton" (click)="handleLogin()">Login</button>
+        <button class="btn col me-1 greyButton" (click)="handleLogToken()">Display token</button>
     </div>
 </nav>
