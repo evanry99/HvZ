@@ -23,8 +23,8 @@ background: rgba(0, 0, 0, 0.2);
 body{
     min-height: 100vh;
     background-image: url("./assets/images/3825.jpg");
-    background-position: center;
-    background-size: 200vh 100vh;
+    background-position: 50% 70%;
+    background-size: 220vh 110vh;
 }
 
 * {
@@ -53,14 +53,6 @@ th {
 
 .mainPurple {
     background-color: var(--purple);
-}
-
-.greyButton {
-    background: var(--light-grey);
-}
-
-.greyButton:hover {
-    background: var(--grey);
 }
 
 .headerFont {

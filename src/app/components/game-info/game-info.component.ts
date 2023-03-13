@@ -13,7 +13,7 @@ export class GameInfoComponent {
   constructor(private readonly gameService: GameService){}
 
   ngOnInit(){
-    this._description = "Temp tmp  tmp tmp tmp mtpm tmpm tmp" //game.description
+    this._description = "Temp tmp  tmp tmp tmp mtpm tmpm tmp tmp tmp" //game.description
   }
 
 }

@@ -1,4 +1,5 @@
-<div class="container-fluid pt-2">
+<div class="pe-3 ps-3">
+  <div class="container-fluid pt-2 mainPurple  pb-3">
     <div class="row">
         <h2 class="col-sm ms-3">{{_title}}</h2>
         <p class="col-sm text-center my-auto">Faction: Human</p>
@@ -11,17 +12,18 @@
     </div>
     <div class="row ms-0">
         <div class="dropdown col">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown button
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" routerLink="map">Map</a>
-              <a class="dropdown-item" href="#">Players (admin)</a>
+              <a class="dropdown-item text-black" routerLink="map">Map</a>
+              <a class="dropdown-item text-black" href="#">Players (admin)</a>
             </div>
           </div>
-          <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
+        <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
     </div>
-    <div class="mainPurple mt-3 p-3">
+    <div class="fragment mt-3 border-top border-3 border-dark">
       <router-outlet></router-outlet>
     </div>
+  </div>
 </div>
