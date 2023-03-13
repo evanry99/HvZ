@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
+import { Gravestone } from '../models/gravestone.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
 
