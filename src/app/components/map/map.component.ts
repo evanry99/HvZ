@@ -91,8 +91,5 @@ export class MapComponent {
         .openPopup()
       );
     }
-
-
   }
-
 }

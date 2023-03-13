@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Player } from '../models/player.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
-
-
-const {apiUrl} = environment
 import { environment } from 'src/environments/environment.development';
+
+const {apiUrl} = environment;
+
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  constructor(private http:HttpClient){
-    
-  }
+  constructor(private http:HttpClient){}
 
   private _players: Player[] = [];
   private _error: string = "";
