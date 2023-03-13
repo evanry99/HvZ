@@ -14,6 +14,8 @@ import { GameRulesComponent } from './components/game-rules/game-rules.component
 import { MapComponent } from './components/map/map.component';
 import { BiteCodeFormComponent } from './components/bite-code-form/bite-code-form.component';
 import { FormsModule } from '@angular/forms';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { FormsModule } from '@angular/forms';
     GameDescriptionComponent,
     GameRulesComponent,
     MapComponent,
-    BiteCodeFormComponent
+    BiteCodeFormComponent,
+    ChatComponent,
+    ChatMessageComponent
   ],
   imports: [
     BrowserModule,
