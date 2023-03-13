@@ -1,17 +1,16 @@
-<div class="container">
-    <div class="card" id="chat">
+<div class="container-fluid chatContainer">
+    <div class="card bg-dark" id="chat">
         <div class="card-header">
             <h5>Chat</h5>
         </div>
         <div class="card-body">
             <app-chat-message></app-chat-message>
         </div>
-        <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-            <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)">
-                <input type="text" class="form-control" name="chat" id="inputChat" aria-describedby="chatHelp" required ngModel #description="ngModel">
-                <button type="submit" [disabled]="chatForm.invalid" class="btn btn-primary"></button>
+        <div class="card-footer text-muted p-3">
+            <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
+                <input type="text" class="form-control-lg col-10 me-1" name="chat" id="inputChat" aria-describedby="chatHelp" required ngModel #description="ngModel">
+                <button type="submit" [disabled]="chatForm.invalid" class="btn btn-primary col-sm">Send</button>
             </form>
         </div>
-
     </div>
 </div>

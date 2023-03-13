@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ChatComponent } from './components/chat/chat.component';
 import { GameInfoComponent } from './components/game-info/game-info.component';
 import { MapComponent } from './components/map/map.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
@@ -27,7 +28,11 @@ const routes: Routes = [
       {
         path: 'map',
         component: MapComponent,
-      }
+      },
+      {
+        path: 'chat',
+        component: ChatComponent,
+      },
     ]
   },
   {
