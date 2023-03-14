@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
@@ -6,7 +6,7 @@ import { Gravestone } from '../models/gravestone.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
 
-const { apiUrl2 } = environment
+const { apiUrl } = environment
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,8 @@ export class GameService {
   constructor(private readonly http: HttpClient) { }
 
   public getGames(){
-    return this.http.get<Game[]>(apiUrl2+"/games")
+
+    return this.http.get<Game[]>(apiUrl+"/game")
       .subscribe({
         next: (games: Game[]) => {
           this._games = games;

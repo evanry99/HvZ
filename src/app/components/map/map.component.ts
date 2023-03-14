@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { latLng, tileLayer, LatLngBounds, latLngBounds, map, marker, polygon, Icon, icon } from 'leaflet';
 import { Gravestone } from 'src/app/models/gravestone.model';
-import { Map } from 'src/app/models/map.model';
+import { MapModel } from 'src/app/models/map.model';
 import { KillService } from 'src/app/services/kill.service';
 import { MapService } from 'src/app/services/map.service';
 
@@ -12,7 +12,7 @@ import { MapService } from 'src/app/services/map.service';
 })
 export class MapComponent {
 
-  private _map: Map = {
+  private _map: MapModel = {
     nw_lat: 0,
     nw_lng: 0,
     se_lat: 0,
