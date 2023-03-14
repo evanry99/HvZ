@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './components/chat/chat.component';
 import { GameInfoComponent } from './components/game-info/game-info.component';
 import { MapComponent } from './components/map/map.component';
+import { SquadInfoComponent } from './components/squad-info/squad-info.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { LandingPage } from './pages/landing/landing.page';
 
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'chat',
         component: ChatComponent,
+      },
+      {
+        path: 'squad-info',
+        component: SquadInfoComponent,
       },
     ]
   },
