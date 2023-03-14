@@ -16,6 +16,7 @@ export class NavBarComponent {
 
   handleLogin() {
     keycloak.login()
+    
   }
 
   handleLogToken() {
@@ -25,7 +26,7 @@ export class NavBarComponent {
     console.log("Is admin: ", keycloak.tokenParsed.realm_access.roles.includes("admin"));
   }
 
-  handleMakeAdmin() { //TODO
+  handleMakeAdmin() {
     if (!keycloak.tokenParsed.realm_access.roles.includes('admin')) {
       keycloak.tokenParsed.realm_access.roles.push("admin")
       //keycloak.tokenParsed.realm_access.roles.pop()
@@ -33,7 +34,7 @@ export class NavBarComponent {
     } else {
       //keycloak.tokenParsed.realm_access.roles.filter(word => word !== 'admin')
       keycloak.tokenParsed.realm_access.roles.forEach((element, index) => {
-        if(element==='admin') keycloak.tokenParsed.realm_access.roles.splice(index,1);
+        if (element === 'admin') keycloak.tokenParsed.realm_access.roles.splice(index, 1);
       });
       console.log("User is no longer admin");
 
