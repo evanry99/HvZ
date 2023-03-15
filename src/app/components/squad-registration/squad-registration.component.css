@@ -1,0 +1,22 @@
+.modal-content{
+    background-color: var(--purple);
+    color: white;
+}
+
+label{
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+.btn-close{
+    background-color: white;
+}
+
+
+form button{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#SquadNameHelp{
+    color: white;
+}

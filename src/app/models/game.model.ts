@@ -7,4 +7,5 @@ export interface Game {
     nw_Lng?: number;
     se_Lat?: number;
     se_Lng?: number;
+    numberOfPlayers?: number;
 }

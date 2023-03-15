@@ -1,0 +1,28 @@
+<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Register Squad</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Register Squad</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form #registerSquadForm="ngForm" (ngSubmit)="onSubmit(registerSquadForm)"> 
+                <div class="mb-3">
+                    <label for="inputSquadName" class="form-label">Squad name</label>
+                    <input type="text" class="form-control" name="SquadName" id="inputSquadName" aria-describedby="SquadNameHelp" ngModel minlength="3" required #SquadName="ngModel">
+                    <div id="SquadNameHelp" class="form-text">Please enter the squad name</div>
+                    <div *ngIf="SquadName.errors && (SquadName.dirty || SquadName.touched)">
+                        <div id="SquadNameHelp" class="form-text" *ngIf="SquadName.errors['required']">Squad name is required</div>
+                        <div id="SquadNameHelp" class="form-text" *ngIf="SquadName.errors['minlength']">Squad name is too short</div>
+                    </div>
+                        
+                </div>
+                    <button type="submit" [disabled]="registerSquadForm.invalid" class="btn btn-dark">Submit Squad</button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>

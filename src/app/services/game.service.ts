@@ -1,8 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { finalize } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
 import { Gravestone } from '../models/gravestone.model';
+import { Player } from '../models/player.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
 
@@ -39,12 +41,15 @@ export class GameService {
   constructor(private readonly http: HttpClient) { }
 
   public getGames(){
-
     return this.http.get<Game[]>(apiUrl+"/game")
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
       .subscribe({
         next: (games: Game[]) => {
           this._games = games;
-          console.log(games);
         },
         error: (error: HttpErrorResponse) => {
           this._error = error.message;
@@ -57,4 +62,21 @@ export class GameService {
     //return this._games.filter((game:Game) => game.id === id)
     return this._games[id-1];
   }
+
+  public getNumberOfPlayersInGame(id:number){
+    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
+    .subscribe({
+      next: (players: Player[]) => {
+          this._game = this.getGameById(id)
+          this._game.numberOfPlayers = players.length;
+     
+      },
+      error: (error:HttpErrorResponse) =>{
+        this._error = error.message;
+      }
+    })
+  }
+
+
 }
+
