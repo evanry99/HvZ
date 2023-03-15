@@ -23,7 +23,7 @@ export class GameDetailPage {
   ngOnInit(){
     this.setGame(2);
     if(!this._game){
-      //this.router.navigateByUrl("/landing");
+      this.router.navigateByUrl("/landing");
     }
     this.mapService.setMap();
   }
@@ -37,6 +37,7 @@ export class GameDetailPage {
       console.log("Error: " + error.message) 
     }
   }
+
 }
 
 

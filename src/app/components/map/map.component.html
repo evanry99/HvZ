@@ -1,6 +1,6 @@
-<div id="map"
+<div *ngIf="mapReady" id="map"
     leaflet 
     [leafletOptions]="options"
     [leafletLayers]="layers">
 </div>
-<button class="btn btn-light refreshMap" type="button" (click)="updateGravestones()">Refresh</button>
+<button class="btn btn-light refreshMap" type="button" (click)="updateKills()">Refresh</button>

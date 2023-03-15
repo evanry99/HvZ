@@ -34,10 +34,9 @@ export class PlayerService {
         }
       })
   }
+  
   public playerById(id: Number): Player| undefined{
       return this._players?.find((player:Player) => player.id === id);
   }
-  
- 
 }
 
