@@ -8,7 +8,7 @@ import keycloak from 'src/keycloak';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  roles = keycloak.tokenParsed.realm_access.roles;
+  roles = keycloak?.tokenParsed?.realm_access?.roles;
   constructor(private readonly router: Router) { } // wass/pass & admin/admin & 
 
   handleLogout() {

@@ -87,7 +87,7 @@ export class MapComponent {
       console.log(kill)
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${kill.id}, ${kill.story}, ${kill.time_of_death}`)
+        .bindPopup(`${kill.victimId}, ${kill.story}, ${kill.timeOfDeath}`)
         .openPopup()
       );
     }
