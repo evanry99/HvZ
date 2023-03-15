@@ -39,7 +39,9 @@ export class MapComponent {
     await this.killService.getKills();
     this._game = this.gameService.game;
     this._kills = this.killService.kills;
-    this.mapInit();
+    if(this.hasCoordinates()){
+      this.mapInit();
+    }
   }
 
   updateKills(){
@@ -52,7 +54,7 @@ export class MapComponent {
   }
 
   hasCoordinates(): boolean{
-    if(!this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
+    if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
           return false;
         }
     return true;

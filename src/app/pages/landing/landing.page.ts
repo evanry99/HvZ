@@ -16,7 +16,7 @@ export class LandingPage implements OnInit{
     return this.gameService.games
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.gameService.getGames();
+  ngOnInit(): void {
+    this.gameService.getGames()
   }
 }
