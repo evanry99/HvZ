@@ -7,7 +7,7 @@ import { GameService } from "src/app/services/game.service";
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.css']
 })
-export class LandingPage implements OnInit{
+export class LandingPage{
   constructor(
     readonly gameService:GameService
   ){}
@@ -16,7 +16,5 @@ export class LandingPage implements OnInit{
     return this.gameService.games
   }
 
-  ngOnInit(): void {
-    this.gameService.getGames()
-  }
+  
 }

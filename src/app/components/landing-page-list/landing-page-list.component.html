@@ -11,9 +11,9 @@
     <tbody>
         <tr *ngFor="let game of games">
             <th scope="row">{{game.name}}</th>
-            <td>{{game.game_state}}</td>
-            <td>{{game.se_lat}}</td>
-            <td>{{game.se_lng}}</td>
+            <td>{{game.numberOfPlayers}}</td>
+            <td>{{game.se_Lat}}</td>
+            <td>{{game.se_Lng}}</td>
             <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame(game)">View</button></td>
           </tr>
     </tbody>
