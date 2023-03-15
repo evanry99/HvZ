@@ -1,9 +1,11 @@
 export interface Game {
     id: number;
     name: string;
-    game_state: string;
-    nw_lat: number;
-    nw_lng: number;
-    se_lat: number;
-    se_lng: number;
+    gameState: string;
+    description: string;
+    nw_Lat: number;
+    nw_Lng: number;
+    se_Lat: number;
+    se_Lng: number;
+    numberOfPlayers?: number;
 }

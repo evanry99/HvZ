@@ -45,4 +45,16 @@ export class KillService {
         }
       })
   }
+  registerKill(kill:Kill){
+    this.http.post<Kill>(`${apiUrl}/kill`, kill)
+    .subscribe({
+      next: (kill:Kill) => {
+        this._kills.push(kill);
+        console.log(kill)
+      },
+      error: (error:HttpErrorResponse) => {
+        this._error = error.message;
+      }
+    })
+  }
 }

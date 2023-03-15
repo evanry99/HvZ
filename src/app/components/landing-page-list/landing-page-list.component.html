@@ -1,20 +1,20 @@
 <table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">Game title</th>
-      <th scope="col">Number of players</th>
-      <th scope="col">Game state</th>
-      <th scope="col">Start date</th>
-      <th scope="col"><button class="btn btn-primary scalableFont">Refresh</button></th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor="let game of games">
-          <th scope="row">{{game.name}}</th>
-          <td>{{game.game_state}}</td>
-          <td>{{game.se_lat}}</td>
-          <td>{{game.se_lng}}</td>
-          <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame(game)">View</button></td>
-        </tr>
-  </tbody>
-</table>
+    <thead>
+      <tr>
+        <th scope="col">Game title</th>
+        <th scope="col">Number of players</th>
+        <th scope="col">Game state</th>
+        <th scope="col">Start date</th>
+        <th scope="col"><button class="btn btn-primary scalableFont">Refresh</button></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let game of games">
+            <th scope="row">{{game.name}}</th>
+            <td>{{game.numberOfPlayers}}</td>
+            <td>{{game.se_Lat}}</td>
+            <td>{{game.se_Lng}}</td>
+            <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame(game)">View</button></td>
+          </tr>
+    </tbody>
+  </table>

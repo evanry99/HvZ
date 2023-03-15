@@ -22,10 +22,10 @@ export class MapService {
   setMap(): void {
     const game: Game = this.gameService.game
     this._map = {
-      nw_lat : game.nw_lat,
-      nw_lng : game.nw_lng,
-      se_lat : game.se_lat,
-      se_lng : game.se_lng
+      nw_lat : game.nw_Lat,
+      nw_lng : game.nw_Lng,
+      se_lat : game.se_Lat,
+      se_lng : game.se_Lng
     }
   }
 
