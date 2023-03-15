@@ -4,6 +4,8 @@ import { Gravestone } from '../models/gravestone.model';
 import { Kill } from '../models/kill.model';
 import { GameService } from './game.service';
 import { environment } from 'src/environments/environment.development';
+import { lastValueFrom } from 'rxjs';
+
 
 const {apiUrl} = environment;
 
@@ -12,8 +14,12 @@ const {apiUrl} = environment;
 })
 export class KillService {
 
-  private _kills?: Kill[];
+  private _kills: Kill[] = [];
   private _error: string = "";
+
+  get kills() {
+    return this._kills;
+  }
 
   constructor(
     private readonly gameService: GameService,
@@ -33,16 +39,15 @@ export class KillService {
     return gravestones;
   }
 
-  getKills() {
+  async getKills(): Promise<void>{
     const gameId: number = this.gameService.game.id;
-    this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`)
-      .subscribe({
-        next: (kills: Kill[]) => {
+    //this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`)
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/kill`))
+      .then((kills: Kill[]) => {
           this._kills = kills;
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
+        })
+      .catch((error: HttpErrorResponse) => {
+        this._error = error.message;
       })
   }
   registerKill(kill:Kill){

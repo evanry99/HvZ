@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Game } from '../models/game.model';
-import { Map } from '../models/map.model';
+import { MapModel } from '../models/map.model';
 import { GameService } from './game.service';
 
 @Injectable({
@@ -8,9 +8,9 @@ import { GameService } from './game.service';
 })
 export class MapService {
 
-  private _map?: Map;
+  private _map?: MapModel;
 
-  get map(): Map{
+  get map(): MapModel{
     if(!this._map){
       throw new Error("No map")
     }
@@ -28,5 +28,4 @@ export class MapService {
       se_lng : game.se_Lng
     }
   }
-
 }
