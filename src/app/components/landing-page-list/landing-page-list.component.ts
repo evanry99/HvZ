@@ -9,18 +9,26 @@ import { GameService } from "src/app/services/game.service";
   styleUrls: ['./landing-page-list.component.css']
 })
 export class LandingPageListComponent implements OnInit{
-  @Input() games: Game[] = []
+  @Input() games: Game[] = [];
+
+ 
   constructor(
     private readonly gameService: GameService,
     private readonly router: Router){}
 
   async goToGame(game: Game){
-    console.log(game)
+    //console.log(game)
     this.gameService.game = game;
     this.router.navigateByUrl("/game-detail")
   }
 
   ngOnInit(): void {
-      this.gameService.getGames();
+
+      this.gameService.getGames()
+      console.log(this.gameService.games)
+      this.gameService.games.forEach(game=>
+          this.gameService.getNumberOfPlayersInGame(game.id)
+        )
+
   }
 }

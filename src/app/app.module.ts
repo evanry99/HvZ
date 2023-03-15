@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { GameInfoComponent } from './components/game-info/game-info.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
+import { SquadInfoComponent } from './components/squad-info/squad-info.component';
+import { MapPingComponent } from './components/map-ping/map-ping.component';
 import { SquadRegistrationComponent } from './components/squad-registration/squad-registration.component';
 
 
@@ -30,6 +32,8 @@ import { SquadRegistrationComponent } from './components/squad-registration/squa
     GameInfoComponent,
     ChatComponent,
     ChatMessageComponent,
+    SquadInfoComponent,
+    MapPingComponent,
     SquadRegistrationComponent
   ],
   imports: [

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { latLng, tileLayer, LatLngBounds, latLngBounds, map, marker, polygon, Icon, icon } from 'leaflet';
-import { Gravestone } from 'src/app/models/gravestone.model';
-import { Map } from 'src/app/models/map.model';
+import { Game } from 'src/app/models/game.model';
+import { Kill } from 'src/app/models/kill.model';
+import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
-import { MapService } from 'src/app/services/map.service';
 
 @Component({
   selector: 'app-map',
@@ -11,18 +11,11 @@ import { MapService } from 'src/app/services/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent {
+  private _game: Game;
 
-  private _map: Map = {
-    nw_lat: 0,
-    nw_lng: 0,
-    se_lat: 0,
-    se_lng: 0
-  };
+  private _kills: Kill[] = [];
 
-  private _gravestones: Gravestone[] = [];
-
-  constructor(private readonly mapService: MapService, private readonly killService: KillService){
-  }
+  mapReady: boolean = false;
 
   options = {};
 
@@ -37,19 +30,21 @@ export class MapComponent {
    })
   };
 
-  ngOnInit(){
-    //this._map = this.mapService.map;
-    //temp
-    this._map = {
-      nw_lat : -43.11,
-      nw_lng : 5.25,
-      se_lat : 45,
-      se_lng : 50
-    }
-    this.mapInit();
+  constructor(
+    private readonly killService: KillService,
+    private readonly gameService: GameService){
   }
 
-  updateGravestones(){
+  async ngOnInit(){
+    await this.killService.getKills();
+    this._game = this.gameService.game;
+    this._kills = this.killService.kills;
+    if(this.hasCoordinates()){
+      this.mapInit();
+    }
+  }
+
+  updateKills(){
     //temp
     this.layers.push(
       marker([20, 20], this.gravestoneIcon)
@@ -58,9 +53,14 @@ export class MapComponent {
     );
   }
 
-  mapInit(){
-    this._gravestones = this.killService.getGravestones();
+  hasCoordinates(): boolean{
+    if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
+          return false;
+        }
+    return true;
+  }
 
+  mapInit(){
     this.options = {
       layers: [
           tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
@@ -71,25 +71,26 @@ export class MapComponent {
       ],
       zoom: 5,
       center: latLng(
-        (this._map.nw_lat + this._map.se_lat)/2,
-        (this._map.nw_lng + this._map.se_lng)/2),
-      maxBounds: latLngBounds(latLng(this._map.nw_lat, this._map.nw_lng), latLng(this._map.se_lat, this._map.se_lng))
+        (this._game.nw_Lat + this._game.se_Lat)/2,
+        (this._game.nw_Lng + this._game.se_Lng)/2),
+      maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng))
     };
 
     this.layers.push(
       polygon([
         [[90, -180], [90, 180], [-90, 180], [-90, -180]],
-        [[ this._map.nw_lat, this._map.nw_lng ], [ this._map.nw_lat, this._map.se_lng ], [ this._map.se_lat, this._map.se_lng ], [ this._map.se_lat, this._map.nw_lng ]]
+        [[ this._game.nw_Lat, this._game.nw_Lng ], [ this._game.nw_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.nw_Lng ]]
       ]).setStyle({color: '#FF0000'}),
     );
 
-    for(let gravestone of this._gravestones){
-      console.log(gravestone)
+    for(let kill of this._kills){
+      console.log(kill)
       this.layers.push(
-        marker([gravestone.lat, gravestone.lng], this.gravestoneIcon)
-        .bindPopup("Ola Normann, 12.12.2012")
+        marker([kill.lat, kill.lng], this.gravestoneIcon)
+        .bindPopup(`${kill.id}, ${kill.story}, ${kill.time_of_death}`)
         .openPopup()
       );
     }
+    this.mapReady = true;
   }
 }
