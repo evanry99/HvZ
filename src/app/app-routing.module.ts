@@ -17,7 +17,7 @@ const routes: Routes = [
     component: GameDetailPage,
     canActivate: [RoleGuard],
     data: {
-      role: "admin" || "uma_authorization"
+      role: "uma_authorization"
     },
     children: [
       {

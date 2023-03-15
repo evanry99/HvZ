@@ -16,7 +16,6 @@ export class NavBarComponent {
 
   handleLogin() {
     keycloak.login()
-    
   }
 
   handleLogToken() {
