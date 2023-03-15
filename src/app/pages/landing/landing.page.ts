@@ -7,7 +7,9 @@ import { GameService } from "src/app/services/game.service";
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.css']
 })
-export class LandingPage{
+export class LandingPage implements OnInit{
+  theMessage: string = "Hello from the other side"
+  
   constructor(
     readonly gameService:GameService
   ){}
@@ -16,5 +18,14 @@ export class LandingPage{
     return this.gameService.games
   }
 
-  
+  logout() {
+    console.log("logged out");
+  }
+
+  handleLogin() {
+  }
+
+  ngOnInit(): void {
+    this.gameService.getGames()
+  }
 }
