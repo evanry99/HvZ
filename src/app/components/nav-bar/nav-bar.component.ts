@@ -8,7 +8,6 @@ import keycloak from 'src/keycloak';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  roles = keycloak.tokenParsed.realm_access.roles;
   constructor(private readonly router: Router) { } // wass/pass & admin/admin & 
 
   handleLogout() {
@@ -22,20 +21,24 @@ export class NavBarComponent {
   handleLogToken() {
     console.log("Keycloak token: ", keycloak.token);
     console.log("Keycloak token parsed: ", keycloak.tokenParsed);
-    console.log("User roles: ", this.roles);
-    console.log("Is admin: ", this.roles.includes("admin"));
+    console.log("User roles: ", keycloak.tokenParsed.realm_access.roles);
+    console.log("Is admin: ", keycloak.tokenParsed.realm_access.roles.includes("admin"));
   }
 
-  handleMakeAdmin() { //TODO
-    if (!this.roles.includes('admin')) {
-      this.roles.push("admin")
-      console.log("was not admin");      
+  handleMakeAdmin() {
+    if (!keycloak.tokenParsed.realm_access.roles.includes('admin')) {
+      keycloak.tokenParsed.realm_access.roles.push("admin")
+      //keycloak.tokenParsed.realm_access.roles.pop()
+      console.log("User is now admin");
     } else {
-      this.roles.filter(word => word !== 'admin')
-      console.log("was admin");
-      
+      //keycloak.tokenParsed.realm_access.roles.filter(word => word !== 'admin')
+      keycloak.tokenParsed.realm_access.roles.forEach((element, index) => {
+        if (element === 'admin') keycloak.tokenParsed.realm_access.roles.splice(index, 1);
+      });
+      console.log("User is no longer admin");
+
     }
-    console.log("User roles: ", this.roles);
+    console.log("User roles: ", keycloak.tokenParsed.realm_access.roles);
   }
 
   goToLanding() {
