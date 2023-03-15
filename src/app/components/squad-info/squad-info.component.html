@@ -16,8 +16,9 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let game of games">
-            <td>{{game}}</td>
+        <tr *ngFor="let player of _players">
+            <td scope="row">{{player.id}}</td>
+            <td>{{player.isHuman}}</td>
         </tr>
     </tbody>
 </table>

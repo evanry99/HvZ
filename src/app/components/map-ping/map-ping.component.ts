@@ -80,8 +80,13 @@ export class MapPingComponent {
       zoom: 5,
       center: latLng(
         (this._game.nw_Lat + this._game.se_Lat)/2,
-        (this._game.nw_Lng + this._game.se_Lng)/2),
-      maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng)),
+        (this._game.nw_Lng + this._game.se_Lng)/2)
     };
+    this.layers.push(
+      polygon([
+        [[90, -180], [90, 180], [-90, 180], [-90, -180]],
+        [[ this._game.nw_Lat, this._game.nw_Lng ], [ this._game.nw_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.nw_Lng ]]
+      ]).setStyle({color: '#FF0000'}),
+    );
   }
 }

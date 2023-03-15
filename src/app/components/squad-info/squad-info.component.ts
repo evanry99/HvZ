@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Player } from 'src/app/models/player.model';
+import { PlayerService } from 'src/app/services/player.service';
 
 @Component({
   selector: 'app-squad-info',
@@ -8,8 +9,14 @@ import { Player } from 'src/app/models/player.model';
 })
 export class SquadInfoComponent {
 
-  private players: Player[] = [];
+  _players: Player[] = [];
 
-  games: string[] = ["a", "b", "c"] 
+  constructor(private readonly playerService: PlayerService) { }
+
+  ngOnInit(){
+    //temp
+    this.playerService.getPlayers();
+    this._players = this.playerService.players;
+  }
 
 }
