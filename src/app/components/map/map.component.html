@@ -1,6 +1,9 @@
-<div *ngIf="mapReady" id="map"
+<div *ngIf="mapReady && hasCoordinates()" class="map"
     leaflet 
     [leafletOptions]="options"
     [leafletLayers]="layers">
+</div>
+<div *ngIf="!hasCoordinates()" class="map d-flex align-items-center">
+    <h1 class="m-auto">Map not set</h1>
 </div>
 <button class="btn btn-light refreshMap" type="button" (click)="updateKills()">Refresh</button>

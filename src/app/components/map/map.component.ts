@@ -17,11 +17,6 @@ export class MapComponent {
 
   mapReady: boolean = false;
 
-  constructor(
-    private readonly killService: KillService,
-    private readonly gameService: GameService){
-  }
-
   options = {};
 
   layers: any= []
@@ -34,6 +29,11 @@ export class MapComponent {
       iconUrl: '../../assets/images/gravestone.png',
    })
   };
+
+  constructor(
+    private readonly killService: KillService,
+    private readonly gameService: GameService){
+  }
 
   async ngOnInit(){
     await this.killService.getKills();
@@ -49,6 +49,13 @@ export class MapComponent {
       .bindPopup("Ola Normann, 12.12.2012")
       .openPopup()
     );
+  }
+
+  hasCoordinates(): boolean{
+    if(!this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
+          return false;
+        }
+    return true;
   }
 
   mapInit(){
