@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RoleGuard } from 'src/guards/role.guard';
 import { ChatComponent } from './components/chat/chat.component';
 import { GameInfoComponent } from './components/game-info/game-info.component';
 import { MapComponent } from './components/map/map.component';
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'game-detail',
     component: GameDetailPage,
+    canActivate: [RoleGuard],
+    data: {
+      role: "uma_authorization"
+    },
     children: [
       {
         path: '',
