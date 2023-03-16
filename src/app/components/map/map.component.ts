@@ -52,13 +52,23 @@ export class MapComponent {
     }
   }
 
-  updateKills(){
-    //temp
-    this.layers.push(
-      marker([20, 20], this.gravestoneIcon)
-      .bindPopup("Ola Normann, 12.12.2012")
-      .openPopup()
-    );
+  async updateKills(){
+    await this.killService.getKills();
+    const kills: Kill[] = this.killService.kills;
+    const newKills: Kill[] = kills.filter((kill: Kill) => this._kills.includes(kill));
+    console.log(newKills)
+    console.log(this._kills)
+    for(let kill of newKills){
+      let player = this.playerService.playerById(kill.victimId);
+      let user: User = await this.userService.getUserById(player.userId);
+      this.layers.push(
+        marker([kill.lat, kill.lng], this.gravestoneIcon)
+        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${kill.timeOfDeath.getTime}`)
+        .openPopup()
+      );
+    }
+
+    this._kills = kills;
   }
 
   hasCoordinates(): boolean{
