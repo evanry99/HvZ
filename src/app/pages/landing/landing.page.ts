@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Game } from "src/app/models/game.model";
+import { User } from "src/app/models/user.model";
 import { GameService } from "src/app/services/game.service";
+import { UserService } from "src/app/services/user.service";
+import keycloak from "src/keycloak";
 
 @Component({
   selector: 'app-landing',
@@ -8,24 +11,32 @@ import { GameService } from "src/app/services/game.service";
   styleUrls: ['./landing.page.css']
 })
 export class LandingPage implements OnInit{
-  theMessage: string = "Hello from the other side"
-  
+
   constructor(
-    readonly gameService:GameService
+    readonly gameService:GameService,
+    readonly userService: UserService
   ){}
   
   get games():Game[]{
     return this.gameService.games
   }
 
-  logout() {
-    console.log("logged out");
-  }
 
-  handleLogin() {
-  }
+
 
   ngOnInit(): void {
     this.gameService.getGames()
+    if(this.isAuthenticated() === true){
+      let user: User = {
+        firstName: keycloak.tokenParsed.given_name,
+        lastName: keycloak.tokenParsed.family_name,
+        isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
+      }
+      this.userService.addUser(user)
+    }
+  }
+
+  isAuthenticated():boolean{
+    return keycloak.authenticated
   }
 }
