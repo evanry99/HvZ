@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Gravestone } from '../models/gravestone.model';
 import { Kill } from '../models/kill.model';
 import { GameService } from './game.service';
 import { environment } from 'src/environments/environment.development';
@@ -25,24 +24,9 @@ export class KillService {
     private readonly gameService: GameService,
     private readonly http: HttpClient) { }
 
-  getGravestones(): Gravestone[] {
-    //temp
-    const gravestones: Gravestone[] = [];
-    gravestones.push({
-      lat: 40,
-      lng: 40
-    })
-    gravestones.push({
-      lat: 30,
-      lng: 41
-    })
-    return gravestones;
-  }
-
   async getKills(): Promise<void>{
     const gameId: number = this.gameService.game.id;
-    //this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`)
-    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/kill`))
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`))
       .then((kills: Kill[]) => {
           this._kills = kills;
         })
@@ -50,6 +34,7 @@ export class KillService {
         this._error = error.message;
       })
   }
+
   registerKill(kill:Kill){
     this.http.post<Kill>(`${apiUrl}/kill`, kill)
     .subscribe({

@@ -17,7 +17,6 @@ export class LandingPageListComponent implements OnInit{
     private readonly router: Router){}
 
   async goToGame(game: Game){
-    //console.log(game)
     this.gameService.game = game;
     this.router.navigateByUrl("/game-detail")
   }
@@ -25,7 +24,6 @@ export class LandingPageListComponent implements OnInit{
   ngOnInit(): void {
 
       this.gameService.getGames()
-      console.log(this.gameService.games)
       this.gameService.games.forEach(game=>
           this.gameService.getNumberOfPlayersInGame(game.id)
         )

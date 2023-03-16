@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Game } from '../models/game.model';
-import { Gravestone } from '../models/gravestone.model';
 import { Player } from '../models/player.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { gameKey } from '../variables/storage-keys';
