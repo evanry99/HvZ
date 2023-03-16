@@ -8,7 +8,7 @@ import keycloak from 'src/keycloak';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  constructor(private readonly router: Router) { } // wass/pass & admin/admin & 
+  constructor(private readonly router: Router) { } 
 
   handleLogout() {
     keycloak.logout()
@@ -23,15 +23,14 @@ export class NavBarComponent {
     console.log("Keycloak token parsed: ", keycloak.tokenParsed);
     console.log("User roles: ", keycloak.tokenParsed.realm_access.roles);
     console.log("Is admin: ", keycloak.tokenParsed.realm_access.roles.includes("admin"));
+    console.log("Username: ", keycloak.tokenParsed.preferred_username);
   }
 
   handleMakeAdmin() {
     if (!keycloak.tokenParsed.realm_access.roles.includes('admin')) {
       keycloak.tokenParsed.realm_access.roles.push("admin")
-      //keycloak.tokenParsed.realm_access.roles.pop()
       console.log("User is now admin");
     } else {
-      //keycloak.tokenParsed.realm_access.roles.filter(word => word !== 'admin')
       keycloak.tokenParsed.realm_access.roles.forEach((element, index) => {
         if (element === 'admin') keycloak.tokenParsed.realm_access.roles.splice(index, 1);
       });
