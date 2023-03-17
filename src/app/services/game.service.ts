@@ -15,7 +15,7 @@ const { apiUrl } = environment
 export class GameService {
 
   private _games: Game[] = [];
-  private _game?:Game;
+  private _game:Game;
   private _error = ""
   private _loading = false;
 
@@ -49,6 +49,9 @@ export class GameService {
       .subscribe({
         next: (games: Game[]) => {
           this._games = games;
+          games.forEach(game => {
+            this.getNumberOfPlayersInGame(game.id)
+          })
         },
         error: (error: HttpErrorResponse) => {
           this._error = error.message;
@@ -57,9 +60,7 @@ export class GameService {
   }
 
   public getGameById(id:number){
-    //Todo, fix when real Api works
-    //return this._games.filter((game:Game) => game.id === id)
-    return this._games[id-1];
+    return this._games.filter((game:Game) => game.id === id).pop()
   }
 
   public getNumberOfPlayersInGame(id:number){
@@ -68,6 +69,10 @@ export class GameService {
       next: (players: Player[]) => {
           this._game = this.getGameById(id)
           this._game.numberOfPlayers = players.length;
+          
+          
+         
+            
      
       },
       error: (error:HttpErrorResponse) =>{

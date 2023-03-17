@@ -4,3 +4,9 @@ export interface User{
     lastName: string;
     isAdmin: boolean;
 }
+
+export interface UserDTO{
+    firstName: string;
+    lastName: string;
+    isAdmin: boolean;
+}
