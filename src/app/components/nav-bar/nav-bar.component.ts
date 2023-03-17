@@ -48,3 +48,4 @@ export class NavBarComponent {
     return this.router.url !== "/landing";
   }
 }
+  
