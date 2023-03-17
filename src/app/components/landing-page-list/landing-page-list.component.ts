@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
 import { Game } from "src/app/models/game.model";
 import { GameService } from "src/app/services/game.service";
 
