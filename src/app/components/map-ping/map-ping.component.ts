@@ -73,7 +73,7 @@ export class MapPingComponent {
       layers: [
           tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
             maxZoom: 19, 
-            minZoom: 6, 
+            minZoom: 3, 
             attribution: '...' 
           })
       ],

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Player } from '../models/player.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import { environment } from 'src/environments/environment.development';
-import { User } from '../models/user.model';
-import { userKey } from '../variables/storage-keys';
-import { storageRead } from '../utils/storage.util';
+import { User, UserResponse } from '../models/user.model';
+import { userKey, playerKey } from '../variables/storage-keys';
+import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
 
 const {apiUrl} = environment;
@@ -18,6 +18,7 @@ export class PlayerService {
     private readonly gameService: GameService){}
 
   private _players: Player[] = [];
+  private _player: Player;
   private _error: string = "";
 
   get players(): Player[]{
@@ -26,6 +27,16 @@ export class PlayerService {
 
   get error(): string{
     return this._error;
+  }
+
+  get player(): Player {
+    this._player = storageRead(playerKey);
+    return this._player;
+  }
+
+  set player(p: Player) {
+    storageSave<Player>(playerKey, p);
+    this._player = p;
   }
 
   public getPlayers(){
@@ -46,7 +57,7 @@ export class PlayerService {
   }
 
   public registerPlayer() {
-    let user: User = storageRead(userKey);
+    let user: UserResponse = storageRead(userKey);
     let game = this.gameService.game;
     let player = {
       isPatientZero: false,

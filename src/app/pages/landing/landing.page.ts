@@ -29,14 +29,14 @@ export class LandingPage implements OnInit{
     if(this.isAuthenticated() === true){
       //Todo: Check if user already is logged in- Do not add user multiple times
       // Edit this
-      if(this.userService.user.firstName !== keycloak.tokenParsed.given_name){
+      if(!this.userService.user || this.userService.user.firstName !== keycloak.tokenParsed.given_name){
         let user: User = {
         firstName: keycloak.tokenParsed.given_name,
         lastName: keycloak.tokenParsed.family_name,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
-      }
+        }
       this.userService.addUser(user)
-    }
+      }
     }
       
   }
