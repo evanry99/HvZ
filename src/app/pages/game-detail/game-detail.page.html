@@ -17,12 +17,14 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item text-black" routerLink="map">Map</a>
+              <a class="dropdown-item text-black" routerLink="chat">Chat</a>
+              <a class="dropdown-item text-black" routerLink="squad-info">Squad Info</a>
               <a class="dropdown-item text-black" href="#">Players (admin)</a>
             </div>
           </div>
         <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
     </div>
-    <div class="fragment mt-3 border-top border-bottom border-3 border-dark">
+    <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
       <router-outlet></router-outlet>
     </div>
   </div>

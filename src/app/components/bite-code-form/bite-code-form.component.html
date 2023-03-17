@@ -12,7 +12,7 @@
             <form #registerKillForm="ngForm" (ngSubmit)="onSubmit(registerKillForm)"> 
                 <div class="mb-3">
                     <label for="inputBiteCode" class="form-label">Bite Code</label>
-                    <input type="text" class="form-control" name="biteCode" id="inputBiteCode" aria-describedby="biteCodeHelp" ngModel minlength="3" required #biteCode="ngModel">
+                    <input type="text" class="form-control" name="biteCode" id="inputBiteCode" aria-describedby="biteCodeHelp" ngModel minlength="1" required #biteCode="ngModel">
                     <div id="biteCodeHelp" class="form-text">Please enter the bite code of the player that killed you</div>
                     <div *ngIf="biteCode.errors && (biteCode.dirty || biteCode.touched)">
                         <div id="biteCodeHelp" class="form-text" *ngIf="biteCode.errors['required']">Bite code is required</div>

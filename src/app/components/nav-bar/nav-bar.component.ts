@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 import keycloak from 'src/keycloak';
-
+import { User } from 'src/app/models/user.model';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -14,9 +15,11 @@ export class NavBarComponent {
     keycloak.logout()
   }
 
+
   handleLogin() {
-    keycloak.login()
-  }
+      keycloak.login()
+    }
+ 
 
   handleLogToken() {
     console.log("Keycloak token: ", keycloak.token);
@@ -46,6 +49,10 @@ export class NavBarComponent {
 
   isNotLanding() {
     return this.router.url !== "/landing";
+  }
+
+  isAuthenticated(){
+    return keycloak.authenticated
   }
 }
   
