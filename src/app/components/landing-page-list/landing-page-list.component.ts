@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 import { Game } from "src/app/models/game.model";
 import { GameService } from "src/app/services/game.service";
 
@@ -24,9 +25,7 @@ export class LandingPageListComponent implements OnInit{
   ngOnInit(): void {
 
       this.gameService.getGames()
-      this.gameService.games.forEach(game=>
-          this.gameService.getNumberOfPlayersInGame(game.id)
-        )
+      
 
   }
 }
