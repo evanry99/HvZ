@@ -83,5 +83,17 @@ export class PlayerService {
     let player = this._players.filter((p: Player) => p.gameId === gameId && p.userId === userId)[0];
     return player;
   }
+
+  public updatePlayer(player: Player) {
+    this.http.put<Player>(`${apiUrl}/player/${player.id}`, player)
+    .subscribe({
+      next: () => {
+        this.getPlayers();
+      },
+      error: (error:HttpErrorResponse) => {
+        this._error = error.message;
+      }
+    })
+  }
 }
 

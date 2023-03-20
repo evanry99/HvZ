@@ -34,7 +34,7 @@ export class GameDetailPage {
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
-    this._isAdmin = this.userService.user.isAdmin;
+    this._isAdmin = true; //this.userService.user.isAdmin;
   }
 
   get chats(): Chat[]{
