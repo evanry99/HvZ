@@ -18,6 +18,8 @@ export class GameDetailPage {
   _title?: string;
   _game? : Game
   _player: Player;
+  _state: string;
+  _isAdmin: boolean;
 
   constructor(
     private readonly gameService: GameService,
@@ -32,7 +34,10 @@ export class GameDetailPage {
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
+    this.checkPlayer();
+    this._isAdmin = true; //this.userService.user.isAdmin;
   }
+
   get chats(): Chat[]{
     return this.chatService.chats
   }
@@ -47,11 +52,23 @@ export class GameDetailPage {
     }
   }
 
-  checkPlayer() {
-    const user = this.userService.user;
-    //const player = this.playerService.getPlayerFromUser(user.id)
+  async checkPlayer() {
+    this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
+    this.humanOrZombie();
   }
 
+  async register() {
+    await this.playerService.registerPlayer();
+    this._player = this.playerService.player;
+    this.humanOrZombie();
+  }
+
+  humanOrZombie(): void {
+    if(this._player.isHuman){
+      this._state = "Human";
+    }
+    this._state = "Zombie";
+  }
 }
 
 
