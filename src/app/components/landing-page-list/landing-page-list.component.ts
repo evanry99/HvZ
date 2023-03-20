@@ -29,6 +29,10 @@ export class LandingPageListComponent implements OnInit{
       this.gameService.games.forEach(game=>
           this.gameService.getNumberOfPlayersInGame(game.id)
         )
+  }
 
+  timeToReadable(date: string): string {
+    const d = new Date(date);
+    return d.toLocaleString("en-GB");
   }
 }

@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import * as signalR from "@microsoft/signalr"
 import { environment } from 'src/environments/environment';
 
-const {apiUrl} = environment
+const {apiUrlR} = environment
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -25,7 +25,7 @@ export class ChatComponent{
   ngOnInit(): void {
     this.chatService.getChat(this.gameService.game.id);
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${apiUrl}/notify`)
+      .withUrl(`${apiUrlR}/notify`)
       .build()
 
     this.hubConnection

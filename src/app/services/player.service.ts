@@ -37,9 +37,6 @@ export class PlayerService {
   get error(): string{
     return this._error;
   }
-  get playersInGame(): Player[]{
-    return this._playersInGame;
-  }
 
   get loading(){
     return this._loading;
