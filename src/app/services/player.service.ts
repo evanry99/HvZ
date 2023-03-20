@@ -33,9 +33,12 @@ export class PlayerService {
     return this._error;
   }
   get playersInGame(): Player[]{
-    return this._playersInGame
+    return this._playersInGame;
   }
 
+  get loading(){
+    return this._loading;
+  }
   get player(): Player {
     this._player = storageRead(playerKey);
     return this._player;
@@ -88,7 +91,7 @@ export class PlayerService {
     this.http.post<Player>(`${apiUrl}/player`, player)
     .subscribe({
       next: (p: Player) => {
-        console.log(p)
+        console.log(p);
       },
       error: (error:HttpErrorResponse) => {
         this._error = error.message;

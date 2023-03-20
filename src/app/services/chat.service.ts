@@ -16,7 +16,10 @@ export class ChatService {
 
   constructor(private readonly http: HttpClient) { }
   get chats(){
-    return this._chats
+    return this._chats;
+  }
+  get loading(){
+    return this._loading;
   }
 
   public getChat(gameId:number){
@@ -27,7 +30,7 @@ export class ChatService {
       })
     )
     .subscribe((chats: Chat[]) => {
-      this._chats = chats
+      this._chats = chats;
     })
   } 
 
@@ -35,13 +38,13 @@ export class ChatService {
     return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
     .pipe(
       finalize(() => {
-        this._loading = false
+        this._loading = false;
       }
         
       )
     )
     .subscribe((chat:Chat) => {
-      this._chats.push(chat)
+      this._chats.push(chat);
     })
   }
 }
