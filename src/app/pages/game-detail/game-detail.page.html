@@ -2,10 +2,12 @@
   <div class="container-fluid pt-2 mainPurple  pb-3">
     <div class="row">
         <h2 class="col-sm ms-3">{{_title}}</h2>
-        <p class="col-sm text-center my-auto">Faction: Human</p>
+        <div class="col-sm">
+          <p *ngIf="_player" class="text-center my-auto">Faction: {{_state}}</p>
+        </div>
         <div class="col-sm grid me-1">
             <div class="row">
-                <button class="btn col seeThrough">Register</button>
+                <button class="btn col seeThrough" (click)="checkPlayer()">Register</button>
                 <button class="btn col seeThrough" [routerLink]="'info'">Info</button>
             </div>
         </div>
@@ -19,7 +21,7 @@
               <a class="dropdown-item text-black" routerLink="map">Map</a>
               <a class="dropdown-item text-black" routerLink="chat">Chat</a>
               <a class="dropdown-item text-black" routerLink="squad-info">Squad Info</a>
-              <a class="dropdown-item text-black" href="#">Players (admin)</a>
+              <a *ngIf="_isAdmin" class="dropdown-item text-black" href="#">Players (admin)</a>
             </div>
           </div>
         <app-bite-code-form class="col text-end me-3"></app-bite-code-form>

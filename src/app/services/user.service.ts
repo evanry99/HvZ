@@ -16,7 +16,7 @@ export class UserService {
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
-  private _user: UserDTO
+  private _user: UserDTO;
 
   constructor(
     private readonly http: HttpClient
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   get userResponse(): UserDTO{
-    return this._userDTO;
+    return this._user;
   }
 
 
@@ -70,7 +70,6 @@ export class UserService {
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
       })
-      
     return user;
   }
 
