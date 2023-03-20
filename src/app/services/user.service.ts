@@ -29,13 +29,19 @@ export class UserService {
     return this._users;
   }
 
-  get user(): UserDTO{
+  get user(): User{
     return this._user;
   }
 
   get userResponse(): User{
     this._userResponse = storageRead<User>(userKey);
     return this._userResponse;
+  }
+  get error(){
+    return this.error;
+  }
+  get loading(){
+    return this._loading;
   }
 
 
@@ -61,7 +67,7 @@ export class UserService {
       })
     )
     .subscribe((users: User[]) => {
-      this._users = users
+      this._users = users;
     })
   }
 

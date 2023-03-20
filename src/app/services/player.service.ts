@@ -19,7 +19,7 @@ export class PlayerService {
     private readonly http:HttpClient,
     private readonly gameService: GameService,
     private readonly userService: UserService){}
-
+  
   private _players: Player[] = [];
   private _playersInGame: Player[] = [];
   private _player: Player;
@@ -37,7 +37,13 @@ export class PlayerService {
   get error(): string{
     return this._error;
   }
+  get playersInGame(): Player[]{
+    return this._playersInGame;
+  }
 
+  get loading(){
+    return this._loading;
+  }
   get player(): Player {
     this._player = storageRead(playerKey);
     return this._player;
@@ -71,6 +77,19 @@ export class PlayerService {
       })
   }
   
+
+  public getPlayersInGame(gameId:number){
+    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`)
+      .subscribe({
+        next: (players: Player[]) => {
+          this._playersInGame = players;
+          console.log(players);
+        },
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+        }
+      })
+  }
   public playerById(id: Number): Player| undefined{
       return this._players?.find((player:Player) => player.id === id);
   }
