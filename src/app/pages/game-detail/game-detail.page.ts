@@ -34,6 +34,7 @@ export class GameDetailPage {
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
+    this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
   }
 
@@ -51,12 +52,9 @@ export class GameDetailPage {
     }
   }
 
-  checkPlayer() {
-    const user = this.userService.user;
-    const player = this.playerService.getPlayerFromUser(1, 1);
-    this._player = player;
-    console.log(player);
-    console.log(2)
+  async checkPlayer() {
+    this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
+    this.humanOrZombie();
   }
 
   async register() {
