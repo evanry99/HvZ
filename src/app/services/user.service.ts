@@ -16,7 +16,8 @@ export class UserService {
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
-  private _user: UserDTO
+  private _userDTO: UserDTO;
+  private _user: User
 
   constructor(
     private readonly http: HttpClient
@@ -26,7 +27,7 @@ export class UserService {
     return this._users;
   }
 
-  get user(): UserDTO{
+  get user(): User{
     return this._user;
   }
 
@@ -81,9 +82,9 @@ export class UserService {
         this._loading = false;
       })
     )
-    .subscribe((user: UserDTO) => {
-      this._user = user;
-      console.log(user)
+    .subscribe((userDTO: UserDTO) => {
+      this._userDTO = userDTO;
+      console.log(userDTO)
     })
   }
 }
