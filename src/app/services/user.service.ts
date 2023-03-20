@@ -30,6 +30,10 @@ export class UserService {
     return this._user;
   }
 
+  get userResponse(): UserDTO{
+    return this._userDTO;
+  }
+
 
   getUser(id): void{
     this.http

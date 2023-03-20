@@ -22,7 +22,6 @@ export class LandingPageListComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
       this.gameService.getGames()
       
 
