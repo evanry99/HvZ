@@ -16,14 +16,11 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent {
+
   private _game: Game;
-
   private _kills: Kill[] = [];
-
   mapReady: boolean = false;
-
   options = {};
-
   layers: any= []
 
   gravestoneIcon = {
@@ -83,7 +80,7 @@ export class MapComponent {
       layers: [
           tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
             maxZoom: 19, 
-            minZoom: 6, 
+            minZoom: 3, 
             attribution: '...' 
           })
       ],
@@ -91,7 +88,7 @@ export class MapComponent {
       center: latLng(
         (this._game.nw_Lat + this._game.se_Lat)/2,
         (this._game.nw_Lng + this._game.se_Lng)/2),
-      maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng))
+      //maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng))
     };
 
     this.layers.push(
