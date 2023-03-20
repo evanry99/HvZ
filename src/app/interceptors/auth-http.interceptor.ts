@@ -19,7 +19,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     const { token } = keycloak;
 
     const authRequest = req.clone({
-      headers: req.headers.set("Authorization", 'Bearer ${token}'),
+      headers: req.headers.set("Authorization", `Bearer ${token}`),
     })
 
     return next.handle(authRequest)

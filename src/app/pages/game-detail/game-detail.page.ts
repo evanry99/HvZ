@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Chat } from 'src/app/models/chat.model';
 import { Game } from 'src/app/models/game.model';
 import { Player } from 'src/app/models/player.model';
+import { ChatService } from 'src/app/services/chat.service';
 import { GameService } from 'src/app/services/game.service';
 import { PlayerService } from 'src/app/services/player.service';
 import { UserService } from 'src/app/services/user.service';
@@ -21,7 +23,9 @@ export class GameDetailPage {
     private readonly gameService: GameService,
     private readonly userService: UserService,
     private readonly playerService: PlayerService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly router: Router,
+    private readonly chatService: ChatService
     ){}
 
   ngOnInit(){
@@ -29,6 +33,9 @@ export class GameDetailPage {
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
+  }
+  get chats(): Chat[]{
+    return this.chatService.chats
   }
 
   setGame(){

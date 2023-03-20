@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Game } from "src/app/models/game.model";
-import { UserDTO } from "src/app/models/user.model";
+import { User, UserDTO } from "src/app/models/user.model";
 import { GameService } from "src/app/services/game.service";
 import { UserService } from "src/app/services/user.service";
 import keycloak from "src/keycloak";

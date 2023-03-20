@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Kill } from '../models/kill.model';
@@ -16,8 +16,7 @@ export class UserService {
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
-  private _user: User;
-  private _userDTO: UserDTO;
+  private _user: UserDTO
 
   constructor(
     private readonly http: HttpClient
@@ -27,7 +26,7 @@ export class UserService {
     return this._users;
   }
 
-  get user(): User{
+  get user(): UserDTO{
     return this._user;
   }
 
@@ -76,13 +75,13 @@ export class UserService {
   }
 
   addUser(user:UserDTO): void{
-    this.http.post<User>(`${apiUrl}/user`,user)
+    this.http.post<UserDTO>(`${apiUrl}/user`,user)
     .pipe(
       finalize(()=> {
         this._loading = false;
       })
     )
-    .subscribe((user: User) => {
+    .subscribe((user: UserDTO) => {
       this._user = user;
       console.log(user)
     })

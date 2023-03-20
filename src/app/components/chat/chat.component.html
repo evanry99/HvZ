@@ -4,7 +4,7 @@
             <h5>Chat</h5>
         </div>
         <div class="card-body">
-            <app-chat-message></app-chat-message>
+            <app-chat-message [chats]="chats"></app-chat-message>
         </div>
         <div class="card-footer text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
