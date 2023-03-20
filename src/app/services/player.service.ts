@@ -6,6 +6,7 @@ import { User, UserResponse } from '../models/user.model';
 import { userKey, playerKey } from '../variables/storage-keys';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
+import { finalize } from 'rxjs';
 
 const {apiUrl} = environment;
 
@@ -20,6 +21,7 @@ export class PlayerService {
   private _players: Player[] = [];
   private _player: Player;
   private _error: string = "";
+  private _loading = false;
 
   get players(): Player[]{
     return this._players!;
@@ -74,6 +76,12 @@ export class PlayerService {
         this._error = error.message;
       }
     })
+  }
+
+  public getPlayerFromUser(userId: number, gameId: number): Player{
+    this.getPlayers();
+    let player = this._players.filter((p: Player) => p.gameId === gameId && p.userId === userId)[0];
+    return player;
   }
 }
 

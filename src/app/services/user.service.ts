@@ -4,7 +4,7 @@ import { finalize } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Kill } from '../models/kill.model';
-import { User } from '../models/user.model';
+import { User, UserResponse } from '../models/user.model';
 
 const {apiUrl} = environment;
 
@@ -16,7 +16,8 @@ export class UserService {
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
-  private _user: User
+  private _user: User;
+  private _userResponse: UserResponse;
 
   constructor(
     private readonly http: HttpClient
@@ -28,6 +29,10 @@ export class UserService {
 
   get user(): User{
     return this._user;
+  }
+
+  get userResponse(): UserResponse{
+    return this._userResponse;
   }
 
 
