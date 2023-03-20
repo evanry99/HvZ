@@ -4,7 +4,7 @@ import { finalize } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Kill } from '../models/kill.model';
-import { User, UserResponse } from '../models/user.model';
+import { User, UserDTO } from '../models/user.model';
 
 const {apiUrl} = environment;
 
@@ -17,7 +17,7 @@ export class UserService {
   private _error: string = "";
   private _loading: boolean = false;
   private _user: User;
-  private _userResponse: UserResponse;
+  private _userDTO: UserDTO;
 
   constructor(
     private readonly http: HttpClient
@@ -31,8 +31,8 @@ export class UserService {
     return this._user;
   }
 
-  get userResponse(): UserResponse{
-    return this._userResponse;
+  get userResponse(): UserDTO{
+    return this._userDTO;
   }
 
 
@@ -75,7 +75,7 @@ export class UserService {
     return user;
   }
 
-  addUser(user:User): void{
+  addUser(user:UserDTO): void{
     this.http.post<User>(`${apiUrl}/user`,user)
     .pipe(
       finalize(()=> {

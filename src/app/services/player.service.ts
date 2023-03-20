@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Player } from '../models/player.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import { environment } from 'src/environments/environment.development';
-import { User, UserResponse } from '../models/user.model';
+import { User, UserDTO } from '../models/user.model';
 import { userKey, playerKey } from '../variables/storage-keys';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
@@ -59,7 +59,7 @@ export class PlayerService {
   }
 
   public registerPlayer() {
-    let user: UserResponse = storageRead(userKey);
+    let user: User = storageRead(userKey);
     let game = this.gameService.game;
     let player = {
       isPatientZero: false,
