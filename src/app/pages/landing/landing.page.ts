@@ -10,14 +10,14 @@ import keycloak from "src/keycloak";
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.css']
 })
-export class LandingPage implements OnInit{
+export class LandingPage implements OnInit {
 
   constructor(
-    readonly gameService:GameService,
+    readonly gameService: GameService,
     readonly userService: UserService
-  ){}
-  
-  get games():Game[]{
+  ) { }
+
+  get games(): Game[] {
     return this.gameService.games
   }
 
@@ -26,22 +26,23 @@ export class LandingPage implements OnInit{
 
   ngOnInit(): void {
     this.gameService.getGames()
-    if(this.isAuthenticated() === true){
+    if (this.isAuthenticated() === true) {
       //Todo: Check if user already is logged in- Do not add user multiple times
       // Edit this
-      if(this.userService.user.firstName !== keycloak.tokenParsed.given_name){
+      if (this.userService.user.firstName !== keycloak.tokenParsed.given_name) {
         let user: User = {
-        firstName: keycloak.tokenParsed.given_name,
-        lastName: keycloak.tokenParsed.family_name,
-        isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
+          firstName: keycloak.tokenParsed.given_name,
+          lastName: keycloak.tokenParsed.family_name,
+          isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin"),
+          id: 12
+        }
+        this.userService.addUser(user)
       }
-      this.userService.addUser(user)
     }
-    }
-      
+
   }
 
-  isAuthenticated():boolean{
+  isAuthenticated(): boolean {
     return keycloak.authenticated
   }
 }

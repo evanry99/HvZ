@@ -24,9 +24,6 @@ export class NavBarComponent {
   handleLogToken() {
     console.log("Keycloak token: ", keycloak.token);
     console.log("Keycloak token parsed: ", keycloak.tokenParsed);
-    console.log("User roles: ", keycloak.tokenParsed.realm_access.roles);
-    console.log("Is admin: ", keycloak.tokenParsed.realm_access.roles.includes("admin"));
-    console.log("Username: ", keycloak.tokenParsed.preferred_username);
   }
 
   handleMakeAdmin() {
