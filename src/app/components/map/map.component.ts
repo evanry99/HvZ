@@ -52,15 +52,14 @@ export class MapComponent {
   async updateKills(){
     await this.killService.getKills();
     const kills: Kill[] = this.killService.kills;
-    const newKills: Kill[] = kills.filter((kill: Kill) => this._kills.includes(kill));
+    const newKills: Kill[] = kills.filter((kill: Kill) => !this._kills.includes(kill));
     console.log(newKills)
-    console.log(this._kills)
     for(let kill of newKills){
       let player = this.playerService.playerById(kill.victimId);
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${kill.timeOfDeath.getTime}`)
+        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
         .openPopup()
       );
     }
@@ -103,7 +102,7 @@ export class MapComponent {
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${kill.timeOfDeath.getTime}`)
+        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
         .openPopup()
       );
     }
