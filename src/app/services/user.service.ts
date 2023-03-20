@@ -34,6 +34,12 @@ export class UserService {
   get userResponse(): UserDTO{
     return this._userDTO;
   }
+  get error(){
+    return this.error;
+  }
+  get loading(){
+    return this._loading;
+  }
 
 
   getUser(id): void{
@@ -58,7 +64,7 @@ export class UserService {
       })
     )
     .subscribe((users: User[]) => {
-      this._users = users
+      this._users = users;
     })
   }
 
@@ -84,7 +90,7 @@ export class UserService {
     )
     .subscribe((userDTO: UserDTO) => {
       this._userDTO = userDTO;
-      console.log(userDTO)
+      console.log(userDTO);
     })
   }
 }

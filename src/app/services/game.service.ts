@@ -32,9 +32,15 @@ export class GameService {
     }
     return this._game;
   }
+  get loading(){
+    return this._loading;
+  }
+  get error(){
+    return this._error;
+  }
 
   get games(){
-    return this._games
+    return this._games;
   }
 
   constructor(private readonly http: HttpClient) { }
@@ -50,7 +56,7 @@ export class GameService {
         next: (games: Game[]) => {
           this._games = games;
           games.forEach(game => {
-            this.getNumberOfPlayersInGame(game.id)
+            this.getNumberOfPlayersInGame(game.id);
           })
         },
         error: (error: HttpErrorResponse) => {
@@ -60,20 +66,15 @@ export class GameService {
   }
 
   public getGameById(id:number){
-    return this._games.filter((game:Game) => game.id === id).pop()
+    return this._games.filter((game:Game) => game.id === id).pop();
   }
 
   public getNumberOfPlayersInGame(id:number){
     return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
     .subscribe({
       next: (players: Player[]) => {
-          this._game = this.getGameById(id)
+          this._game = this.getGameById(id);
           this._game.numberOfPlayers = players.length;
-          
-          
-         
-            
-     
       },
       error: (error:HttpErrorResponse) =>{
         this._error = error.message;
