@@ -18,15 +18,13 @@ export class PlayerEditComponent {
     this._players = this.playerService.players;
   }
 
-  changePatientZero(player: Player){
+  async changePatientZero(player: Player){
     player.isPatientZero = !player.isPatientZero;
-    this.playerService.updatePlayer(player);
-    this._players = this.playerService.players;
+    await this.playerService.updatePlayer(player);
   }
 
-  changeHuman(player: Player){
+  async changeHuman(player: Player){
     player.isHuman = !player.isHuman;
-    this.playerService.updatePlayer(player);
-    this._players = this.playerService.players;
+    await this.playerService.updatePlayer(player);
   }
 }

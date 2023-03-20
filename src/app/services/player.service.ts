@@ -6,7 +6,7 @@ import { User, UserDTO } from '../models/user.model';
 import { userKey, playerKey } from '../variables/storage-keys';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
-import { finalize } from 'rxjs';
+import { finalize, lastValueFrom } from 'rxjs';
 
 const {apiUrl} = environment;
 
@@ -58,24 +58,26 @@ export class PlayerService {
       return this._players?.find((player:Player) => player.id === id);
   }
 
-  public registerPlayer() {
+  public async registerPlayer() {
     let user: User = storageRead(userKey);
     let game = this.gameService.game;
+    //todo userId: user.id
     let player = {
+      biteCode: "2",
       isPatientZero: false,
       isHuman: true,
-      userId: user.id,
+      userId: 1,
       gameId: game.id
     }
-    this.http.post<Player>(`${apiUrl}/player`, player)
-    .subscribe({
-      next: (p: Player) => {
-        console.log(p)
-      },
-      error: (error:HttpErrorResponse) => {
+    await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player))
+      .then((p: Player) => {
+          console.log(p)
+          this._player = p;
+          this.getPlayers();
+        })
+      .catch((error: HttpErrorResponse) => {
         this._error = error.message;
-      }
-    })
+      })
   }
 
   public getPlayerFromUser(userId: number, gameId: number): Player{
@@ -84,16 +86,14 @@ export class PlayerService {
     return player;
   }
 
-  public updatePlayer(player: Player) {
-    this.http.put<Player>(`${apiUrl}/player/${player.id}`, player)
-    .subscribe({
-      next: () => {
-        this.getPlayers();
-      },
-      error: (error:HttpErrorResponse) => {
+  public async updatePlayer(player: Player) {
+    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player))
+      .then(() => {
+          this.getPlayers();
+        })
+      .catch((error: HttpErrorResponse) => {
         this._error = error.message;
-      }
-    })
+      })
   }
 }
 

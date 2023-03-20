@@ -57,6 +57,11 @@ export class GameDetailPage {
     this._player = player;
     console.log(player);
     console.log(2)
+  }
+
+  async register() {
+    await this.playerService.registerPlayer();
+    this._player = this.playerService.player;
     this.humanOrZombie();
   }
 

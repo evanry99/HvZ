@@ -20,13 +20,13 @@
             </td>
             <td *ngIf="player.isHuman">
                 Human
-                <button class="btn btn-light ms-1">
+                <button class="btn btn-light ms-1" (click)="changeHuman(player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
             </td>
             <td *ngIf="!player.isHuman">
                 Zombie
-                <button class="btn btn-light ms-1">
+                <button class="btn btn-light ms-1" (click)="changeHuman(player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
             </td>

@@ -7,7 +7,7 @@
         </div>
         <div class="col-sm grid me-1">
             <div class="row">
-                <button class="btn col seeThrough" (click)="checkPlayer()">Register</button>
+                <button *ngIf="!_player" class="btn col seeThrough" (click)="register()">Register</button>
                 <button class="btn col seeThrough" [routerLink]="'info'">Info</button>
             </div>
         </div>
