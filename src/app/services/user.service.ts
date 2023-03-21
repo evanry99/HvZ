@@ -58,17 +58,20 @@ export class UserService {
     })
   }
 
-  getUsers(): void{
-    this.http
-    .get<User[]>(`${apiUrl}/user`)
-    .pipe(
-      finalize(() => {
-        this._loading = false;
+  public async getUsers(): Promise<void>{
+    await lastValueFrom(this.http
+      .get<User[]>(`${apiUrl}/user`)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      ))
+      .then((users: User[]) => {
+        this._users = users;
+        })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
-    )
-    .subscribe((users: User[]) => {
-      this._users = users;
-    })
   }
 
   async getUserById(id: number): Promise<User> {

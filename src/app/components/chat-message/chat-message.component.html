@@ -1,6 +1,6 @@
 <div *ngFor="let chat of chats">
   <div class="d-flex justify-content-between">
-      <p class="small mb-1">{{chat.playerId}}</p>
+      <p class="small mb-1">{{_username[chat.playerId]}}</p>
       <p class="small mb-1 text-muted">{{timeToReadable(chat.chatTime)}}</p>
     </div>
     <div class="d-flex flex-row justify-content-start">

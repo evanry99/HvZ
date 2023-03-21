@@ -30,6 +30,7 @@ export class ChatComponent{
     return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == false || c.isZombieGlobal == false))
   }
 
+
   constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
   
   ngOnInit(): void {

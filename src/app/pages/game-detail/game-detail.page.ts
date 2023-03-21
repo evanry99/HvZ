@@ -34,6 +34,7 @@ export class GameDetailPage {
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
+    this.playerService.getPlayersWithName();
     this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
   }
