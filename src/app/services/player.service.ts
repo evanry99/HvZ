@@ -6,7 +6,8 @@ import { User, UserDTO } from '../models/user.model';
 import { userKey, playerKey } from '../variables/storage-keys';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
-import { finalize } from 'rxjs';
+import { finalize, lastValueFrom } from 'rxjs';
+import { UserService } from './user.service';
 
 const {apiUrl} = environment;
 
@@ -16,9 +17,11 @@ const {apiUrl} = environment;
 export class PlayerService {
   constructor(
     private readonly http:HttpClient,
-    private readonly gameService: GameService){}
-
+    private readonly gameService: GameService,
+    private readonly userService: UserService){}
+  
   private _players: Player[] = [];
+  private _playersInGame: Player[] = [];
   private _player: Player;
   private _error: string = "";
   private _loading = false;
@@ -27,10 +30,17 @@ export class PlayerService {
     return this._players!;
   }
 
+  get playersInGame(): Player[]{
+    return this._playersInGame;
+  }
+
   get error(): string{
     return this._error;
   }
 
+  get loading(){
+    return this._loading;
+  }
   get player(): Player {
     this._player = storageRead(playerKey);
     return this._player;
@@ -46,6 +56,30 @@ export class PlayerService {
       .subscribe({
         next: (players: Player[]) => {
           this._players = players;
+        },
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+        }
+      })
+  }
+
+  public async getPlayersFromGame(){
+    const game = this.gameService.game;
+    await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`))
+      .then((players: Player[]) => {
+        this._playersInGame = players;
+        })
+      .catch((error: HttpErrorResponse) => {
+        this._error = error.message;
+      })
+  }
+  
+
+  public getPlayersInGame(gameId:number){
+    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`)
+      .subscribe({
+        next: (players: Player[]) => {
+          this._playersInGame = players;
           console.log(players);
         },
         error: (error: HttpErrorResponse) => {
@@ -53,35 +87,42 @@ export class PlayerService {
         }
       })
   }
-  
   public playerById(id: Number): Player| undefined{
       return this._players?.find((player:Player) => player.id === id);
   }
 
-  public registerPlayer() {
-    let user: User = storageRead(userKey);
-    let game = this.gameService.game;
+  public async registerPlayer() {
     let player = {
+      biteCode: "2",
       isPatientZero: false,
       isHuman: true,
-      userId: user.id,
-      gameId: game.id
+      userId: this.userService.userResponse.id,
+      gameId: this.gameService.game.id
     }
-    this.http.post<Player>(`${apiUrl}/player`, player)
-    .subscribe({
-      next: (p: Player) => {
-        console.log(p)
-      },
-      error: (error:HttpErrorResponse) => {
+    await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player))
+      .then((p: Player) => {
+          storageSave<Player>(playerKey, p);
+          this.getPlayersFromGame();
+        })
+      .catch((error: HttpErrorResponse) => {
         this._error = error.message;
-      }
-    })
+      })
   }
 
-  public getPlayerFromUser(userId: number, gameId: number): Player{
-    this.getPlayers();
-    let player = this._players.filter((p: Player) => p.gameId === gameId && p.userId === userId)[0];
+  public async getPlayerFromUser(userId: number): Promise<Player>{
+    await this.getPlayersFromGame();
+    let player = this._playersInGame.filter((p: Player) => p.userId === userId)[0];
     return player;
+  }
+
+  public async updatePlayer(player: Player) {
+    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player))
+      .then(() => {
+          this.getPlayersFromGame();
+        })
+      .catch((error: HttpErrorResponse) => {
+        this._error = error.message;
+      })
   }
 }
 

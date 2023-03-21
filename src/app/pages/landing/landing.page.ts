@@ -24,15 +24,16 @@ export class LandingPage implements OnInit {
 
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.gameService.getGames()
-    if (this.isAuthenticated() === true) {
-      //Todo: Check if user already is logged in- Do not add user multiple times
-      // Edit this
-      if(!this.userService.user || this.userService.user.firstName !== keycloak.tokenParsed.given_name){
+    if(this.isAuthenticated() === true){
+      await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
+      console.log(this.userService.userResponse);
+      if(!this.userService.userResponse || this.userService.userResponse.firstName !== keycloak.tokenParsed.given_name){
         let user: UserDTO = {
         firstName: keycloak.tokenParsed.given_name,
         lastName: keycloak.tokenParsed.family_name,
+        userName: keycloak.tokenParsed.preferred_username,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
         }
       this.userService.addUser(user)

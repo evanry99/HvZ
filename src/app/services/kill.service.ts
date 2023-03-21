@@ -19,6 +19,9 @@ export class KillService {
   get kills() {
     return this._kills;
   }
+  get error(){
+    return this._error;
+  }
 
   constructor(
     private readonly gameService: GameService,
@@ -40,7 +43,7 @@ export class KillService {
     .subscribe({
       next: (kill:Kill) => {
         this._kills.push(kill);
-        console.log(kill)
+        console.log(kill);
       },
       error: (error:HttpErrorResponse) => {
         this._error = error.message;

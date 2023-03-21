@@ -10,6 +10,11 @@ import { Chat } from 'src/app/models/chat.model';
 export class ChatMessageComponent {
   @Input() chats: Chat[] = [];
 
+  timeToReadable(date: Date): string {
+    const d = new Date(date);
+    return d.toLocaleString("en-GB");
+  }
+
   htmlEscape(str) {
     return str
       .replace(/&/g, '&amp')

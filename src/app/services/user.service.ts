@@ -5,6 +5,8 @@ import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Kill } from '../models/kill.model';
 import { User, UserDTO } from '../models/user.model';
+import { storageRead, storageSave } from '../utils/storage.util';
+import { userKey } from '../variables/storage-keys';
 
 const { apiUrl } = environment;
 
@@ -16,7 +18,8 @@ export class UserService {
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
-  private _user: UserDTO
+  private _user: UserDTO;
+  private _userResponse: User;
 
   constructor(
     private readonly http: HttpClient
@@ -30,8 +33,15 @@ export class UserService {
     return this._user;
   }
 
-  get userResponse(): UserDTO {
-    return this._user;
+  get userResponse(): User{
+    this._userResponse = storageRead<User>(userKey);
+    return this._userResponse;
+  }
+  get error(){
+    return this.error;
+  }
+  get loading(){
+    return this._loading;
   }
 
 
@@ -51,15 +61,15 @@ export class UserService {
 
   getUsers(): void {
     this.http
-      .get<User[]>(`${apiUrl}/user`)
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((users: User[]) => {
-        this._users = users
+    .get<User[]>(`${apiUrl}/user`)
+    .pipe(
+      finalize(() => {
+        this._loading = false;
       })
+    )
+    .subscribe((users: User[]) => {
+      this._users = users;
+    })
   }
 
   async getUserById(id: number): Promise<User> {
@@ -71,20 +81,30 @@ export class UserService {
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
       })
-
     return user;
   }
 
-  addUser(user: UserDTO): void {
-    this.http.post<UserDTO>(`${apiUrl}/user`, user)
-      .pipe(
-        finalize(() => {
-          this._loading = false;
+  async getUserByUsername(username: string) {
+    await lastValueFrom(this.http.get<User>(`${apiUrl}/user/username/${username}`))
+      .then((user: User) => {
+        this._userResponse = user;
+        storageSave(userKey, user);
         })
-      )
-      .subscribe((user: UserDTO) => {
-        this._user = user;
-        console.log(user)
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
+  }
+
+  addUser(user:UserDTO): void{
+    this.http.post<User>(`${apiUrl}/user`,user)
+    .pipe(
+      finalize(()=> {
+        this._loading = false;
+      })
+    )
+    .subscribe((user: User) => {
+      this._userResponse = user;
+      storageSave(userKey, user);
+    })
   }
 }

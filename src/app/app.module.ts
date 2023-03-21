@@ -18,6 +18,7 @@ import { ChatMessageComponent } from './components/chat-message/chat-message.com
 import { SquadInfoComponent } from './components/squad-info/squad-info.component';
 import { MapPingComponent } from './components/map-ping/map-ping.component';
 import { SquadRegistrationComponent } from './components/squad-registration/squad-registration.component';
+import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SquadRegistrationComponent } from './components/squad-registration/squa
     ChatMessageComponent,
     SquadInfoComponent,
     MapPingComponent,
-    SquadRegistrationComponent
+    SquadRegistrationComponent,
+    PlayerEditComponent
   ],
   imports: [
     BrowserModule,
