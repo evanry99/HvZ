@@ -34,6 +34,19 @@ export class ChatService {
     })
   } 
 
+  public getSquadchat(squadId:number){
+    this._chats = this._chats.filter(c => c.squadId == squadId && c.isHumanGlobal === false && c.isZombieGlobal=== false)
+  }
+
+  public getFactionChat(faction:string){
+    if(faction === "human"){
+      this._chats = this._chats.filter(c => c.isHumanGlobal == true && c.isZombieGlobal === false)
+    }
+    else{
+      this._chats = this._chats.filter(c => c.isZombieGlobal == true && c.isHumanGlobal === false)
+    }
+  }
+
   public sendChat(chat:ChatDTO, gameId:number){
     return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
     .pipe(

@@ -1,10 +1,15 @@
 <div class="container-fluid chatContainer">
     <div class="card bg-dark" id="chat">
         <div class="card-header">
-            <h5>Chat</h5>
+            <h5>{{chatState}} Chat</h5>
+            <button class="btn btn-primary col-sm" (click)="changeChatState('Global')">Global chat</button>
+            <button class="btn btn-primary col-sm" (click)="changeChatState('Faction')">Faction chat</button>
+            <button class="btn btn-primary col-sm" (click)="changeChatState('Squad')">Squad chat</button>
         </div>
         <div class="card-body overflow-y-scroll">
-            <app-chat-message id="chatBody" [chats]="chats"></app-chat-message>
+            <app-chat-message *ngIf="chatState === 'Global'" id="chatBody" [chats]="chats"></app-chat-message>
+            <app-chat-message *ngIf="chatState === 'Squad'" id="chatBody" [chats]="factionChats"></app-chat-message>
+            <app-chat-message *ngIf="chatState === 'Faction'" id="chatBody" [chats]="squadChats"></app-chat-message>
         </div>
         <div class="card-footer sticky-bottom bg-dar text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
