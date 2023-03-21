@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Kill } from '../models/kill.model';
 import { User, UserDTO } from '../models/user.model';
 
-const {apiUrl} = environment;
+const { apiUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -22,68 +22,69 @@ export class UserService {
     private readonly http: HttpClient
   ) { }
 
-  get users(): User[]{
+  get users(): User[] {
     return this._users;
   }
 
-  get user(): UserDTO{
+  get user(): UserDTO {
     return this._user;
   }
 
-  get userResponse(): UserDTO{
-    return this._userDTO;
+  get userResponse(): UserDTO {
+    return this._user;
   }
 
 
-  getUser(id): void{
+  getUser(id): void {
     this.http
-    .get<User>(`${apiUrl}/user/${id}`)
-    .pipe(
-      finalize(()=> {
-        this._loading = false;
+      .get<User>(`${apiUrl}/user/${id}`)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((user: User) => {
+        this._user = user;
       })
-    )
-    .subscribe((user: User) => {
-      this._user = user;
-    })
+
   }
 
-  getUsers(): void{
+  getUsers(): void {
     this.http
-    .get<User[]>(`${apiUrl}/user`)
-    .pipe(
-      finalize(() => {
-        this._loading = false;
+      .get<User[]>(`${apiUrl}/user`)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((users: User[]) => {
+        this._users = users
       })
-    )
-    .subscribe((users: User[]) => {
-      this._users = users
-    })
   }
 
   async getUserById(id: number): Promise<User> {
     let user: User;
     await lastValueFrom(this.http.get<User>(`${apiUrl}/user/${id}`))
       .then((u: User) => {
-          user = u;
-        })
+        user = u;
+      })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
       })
-      
+
     return user;
   }
 
-  addUser(user:UserDTO): void{
-    this.http.post<UserDTO>(`${apiUrl}/user`,user)
-    .pipe(
-      finalize(()=> {
-        this._loading = false;
+  addUser(user: UserDTO): void {
+    this.http.post<UserDTO>(`${apiUrl}/user`, user)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((user: UserDTO) => {
+        this._user = user;
+        console.log(user)
       })
-    )
-    .subscribe((user: UserDTO) => {
-      this._user = user;
-      console.log(user)
-    })
   }
 }

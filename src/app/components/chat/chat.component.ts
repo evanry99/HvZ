@@ -10,17 +10,18 @@ import { GameService } from 'src/app/services/game.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent{
-  
-  get chats(): Chat[]{
+export class ChatComponent {
+
+  get chats(): Chat[] {
     return this.chatService.chats
   }
-  constructor(private chatService:ChatService, private gameService:GameService){}
-  
+  constructor(private chatService: ChatService, private gameService: GameService) { }
+
   ngOnInit(): void {
     this.chatService.getChat(this.gameService.game.id)
   }
-  onSubmit(form:NgForm){
+  onSubmit(form: NgForm) {
     console.log(form.value.chat)
   }
+
 }

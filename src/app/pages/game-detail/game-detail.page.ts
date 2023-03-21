@@ -24,7 +24,6 @@ export class GameDetailPage {
     private readonly userService: UserService,
     private readonly playerService: PlayerService,
     private readonly router: Router,
-    private readonly router: Router,
     private readonly chatService: ChatService
     ){}
 
