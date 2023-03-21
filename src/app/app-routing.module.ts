@@ -6,6 +6,7 @@ import { GameInfoComponent } from './components/game-info/game-info.component';
 import { MapComponent } from './components/map/map.component';
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import { SquadInfoComponent } from './components/squad-info/squad-info.component';
+import { SquadSelectComponent } from './components/squad-select/squad-select.component';
 import { GameDetailPage } from './pages/game-detail/game-detail.page';
 import { LandingPage } from './pages/landing/landing.page';
 
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'squad-info',
         component: SquadInfoComponent,
+      },
+      {
+        path: 'squad-select',
+        component: SquadSelectComponent,
       },
       {
         path: 'player-edit',

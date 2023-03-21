@@ -18,6 +18,7 @@ export class GameDetailPage {
   _title?: string;
   _game? : Game
   _player: Player;
+  _inSquad: boolean;
   _state: string;
   _isAdmin: boolean;
 
@@ -37,6 +38,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
+    this._inSquad = false; //temp
   }
 
   get chats(): Chat[]{
@@ -62,6 +64,7 @@ export class GameDetailPage {
 
   async register() {
     await this.playerService.registerPlayer();
+    this.playerService.getPlayersWithName();
     this._player = this.playerService.player;
     this.humanOrZombie();
   }

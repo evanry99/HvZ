@@ -1,0 +1,24 @@
+<div class="bg-dark text-center">
+    <p class="m-0">Squad Name</p>
+</div>
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col" class="col-3">Name</th>
+            <th scope="col" class="col-3">Rank</th>
+            <th scope="col" class="col-3">State</th>
+            <th scope="col" class="">
+                <div class="float-end">
+                    <app-map-ping class="me-2">Ping</app-map-ping>
+                    <button class="btn btn-primary scalableFont">Leave</button>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let player of _players">
+            <td scope="row">{{player.id}}</td>
+            <td>{{player.isHuman}}</td>
+        </tr>
+    </tbody>
+</table>

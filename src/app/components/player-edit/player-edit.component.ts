@@ -10,6 +10,7 @@ import { PlayerService } from 'src/app/services/player.service';
 export class PlayerEditComponent {
 
   _players: PlayerWithName[] = [];
+  _
 
   constructor(private readonly playerService: PlayerService) { }
 

@@ -65,11 +65,10 @@ export class ChatComponent{
       isZombieGlobal: true,
       chatTime: new Date,
       playerId: this.playerService.player.id
-
-    }
-    
-    this.chatService.sendChat(chat, this.gameService.game.id)
-    form.reset();
+      }
+      
+      this.chatService.sendChat(chat, this.gameService.game.id)
+      form.reset();
     }
     else if(this.chatState === "Squad"){
       let chat: ChatDTO = {
