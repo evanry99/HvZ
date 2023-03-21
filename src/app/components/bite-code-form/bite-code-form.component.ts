@@ -26,7 +26,8 @@ export class BiteCodeFormComponent {
     timeOfDeath: new Date()
     }
     
-    this.killService.registerKill(kill)
+    this.killService.registerKill(kill);
+    
 
   }
 }
