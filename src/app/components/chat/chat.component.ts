@@ -23,6 +23,7 @@ export class ChatComponent{
     return this.chatService.chats
   }
 
+
   constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
   
   ngOnInit(): void {
