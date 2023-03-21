@@ -3,10 +3,10 @@
         <div class="card-header">
             <h5>Chat</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body overflow-y-scroll">
             <app-chat-message [chats]="chats"></app-chat-message>
         </div>
-        <div class="card-footer text-muted p-3">
+        <div class="card-footer sticky-bottom bg-dar text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
                 <input type="text" class="form-control-lg col-10 me-1" name="chat" id="inputChat" aria-describedby="chatHelp" required ngModel #description="ngModel">
                 <button type="submit" [disabled]="chatForm.invalid" class="btn btn-primary col-sm">Send</button>

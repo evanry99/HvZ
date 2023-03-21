@@ -87,7 +87,6 @@ export class MapComponent {
       center: latLng(
         (this._game.nw_Lat + this._game.se_Lat)/2,
         (this._game.nw_Lng + this._game.se_Lng)/2),
-      //maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng))
     };
 
     this.layers.push(
