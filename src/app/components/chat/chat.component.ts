@@ -24,10 +24,17 @@ export class ChatComponent{
     return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
   }
   get squadChats():Chat[]{
+    //TODO: GET SQUAD ID
     return this.chatService.chats.filter(c => c.squadId === 1)
   }
   get factionChats(): Chat[]{
-    return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == false || c.isZombieGlobal == false))
+    if(this.playerService.player.isHuman){
+      return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == this.playerService.player.isHuman && c.isZombieGlobal == false))
+    }
+    else{
+      return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == false && c.isZombieGlobal == true))
+    }
+    
   }
 
 
