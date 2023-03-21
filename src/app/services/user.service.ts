@@ -29,7 +29,7 @@ export class UserService {
     return this._users;
   }
 
-  get user(): User{
+  get user(): UserDTO{
     return this._user;
   }
 

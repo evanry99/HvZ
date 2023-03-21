@@ -23,7 +23,7 @@ export class BiteCodeFormComponent {
     lng : form.value.longitude,
     //TODO: This is hard coded. Need to be able to get active user to recieve victim
     killerId: 1,
-    timeOfDeath: new Date
+    timeOfDeath: new Date()
     }
     
     this.killService.registerKill(kill)

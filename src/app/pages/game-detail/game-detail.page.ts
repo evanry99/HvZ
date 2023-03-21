@@ -54,7 +54,9 @@ export class GameDetailPage {
 
   async checkPlayer() {
     this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
-    this.humanOrZombie();
+    if(this._player){
+      this.humanOrZombie();
+    }
   }
 
   async register() {

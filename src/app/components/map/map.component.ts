@@ -52,15 +52,14 @@ export class MapComponent {
   async updateKills(){
     await this.killService.getKills();
     const kills: Kill[] = this.killService.kills;
-    const newKills: Kill[] = kills.filter((kill: Kill) => this._kills.includes(kill));
+    const newKills: Kill[] = kills.filter((kill: Kill) => !this._kills.includes(kill));
     console.log(newKills)
-    console.log(this._kills)
     for(let kill of newKills){
       let player = this.playerService.playerById(kill.victimId);
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${kill.timeOfDeath.getTime}`)
+        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
         .openPopup()
       );
     }
@@ -88,7 +87,6 @@ export class MapComponent {
       center: latLng(
         (this._game.nw_Lat + this._game.se_Lat)/2,
         (this._game.nw_Lng + this._game.se_Lng)/2),
-      //maxBounds: latLngBounds(latLng(this._game.nw_Lat, this._game.nw_Lng), latLng(this._game.se_Lat, this._game.se_Lng))
     };
 
     this.layers.push(
@@ -103,7 +101,7 @@ export class MapComponent {
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${kill.timeOfDeath.getTime}`)
+        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
         .openPopup()
       );
     }

@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import * as signalR from "@microsoft/signalr"
 import { environment } from 'src/environments/environment';
 
-const {apiUrl} = environment
+const {apiUrlR} = environment
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -17,26 +17,33 @@ const {apiUrl} = environment
 })
 export class ChatComponent{
   private hubConnection: signalR.HubConnection;
+
   get chats(): Chat[]{
+    document.getElementById("chatBody").scrollIntoView(false);
     return this.chatService.chats
   }
+
   constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
   
   ngOnInit(): void {
     this.chatService.getChat(this.gameService.game.id);
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${apiUrl}/notify`)
+      .withUrl(`${apiUrlR}/hub`, {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets
+        }).withAutomaticReconnect()
       .build()
 
     this.hubConnection
       .start()
       .then(() => console.log("Connection started"))
       .catch((err) => console.log(err.message))
-    this.hubConnection.on("BroadcastMessage", () =>{
+    this.hubConnection.on("chat", () =>{
       this.chatService.getChat(this.gameService.game.id)
     })
     this.playerService.getPlayersInGame(this.gameService.game.id)
   }
+  
   onSubmit(form:NgForm){
     //let playerId =  this.playerService.playersInGame.filter((player:Player) => player.userId === this.userService.user.id).pop().id
     let chat: ChatDTO = {
@@ -50,5 +57,6 @@ export class ChatComponent{
     }
     //console.log(this.playerService.getPlayerFromUser(this.userService.user.id,this.gameService.game.id).id)
     this.chatService.sendChat(chat, this.gameService.game.id)
+    form.reset();
   }
 }
