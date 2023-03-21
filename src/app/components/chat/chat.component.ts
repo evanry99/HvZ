@@ -22,13 +22,16 @@ export class ChatComponent{
     document.getElementById("chatBody").scrollIntoView(false);
     return this.chatService.chats
   }
-  
+
   constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
   
   ngOnInit(): void {
     this.chatService.getChat(this.gameService.game.id);
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${apiUrlR}/hub`)
+      .withUrl(`${apiUrlR}/hub`, {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets
+        }).withAutomaticReconnect()
       .build()
 
     this.hubConnection
