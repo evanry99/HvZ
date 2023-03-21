@@ -4,7 +4,7 @@
             <h5>Chat</h5>
         </div>
         <div class="card-body overflow-y-scroll">
-            <app-chat-message [chats]="chats"></app-chat-message>
+            <app-chat-message id="chatBody" [chats]="chats"></app-chat-message>
         </div>
         <div class="card-footer sticky-bottom bg-dar text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">

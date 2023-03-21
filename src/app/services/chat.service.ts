@@ -39,9 +39,7 @@ export class ChatService {
     .pipe(
       finalize(() => {
         this._loading = false;
-      }
-        
-      )
+      })
     )
     .subscribe((chat:Chat) => {
       this._chats.push(chat);
