@@ -20,6 +20,8 @@ import { MapPingComponent } from './components/map-ping/map-ping.component';
 import { SquadRegistrationComponent } from './components/squad-registration/squad-registration.component';
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import { SquadSelectComponent } from './components/squad-select/squad-select.component';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -38,14 +40,16 @@ import { SquadSelectComponent } from './components/squad-select/squad-select.com
     MapPingComponent,
     SquadRegistrationComponent,
     PlayerEditComponent,
-    SquadSelectComponent
+    SquadSelectComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     LeafletModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

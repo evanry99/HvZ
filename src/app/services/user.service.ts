@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpError } from '@microsoft/signalr';
 import { finalize, Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -58,7 +59,8 @@ export class UserService {
     })
   }
 
-  public async getUsers(): Promise<void>{
+  public async getUsers(): Promise<User[]>{
+    let userList = []
     await lastValueFrom(this.http
       .get<User[]>(`${apiUrl}/user`)
       .pipe(
@@ -68,10 +70,14 @@ export class UserService {
       ))
       .then((users: User[]) => {
         this._users = users;
+        userList = users
+        
         })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
+        
       })
+      return userList
   }
 
   async getUserById(id: number): Promise<User> {
@@ -108,5 +114,17 @@ export class UserService {
       this._userResponse = user;
       storageSave(userKey, user);
     })
+  }
+
+  editUser(user:User){
+    this.http.put(`${apiUrl}/user/${user.id}`, user)
+      .subscribe({
+        next: ((user:User) =>{
+          console.log(user)
+        }),
+        error: (error: HttpError) => {
+          console.log(error.message)
+        }
+      })
   }
 }

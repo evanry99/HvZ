@@ -18,7 +18,7 @@ export class SquadSelectComponent {
   ngOnInit() {
     this.refresh();
   }
-
+  
   refresh() {
     this.squadService.getSquads();
     this._squads = this.squadService.squads;
