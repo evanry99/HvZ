@@ -31,9 +31,8 @@ export class KillService {
   async getKills(): Promise<void> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-
     const gameId: number = this.gameService.game.id;
+    
     await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`, { 'headers': headers }))
       .then((kills: Kill[]) => {
         this._kills = kills;

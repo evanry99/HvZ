@@ -47,8 +47,13 @@ export class GameService {
   constructor(private readonly http: HttpClient) { }
 
   public getGames() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+      //.set('Access-Control-Allow-Origin: ', '*')
+      //.set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
+      
 
-    return this.http.get<Game[]>(apiUrl + "/game")
+    return this.http.get<Game[]>(apiUrl + "/game", {'headers': headers})
       .pipe(
         finalize(() => {
           this._loading = false;
@@ -72,7 +77,10 @@ export class GameService {
   }
 
   public getNumberOfPlayersInGame(id: number) {
-    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`, {'headers': headers})
       .subscribe({
         next: (players: Player[]) => {
           this._game = this.getGameById(id);

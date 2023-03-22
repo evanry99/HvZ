@@ -36,7 +36,7 @@ export class PlayerService {
     return this._playersInGame;
   }
 
-  get playersInGameWithName(): PlayerWithName[]{
+  get playersInGameWithName(): PlayerWithName[] {
     return this._playersInGameWithName;
   }
 
@@ -60,8 +60,9 @@ export class PlayerService {
   public getPlayers() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
+    const gameId: number = this.gameService.game.id;
 
-    return this.http.get<Player[]>(apiUrl + "/player", { 'headers': headers })
+    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player", { 'headers': headers })
       .subscribe({
         next: (players: Player[]) => {
           this._players = players;
@@ -75,6 +76,8 @@ export class PlayerService {
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
+      .set('Access-Control-Allow-Origin:', ' *')
 
     const game = this.gameService.game;
     await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`, { 'headers': headers }))
@@ -89,6 +92,8 @@ export class PlayerService {
   public getPlayersInGame(gameId: number) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
+
 
     return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`, { 'headers': headers })
       .subscribe({
@@ -103,6 +108,8 @@ export class PlayerService {
   }
 
   public playerById(id: Number): Player | undefined {
+    console.log(this._players);
+    
     return this._players?.find((player: Player) => player.id === id);
   }
 
@@ -152,7 +159,7 @@ export class PlayerService {
     const users: User[] = this.userService.users;
     const playersWithName: PlayerWithName[] = this._playersInGame.map((player: Player) => {
       let user: User = users.filter((u: User) => u.id === player.userId)[0];
-      return {player, username: user.userName};
+      return { player, username: user.userName };
     })
     this._playersInGameWithName = playersWithName;
     return playersWithName;

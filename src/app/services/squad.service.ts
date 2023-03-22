@@ -29,7 +29,7 @@ export class SquadService {
 
   public getSquads(){
     const gameId: number = this.gameService.game.id;
-    let url: string = "https://hvz20230314095915.azurewebsites.net";
+    let url: string = "https://hvz20230314095915.azurewebsites.net/api";
     this.http.get<Squad[]>(`${url}/game/${gameId}/squad`)
       .subscribe({
         next: (squads: Squad[]) => {
