@@ -1,4 +1,8 @@
 .image {
-    height: 20px;
+    height: min(1vmax, 20px);
     color: white;
+}
+
+*{
+    font-size: min(1vmax, 20px);
 }

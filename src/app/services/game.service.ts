@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize } from 'rxjs';
+import { finalize, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import keycloak from 'src/keycloak';
 import { Game } from '../models/game.model';
@@ -91,6 +91,18 @@ export class GameService {
         }
       })
   }
+
+  async addGame(game): Promise<void>{
+    await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game))
+      .then((game: Game) => {
+        game.numberOfPlayers = 0;
+        this._games.push(game);
+        })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
+      })
+  }
+
 
 }
 

@@ -32,14 +32,14 @@ export class GameDetailPage {
     private readonly chatService: ChatService
     ){}
 
-  ngOnInit(){
+  async ngOnInit(){
     this.setGame();
     if(!this._game){
       this.router.navigateByUrl("/landing");
     }
     this.playerService.getPlayersWithName();
     this.squadService.getSquads();
-    this.checkPlayer();
+    await this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
     this._inSquad = false; //temp
     
@@ -79,7 +79,9 @@ export class GameDetailPage {
     if(this._player.isHuman){
       this._state = "Human";
     }
-    this._state = "Zombie";
+    else {
+      this._state = "Zombie";
+    }
   }
 }
 

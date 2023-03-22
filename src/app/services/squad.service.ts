@@ -34,7 +34,6 @@ export class SquadService {
     
   public getSquads(){
     const gameId: number = this.gameService.game.id;
-    
     this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`)
       .subscribe({
         next: (squads: Squad[]) => {

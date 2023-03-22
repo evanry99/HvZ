@@ -117,19 +117,16 @@ export class UserService {
       })
   }
 
-  addUser(user: UserDTO): void {
+  async addUser(user:UserDTO): Promise<void>{
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-
-    this.http.post<User>(`${apiUrl}/user`, user, { 'headers': headers })
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((user: User) => {
+    await lastValueFrom(this.http.post<User>(`${apiUrl}/user`,user, { 'headers': headers }))
+      .then((user: User) => {
         this._userResponse = user;
         storageSave(userKey, user);
+        })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
   }
 

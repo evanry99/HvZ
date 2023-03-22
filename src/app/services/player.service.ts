@@ -71,7 +71,7 @@ export class PlayerService {
           this._error = error.message;
         }
       })
-  }
+  }*/
 
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
