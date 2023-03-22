@@ -21,26 +21,30 @@ export class ChatComponent{
 
   get chats(): Chat[]{
     document.getElementById("chatBody").scrollIntoView(false);
-    return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
-  }
-  get squadChats():Chat[]{
-    //TODO: GET SQUAD ID
-    return this.chatService.chats.filter(c => c.squadId === 1)
-  }
-  get factionChats(): Chat[]{
-    if(this.playerService.player.isHuman){
-      return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == this.playerService.player.isHuman && c.isZombieGlobal == false))
+    if(this.chatState === "Global"){
+      return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
+    }
+    else if(this.chatState === "Faction"){
+      if(this.playerService.player.isHuman === true){
+        return this.chatService.chats.filter(c => c.isHumanGlobal === true && c.squadId === null && c.isZombieGlobal === false)
+        }
+        else{
+          return this.chatService.chats.filter(c => c.isHumanGlobal === false && c.squadId === null && c.isZombieGlobal === true)
+
+        }
     }
     else{
-      return this.chatService.chats.filter(c=>  c.squadId === null && (c.isHumanGlobal == false && c.isZombieGlobal == true))
+      return this.chatService.chats.filter(c => c.squadId === 1)
     }
     
   }
 
 
+
   constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
   
   ngOnInit(): void {
+    console.log(this.playerService.player.isHuman)
     this.chatService.getChat(this.gameService.game.id);
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(`${apiUrlR}/hub`, {
@@ -108,8 +112,8 @@ export class ChatComponent{
       else if(this.playerService.player.isHuman === false){
         let chat: ChatDTO = {
           message: form.value.chat,
-          isHumanGlobal: true,
-          isZombieGlobal: false,
+          isHumanGlobal: false,
+          isZombieGlobal: true,
           chatTime: new Date,
           playerId: this.playerService.player.id,
           squadId : null
