@@ -42,6 +42,7 @@ export class GameDetailPage {
     await this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
     this._inSquad = false; //temp
+    
   }
 
   get chats(): Chat[]{
@@ -62,6 +63,7 @@ export class GameDetailPage {
     this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
     if(this._player){
       this.humanOrZombie();
+      this.squadService.getSquadMember();
     }
   }
 
@@ -70,6 +72,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this._player = this.playerService.player;
     this.humanOrZombie();
+    this.squadService.getSquadMember();
   }
 
   humanOrZombie(): void {

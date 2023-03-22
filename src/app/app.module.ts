@@ -22,6 +22,8 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
 import { SquadSelectComponent } from './components/squad-select/squad-select.component';
 import { CreateGameComponent } from './components/create-game/create-game.component';
 import { EditGameComponent } from './components/edit-game/edit-game.component';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -42,14 +44,16 @@ import { EditGameComponent } from './components/edit-game/edit-game.component';
     PlayerEditComponent,
     SquadSelectComponent,
     CreateGameComponent,
-    EditGameComponent
+    EditGameComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     LeafletModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

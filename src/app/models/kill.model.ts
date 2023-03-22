@@ -1,4 +1,5 @@
 export interface Kill {
+    id?: number;
     timeOfDeath: Date,
     story?: string,
     lat: number,

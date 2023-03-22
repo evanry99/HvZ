@@ -10,14 +10,14 @@ import keycloak from "src/keycloak";
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.css']
 })
-export class LandingPage implements OnInit{
+export class LandingPage implements OnInit {
 
   constructor(
-    readonly gameService:GameService,
+    readonly gameService: GameService,
     readonly userService: UserService
-  ){}
-  
-  get games():Game[]{
+  ) { }
+
+  get games(): Game[] {
     return this.gameService.games
   }
 
@@ -40,10 +40,10 @@ export class LandingPage implements OnInit{
       console.log(this.userService.userResponse);
 
     }
-      
+
   }
 
-  isAuthenticated():boolean{
+  isAuthenticated(): boolean {
     return keycloak.authenticated
   }
 }

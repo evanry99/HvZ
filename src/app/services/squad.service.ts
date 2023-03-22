@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment.development';
 import { Player } from '../models/player.model';
 import { PlayerService } from './player.service';
 import { lastValueFrom } from 'rxjs';
+import { SquadMember } from '../models/squad-member.model';
 
 
 const {apiUrl} = environment;
@@ -15,18 +16,22 @@ const {apiUrl} = environment;
   providedIn: 'root'
 })
 export class SquadService {
-
+  private _squadMember: SquadMember
   private _squads: Squad[] = [];
 
   get squads(): Squad[] {
     return this._squads;
   }
 
+  get squadMember(){
+    return this._squadMember
+  }
+
   constructor(
     private readonly http:HttpClient,
     private readonly gameService: GameService,
     private readonly playerService: PlayerService){}
-
+    
   public getSquads(){
     const gameId: number = this.gameService.game.id;
     this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`)
@@ -60,6 +65,39 @@ export class SquadService {
       })
   }
 
+public joinSquad(squadId:number) {
+    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id})
+      .subscribe({
+        next: (squadMember:SquadMember) =>{
+            this._squadMember = squadMember;
 
+        },
+        error: (error:HttpErrorResponse) => {
+          console.log(error.message);
+          this._squadMember = null;
+        }
+        
+    })
+  }
+
+public getSquadMember(){
+  this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`)
+  .subscribe({
+    next: (squadMember: SquadMember) => {
+      this._squadMember = squadMember;
+    },
+    error: (error: HttpErrorResponse) => {
+      console.log(error);
+      this._squadMember = null;
+    }
+  })
+}
+
+public deleteSquad(squad:Squad){
+  this.http.delete(`${apiUrl}/game/squad/${squad.gameId}/${squad.id}`)
+  .subscribe(() => {
+    this._squads = this._squads.filter(s => s.id !== squad.id)
+  })
+}
 
 }

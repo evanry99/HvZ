@@ -1,10 +1,20 @@
-<nav class="navbar bg-dark justify-content-between mb-3 sticky-top">
-    <h2 class="navbar-brand ms-2 text-white headerFont">HvZ</h2>
-    <div class="grid me-2">
-        <button *ngIf="isNotLanding()" class="btn col me-1 btn-light" (click)="goToLanding()">Main</button>
-        <button *ngIf="isAuthenticated() === true" class="btn col me-1 btn-light" (click)="handleLogout()">Logout</button>
-        <button *ngIf="isAuthenticated() === false" class ="btn col me-1 btn-light" (click)="handleLogin()">Login</button>
-        <button  class="btn col me-1 btn-light" (click)="handleLogToken()">Display token</button>
-        <button class="btn col me-1 btn-light" (click)="handleMakeAdmin()">Make admin</button>
+<nav class="navbar navbar-expand-lg bg-dark justify-content-between sticky-top">
+    <a class="navbar-brand ms-4" id="navbar-brand" (click)="goToLanding()">
+        <img src="../../../assets/images/chasing.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <span class="headerFont ms-3">HvZ</span>
+      </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li>
+                <a class="nav-item nav-link" id="nav-main"*ngIf="isNotLanding()"  (click)="goToLanding()">Main</a>
+            </li>
+            <li>
+                <a  class="nav-item nav-link"*ngIf="isAuthenticated() === true" (click)="handleLogout()">Logout</a>
+            </li>
+            <li>
+                <a class ="nav-item nav-link "*ngIf="isAuthenticated() === false"  (click)="handleLogin()">Login</a>
+            </li>
+        </ul>
+        
     </div>
 </nav>
