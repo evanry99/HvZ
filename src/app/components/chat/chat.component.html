@@ -1,10 +1,10 @@
-<div class="container-fluid chatContainer">
+<div class="container-fluid chatContainer ">
     <div class="card bg-dark" id="chat">
         <div class="card-header">
             <h5>{{chatState}} Chat</h5>
-            <button class="btn btn-primary col-sm" (click)="changeChatState('Global')">Global chat</button>
-            <button class="btn btn-primary col-sm" (click)="changeChatState('Faction')">Faction chat</button>
-            <button class="btn btn-primary col-sm" (click)="changeChatState('Squad')">Squad chat</button>
+            <button class="btn btn-dark" (click)="changeChatState('Global')">Global chat</button>
+            <button class="btn btn-dark" (click)="changeChatState('Faction')">Faction chat</button>
+            <button class="btn btn-dark" (click)="changeChatState('Squad')">Squad chat</button>
         </div>
         <div class="card-body overflow-y-scroll">
             <app-chat-message *ngIf="chatState === 'Global'" id="chatBody" [chats]="chats"></app-chat-message>
@@ -13,8 +13,8 @@
         </div>
         <div class="card-footer sticky-bottom bg-dar text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
-                <input type="text" class="form-control-lg col-10 me-1" name="chat" id="inputChat" aria-describedby="chatHelp" required ngModel #description="ngModel">
-                <button type="submit" [disabled]="chatForm.invalid" class="btn btn-primary col-sm">Send</button>
+                <input type="text" class="form-control-lg col-xl-10 col-7 me-1" name="chat" id="inputChat" aria-describedby="chatHelp" required ngModel #description="ngModel">
+                <button type="submit" [disabled]="chatForm.invalid" class="btn btn-dark col-4 col-xl-1">Send</button>
             </form>
         </div>
     </div>
