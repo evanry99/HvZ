@@ -82,6 +82,13 @@ export class GameService {
     })
   }
 
+  public deleteGame(game:Game){
+    this.http.delete(`${apiUrl}/game/${game.id}`)
+    .subscribe(() => {
+      this._games = this._games.filter(g => g.id !== game.id)
+    })
+  }
+
 
 }
 

@@ -58,4 +58,11 @@ export class ChatService {
       this._chats.push(chat);
     })
   }
+
+  public deleteChat(chat:Chat){
+    this.http.delete(`${apiUrl}/game/${chat.id}/chat`)
+    .subscribe(() => {
+      this._chats = this._chats.filter(c => c.id !== chat.id)
+    })
+  }
 }
