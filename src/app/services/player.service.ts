@@ -164,5 +164,12 @@ export class PlayerService {
     this._playersInGameWithName = playersWithName;
     return playersWithName;
   }
+
+  public deletePlayer(player:Player){
+    this.http.delete(`${apiUrl}/game/${player.gameId}/${player.id}`)
+    .subscribe(() => {
+      this._players = this._players.filter(p => p.id !== player.id)
+    })
+  }
 }
 
