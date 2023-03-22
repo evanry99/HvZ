@@ -8,8 +8,8 @@
         </div>
         <div class="card-body overflow-y-scroll">
             <app-chat-message *ngIf="chatState === 'Global'" id="chatBody" [chats]="chats"></app-chat-message>
-            <app-chat-message *ngIf="chatState === 'Squad'" id="chatBody" [chats]="factionChats"></app-chat-message>
-            <app-chat-message *ngIf="chatState === 'Faction'" id="chatBody" [chats]="squadChats"></app-chat-message>
+            <app-chat-message *ngIf="chatState === 'Squad'" id="chatBody" [chats]="chats"></app-chat-message>
+            <app-chat-message *ngIf="chatState === 'Faction'" id="chatBody" [chats]="chats"></app-chat-message>
         </div>
         <div class="card-footer sticky-bottom bg-dar text-muted p-3">
             <form #chatForm="ngForm" (ngSubmit)="onSubmit(chatForm)" class="container-fluid row m-0">
