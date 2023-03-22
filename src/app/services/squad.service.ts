@@ -94,4 +94,11 @@ public getSquadMember(){
   })
 }
 
+public deleteSquad(squad:Squad){
+  this.http.delete(`${apiUrl}/game/squad/${squad.gameId}/${squad.id}`)
+  .subscribe(() => {
+    this._squads = this._squads.filter(s => s.id !== squad.id)
+  })
+}
+
 }

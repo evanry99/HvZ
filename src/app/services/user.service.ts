@@ -127,4 +127,11 @@ export class UserService {
         }
       })
   }
+
+  public deleteUser(user:User){
+    this.http.delete(`${apiUrl}/user/${user.id}`)
+    .subscribe(() => {
+      this._users = this._users.filter(u => u.id !== user.id)
+    })
+  }
 }
