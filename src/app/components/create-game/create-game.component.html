@@ -1,0 +1,54 @@
+<button type="button" class="btn btn-dark scalableFont" data-bs-toggle="modal" data-bs-target="#gameModal">New Game</button>
+
+
+<div class="modal fade" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="gmaeModalLabel">Create game</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form #newGameForm="ngForm" (ngSubmit)="onSubmit(newGameForm)"> 
+                  <div class="mb-3">
+                      <label for="inputgameName" class="form-label">Game name</label>
+                      <input type="text" class="form-control" name="gameName" id="inputgameName" aria-describedby="newGameHelp" ngModel minlength="1" required #gameName="ngModel">
+                      <div id="newGameHelp" class="form-text">Please enter the name of the game</div>
+                      <div *ngIf="gameName.errors && (gameName.dirty || gameName.touched)">
+                          <div id="newGameHelp" class="form-text" *ngIf="gameName.errors['required']">Game name is required</div>
+                          <div id="newGameHelp" class="form-text" *ngIf="gameName.errors['minlength']">Game name is too short</div>
+                      </div>
+                          
+                  </div>
+                      <div class="mb-3">
+                      <label for="inputDescription" class="form-label">Description</label>
+                      <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
+                      <div *ngIf="description.errors && (description.dirty || description.touched)">
+                          <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
+                          <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>
+                      </div>
+                  </div>
+                  <div class="input-group mb-3">
+                      <label for="nwInputLat" class="form-label">Nw Latitude:</label>
+                      <input type="number" class="form-control rounded-1 me-2" name="nwLatitude" id="nwInputLat" ngModel>
+                      <label for="nwInputLng" class="form-label">Nw Longitude:</label>
+                      <input type="number" class="form-control rounded-1" name="nwLongitude" id="nwInputLng" ngModel>
+                  </div>
+                  <div class="input-group mb-3">
+                      <label for="seInputLat" class="form-label">Se Latitude:</label>
+                      <input type="number" class="form-control rounded-1 me-2" name="seLatitude" id="seInputLat" ngModel>
+                      <label for="seInputLng" class="form-label">Se Longitude:</label>
+                      <input type="number" class="form-control rounded-1" name="seLongitude" id="seInputLng" ngModel>
+                  </div>
+                  <div class="input-group mb-3">
+                      <label for="inputStartTime" class="form-label">Start time:</label>
+                      <input type="datetime-local" class="form-control rounded-1 me-2" name="startTime" id="inputStartTime" ngModel>
+                      <label for="inputEndTime" class="form-label">End time:</label>
+                      <input type="datetime-local" class="form-control rounded-1 me-2" name="endTime" id="inputEndTime" ngModel>
+                  </div>
+                      <button type="submit" [disabled]="newGameForm.invalid" class="btn btn-dark" data-bs-dismiss="modal">Create game</button>
+              </form>
+          </div>
+      </div>
+    </div>
+</div>

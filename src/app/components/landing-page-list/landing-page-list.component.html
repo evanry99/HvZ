@@ -5,16 +5,18 @@
         <th scope="col">Number of players</th>
         <th scope="col">Game state</th>
         <th scope="col">Start date</th>
-        <th></th>
+        <th scope="col">
+          <app-create-game *ngIf="_user && _user.isAdmin"></app-create-game>
+        </th>
       </tr>
     </thead>
     <tbody>
         <tr *ngFor="let game of games">
             <th scope="row">{{game.name}}</th>
-            <td>{{game.numberOfPlayers}}</td>
-            <td>{{game.gameState}}</td>
-            <td>{{timeToReadable(game.startTime)}}</td>
-            <td scope="row"><button class="btn btn-sucess" id ="view-button" (click)="goToGame(game)">View</button></td>
+            <td class="scalableFont">{{game.numberOfPlayers}}</td>
+            <td class="scalableFont">{{game.gameState}}</td>
+            <td class="scalableFont">{{timeToReadable(game.startTime)}}</td>
+            <td scope="row"><button class="btn btn-sucess scalableFont" id ="view-button" (click)="goToGame(game)">View</button></td>
           </tr>
     </tbody>
   </table>

@@ -104,6 +104,7 @@ export class PlayerService {
       userId: this.userService.userResponse.id,
       gameId: this.gameService.game.id
     }
+    console.log(player)
     await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player))
       .then((p: Player) => {
           storageSave<Player>(playerKey, p);

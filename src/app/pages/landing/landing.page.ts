@@ -28,7 +28,6 @@ export class LandingPage implements OnInit{
     this.gameService.getGames()
     if(this.isAuthenticated() === true){
       await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
-      console.log(this.userService.userResponse);
       if(!this.userService.userResponse || this.userService.userResponse.firstName !== keycloak.tokenParsed.given_name){
         let user: UserDTO = {
         firstName: keycloak.tokenParsed.given_name,
@@ -36,8 +35,10 @@ export class LandingPage implements OnInit{
         userName: keycloak.tokenParsed.preferred_username,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
         }
-      this.userService.addUser(user)
+      await this.userService.addUser(user)
       }
+      console.log(this.userService.userResponse);
+
     }
       
   }

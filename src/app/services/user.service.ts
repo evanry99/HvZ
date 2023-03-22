@@ -97,16 +97,14 @@ export class UserService {
       })
   }
 
-  addUser(user:UserDTO): void{
-    this.http.post<User>(`${apiUrl}/user`,user)
-    .pipe(
-      finalize(()=> {
-        this._loading = false;
+  async addUser(user:UserDTO): Promise<void>{
+    await lastValueFrom(this.http.post<User>(`${apiUrl}/user`,user))
+      .then((user: User) => {
+        this._userResponse = user;
+        storageSave(userKey, user);
+        })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
-    )
-    .subscribe((user: User) => {
-      this._userResponse = user;
-      storageSave(userKey, user);
-    })
   }
 }
