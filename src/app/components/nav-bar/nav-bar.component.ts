@@ -9,7 +9,7 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  constructor(private readonly router: Router, private readonly userService:UserService) { } // wass/pass & admin/admin & 
+  constructor(private readonly router: Router) { } 
 
   handleLogout() {
     keycloak.logout()
@@ -24,17 +24,13 @@ export class NavBarComponent {
   handleLogToken() {
     console.log("Keycloak token: ", keycloak.token);
     console.log("Keycloak token parsed: ", keycloak.tokenParsed);
-    console.log("User roles: ", keycloak.tokenParsed.realm_access.roles);
-    console.log("Is admin: ", keycloak.tokenParsed.realm_access.roles.includes("admin"));
   }
 
   handleMakeAdmin() {
     if (!keycloak.tokenParsed.realm_access.roles.includes('admin')) {
       keycloak.tokenParsed.realm_access.roles.push("admin")
-      //keycloak.tokenParsed.realm_access.roles.pop()
       console.log("User is now admin");
     } else {
-      //keycloak.tokenParsed.realm_access.roles.filter(word => word !== 'admin')
       keycloak.tokenParsed.realm_access.roles.forEach((element, index) => {
         if (element === 'admin') keycloak.tokenParsed.realm_access.roles.splice(index, 1);
       });
@@ -56,3 +52,4 @@ export class NavBarComponent {
     return keycloak.authenticated
   }
 }
+  

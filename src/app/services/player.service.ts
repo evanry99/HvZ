@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Player, PlayerWithName } from '../models/player.model';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment.development';
 import { User, UserDTO } from '../models/user.model';
 import { userKey, playerKey } from '../variables/storage-keys';
@@ -8,18 +8,19 @@ import { storageRead, storageSave } from '../utils/storage.util';
 import { GameService } from './game.service';
 import { finalize, lastValueFrom } from 'rxjs';
 import { UserService } from './user.service';
+import keycloak from 'src/keycloak';
 
-const {apiUrl} = environment;
+const { apiUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
   constructor(
-    private readonly http:HttpClient,
+    private readonly http: HttpClient,
     private readonly gameService: GameService,
-    private readonly userService: UserService){}
-  
+    private readonly userService: UserService) { }
+
   private _players: Player[] = [];
   private _playersInGame: Player[] = [];
   private _playersInGameWithName: PlayerWithName[] = [];
@@ -27,23 +28,23 @@ export class PlayerService {
   private _error: string = "";
   private _loading = false;
 
-  get players(): Player[]{
+  get players(): Player[] {
     return this._players!;
   }
 
-  get playersInGame(): Player[]{
+  get playersInGame(): Player[] {
     return this._playersInGame;
   }
 
-  get playersInGameWithName(): PlayerWithName[]{
+  get playersInGameWithName(): PlayerWithName[] {
     return this._playersInGameWithName;
   }
 
-  get error(): string{
+  get error(): string {
     return this._error;
   }
 
-  get loading(){
+  get loading() {
     return this._loading;
   }
   get player(): Player {
@@ -56,8 +57,12 @@ export class PlayerService {
     this._player = p;
   }
 
-  public getPlayers(){
-    return this.http.get<Player[]>(apiUrl+"/player")
+  public getPlayers() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+    const gameId: number = this.gameService.game.id;
+
+    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player", { 'headers': headers })
       .subscribe({
         next: (players: Player[]) => {
           this._players = players;
@@ -68,20 +73,29 @@ export class PlayerService {
       })
   }
 
-  public async getPlayersFromGame(){
+  public async getPlayersFromGame() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
+      .set('Access-Control-Allow-Origin:', ' *')
+
     const game = this.gameService.game;
-    await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`))
+    await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`, { 'headers': headers }))
       .then((players: Player[]) => {
         this._playersInGame = players;
-        })
+      })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
   }
-  
 
-  public getPlayersInGame(gameId:number){
-    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`)
+  public getPlayersInGame(gameId: number) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
+
+
+    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`, { 'headers': headers })
       .subscribe({
         next: (players: Player[]) => {
           this._playersInGame = players;
@@ -92,11 +106,17 @@ export class PlayerService {
         }
       })
   }
-  public playerById(id: Number): Player| undefined{
-      return this._players?.find((player:Player) => player.id === id);
+
+  public playerById(id: Number): Player | undefined {
+    console.log(this._players);
+    
+    return this._players?.find((player: Player) => player.id === id);
   }
 
   public async registerPlayer() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
     let player = {
       biteCode: "2",
       isPatientZero: false,
@@ -104,27 +124,30 @@ export class PlayerService {
       userId: this.userService.userResponse.id,
       gameId: this.gameService.game.id
     }
-    await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player))
+    await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player, { 'headers': headers }))
       .then((p: Player) => {
-          storageSave<Player>(playerKey, p);
-          this.getPlayersFromGame();
-        })
+        storageSave<Player>(playerKey, p);
+        this.getPlayersFromGame();
+      })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
   }
 
-  public async getPlayerFromUser(userId: number): Promise<Player>{
+  public async getPlayerFromUser(userId: number): Promise<Player> {
     await this.getPlayersFromGame();
     let player = this._playersInGame.filter((p: Player) => p.userId === userId)[0];
     return player;
   }
 
   public async updatePlayer(player: Player) {
-    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player))
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player, { 'headers': headers }))
       .then(() => {
-          this.getPlayersFromGame();
-        })
+        this.getPlayersFromGame();
+      })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
@@ -136,7 +159,7 @@ export class PlayerService {
     const users: User[] = this.userService.users;
     const playersWithName: PlayerWithName[] = this._playersInGame.map((player: Player) => {
       let user: User = users.filter((u: User) => u.id === player.userId)[0];
-      return {player, username: user.userName};
+      return { player, username: user.userName };
     })
     this._playersInGameWithName = playersWithName;
     return playersWithName;

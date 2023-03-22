@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import keycloak from 'src/keycloak';
 import { Chat, ChatDTO } from '../models/chat.model';
 
 const { apiUrl } = environment
@@ -12,57 +13,56 @@ const { apiUrl } = environment
 })
 export class ChatService {
   private _loading = false;
-  private _chats:Chat[] = []
+  private _chats: Chat[] = []
 
   constructor(private readonly http: HttpClient) { }
-  get chats(){
+  get chats() {
     return this._chats;
   }
-  get loading(){
+  get loading() {
     return this._loading;
   }
 
-  public getChat(gameId:number){
-    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`)
-    .pipe(
-      finalize(() => {
-        this._loading = false;
-      })
-    )
-    .subscribe((chats: Chat[]) => {
-      this._chats = chats;
-    })
-  } 
-
-  public getSquadchat(squadId:number){
-    this._chats = this._chats.filter(c => c.squadId == squadId && c.isHumanGlobal === false && c.isZombieGlobal=== false)
+  public getSquadchat(squadId: number) {
+    this._chats = this._chats.filter(c => c.squadId == squadId && c.isHumanGlobal === false && c.isZombieGlobal === false)
   }
 
-  public getFactionChat(faction:string){
-    if(faction === "human"){
+  public getFactionChat(faction: string) {
+    if (faction === "human") {
       this._chats = this._chats.filter(c => c.isHumanGlobal == true && c.isZombieGlobal === false)
     }
-    else{
+    else {
       this._chats = this._chats.filter(c => c.isZombieGlobal == true && c.isHumanGlobal === false)
     }
   }
 
-  public sendChat(chat:ChatDTO, gameId:number){
+  public sendChat(chat: ChatDTO, gameId: number) {
     return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
-    .pipe(
-      finalize(() => {
-        this._loading = false;
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((chat: Chat) => {
+        this._chats.push(chat);
       })
-    )
-    .subscribe((chat:Chat) => {
-      this._chats.push(chat);
-    })
   }
 
-  public deleteChat(chat:Chat){
-    this.http.delete(`${apiUrl}/game/${chat.id}/chat`)
-    .subscribe(() => {
-      this._chats = this._chats.filter(c => c.id !== chat.id)
-    })
+
+  public getChat(gameId: number) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`, { 'headers': headers })
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((chats: Chat[]) => {
+
+        this._chats = chats;
+      })
   }
+
 }

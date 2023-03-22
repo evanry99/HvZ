@@ -1,15 +1,16 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpError } from '@microsoft/signalr';
 import { finalize, Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import keycloak from 'src/keycloak';
 import { Kill } from '../models/kill.model';
 import { User, UserDTO } from '../models/user.model';
 import { storageRead, storageSave } from '../utils/storage.util';
 import { userKey } from '../variables/storage-keys';
 
-const {apiUrl} = environment;
+const { apiUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -26,53 +27,60 @@ export class UserService {
     private readonly http: HttpClient
   ) { }
 
-  get users(): User[]{
+  get users(): User[] {
     return this._users;
   }
 
-  get user(): UserDTO{
+  get user(): UserDTO {
     return this._user;
   }
 
-  get userResponse(): User{
+  get userResponse(): User {
     this._userResponse = storageRead<User>(userKey);
     return this._userResponse;
   }
-  get error(){
+  get error() {
     return this.error;
   }
-  get loading(){
+  get loading() {
     return this._loading;
   }
 
 
-  getUser(id): void{
-    this.http
-    .get<User>(`${apiUrl}/user/${id}`)
-    .pipe(
-      finalize(()=> {
-        this._loading = false;
-      })
-    )
-    .subscribe((user: User) => {
-      this._user = user;
-    })
-  }
+  getUser(id): void {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
 
-  public async getUsers(): Promise<User[]>{
-    let userList = []
-    await lastValueFrom(this.http
-      .get<User[]>(`${apiUrl}/user`)
+    this.http
+      .get<User>(`${apiUrl}/user/${id}`, { 'headers': headers })
       .pipe(
         finalize(() => {
           this._loading = false;
         })
-      ))
-      .then((users: User[]) => {
-        this._users = users;
+      )
+      .subscribe((user: User) => {
+        this._user = user;
+      })
+
+  }
+
+  public async getUsers(): Promise<User[]> {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    let userList = []
+    await lastValueFrom(this.http
+        .get<User[]>(`${apiUrl}/user`, { 'headers': headers })
+        .pipe(
+          finalize(() => {
+            this._loading = false;
+          })
+        ))
+        .then((users: User[]) => {
+          this._users = users;
         userList = users
         
-        })
+          })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
         
@@ -81,11 +89,14 @@ export class UserService {
   }
 
   async getUserById(id: number): Promise<User> {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
     let user: User;
-    await lastValueFrom(this.http.get<User>(`${apiUrl}/user/${id}`))
+    await lastValueFrom(this.http.get<User>(`${apiUrl}/user/${id}`, { 'headers': headers }))
       .then((u: User) => {
-          user = u;
-        })
+        user = u;
+      })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
       })
@@ -93,27 +104,33 @@ export class UserService {
   }
 
   async getUserByUsername(username: string) {
-    await lastValueFrom(this.http.get<User>(`${apiUrl}/user/username/${username}`))
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    await lastValueFrom(this.http.get<User>(`${apiUrl}/user/username/${username}`, { 'headers': headers }))
       .then((user: User) => {
         this._userResponse = user;
         storageSave(userKey, user);
-        })
+      })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
       })
   }
 
-  addUser(user:UserDTO): void{
-    this.http.post<User>(`${apiUrl}/user`,user)
-    .pipe(
-      finalize(()=> {
-        this._loading = false;
+  addUser(user: UserDTO): void {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.post<User>(`${apiUrl}/user`, user, { 'headers': headers })
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((user: User) => {
+        this._userResponse = user;
+        storageSave(userKey, user);
       })
-    )
-    .subscribe((user: User) => {
-      this._userResponse = user;
-      storageSave(userKey, user);
-    })
   }
 
   editUser(user:User){
