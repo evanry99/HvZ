@@ -20,7 +20,8 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item text-black" routerLink="map">Map</a>
               <a *ngIf="_player" class="dropdown-item text-black" routerLink="chat">Chat</a>
-              <a *ngIf="_player" class="dropdown-item text-black" routerLink="squad-info">Squad Info</a>
+              <a *ngIf="_player && !_inSquad" class="dropdown-item text-black" routerLink="squad-select">Squad Select</a>
+              <a *ngIf="_inSquad" class="dropdown-item text-black" routerLink="squad-info">Squad Info</a>
               <a *ngIf="_isAdmin" class="dropdown-item text-black" routerLink="player-edit">Player Edit</a>
             </div>
           </div>

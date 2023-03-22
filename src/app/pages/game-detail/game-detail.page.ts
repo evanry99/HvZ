@@ -6,6 +6,7 @@ import { Player } from 'src/app/models/player.model';
 import { ChatService } from 'src/app/services/chat.service';
 import { GameService } from 'src/app/services/game.service';
 import { PlayerService } from 'src/app/services/player.service';
+import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class GameDetailPage {
   _title?: string;
   _game? : Game
   _player: Player;
+  _inSquad: boolean;
   _state: string;
   _isAdmin: boolean;
 
@@ -25,6 +27,7 @@ export class GameDetailPage {
     private readonly gameService: GameService,
     private readonly userService: UserService,
     private readonly playerService: PlayerService,
+    private readonly squadService: SquadService,
     private readonly router: Router,
     private readonly chatService: ChatService
     ){}
@@ -35,8 +38,10 @@ export class GameDetailPage {
       this.router.navigateByUrl("/landing");
     }
     this.playerService.getPlayersWithName();
+    this.squadService.getSquads();
     this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
+    this._inSquad = false; //temp
   }
 
   get chats(): Chat[]{
@@ -62,6 +67,7 @@ export class GameDetailPage {
 
   async register() {
     await this.playerService.registerPlayer();
+    this.playerService.getPlayersWithName();
     this._player = this.playerService.player;
     this.humanOrZombie();
   }
