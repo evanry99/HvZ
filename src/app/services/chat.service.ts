@@ -22,25 +22,33 @@ export class ChatService {
   get loading() {
     return this._loading;
   }
-/*
-  public htmlEscape(str) {
-    return str
-      .replace(/&/g, '&amp')
-      .replace(/'/g, '&apos')
-      .replace(/"/g, '&quot')
-      .replace(/>/g, '&gt')
-      .replace(/</g, '&lt');
+
+  public getSquadchat(squadId: number) {
+    this._chats = this._chats.filter(c => c.squadId == squadId && c.isHumanGlobal === false && c.isZombieGlobal === false)
   }
 
-  public htmlUnescape(str) {
-    return str
-      .replace(/&amp/g, '&')
-      .replace(/&apos/g, "'")
-      .replace(/&quot/g, '"')
-      .replace(/&gt/g, '>')
-      .replace(/&lt/g, '<');
+  public getFactionChat(faction: string) {
+    if (faction === "human") {
+      this._chats = this._chats.filter(c => c.isHumanGlobal == true && c.isZombieGlobal === false)
+    }
+    else {
+      this._chats = this._chats.filter(c => c.isZombieGlobal == true && c.isHumanGlobal === false)
+    }
   }
-*/
+
+  public sendChat(chat: ChatDTO, gameId: number) {
+    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe((chat: Chat) => {
+        this._chats.push(chat);
+      })
+  }
+
+
   public getChat(gameId: number) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -52,28 +60,8 @@ export class ChatService {
         })
       )
       .subscribe((chats: Chat[]) => {
-        /*
-        chats.map((chat: Chat) => {
-          chat.message = this.htmlUnescape(chat.message)
-        })
-        */
-        this._chats = chats;
-      })
-  }
 
-  public sendChat(chat: ChatDTO, gameId: number) {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
-    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat, { 'headers': headers })
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((chat: Chat) => {
-        //chat.message = this.htmlEscape(chat.message)
-        this._chats.push(chat);
-        //chat.message = this.htmlUnescape(chat.message)
+        this._chats = chats;
       })
   }
 

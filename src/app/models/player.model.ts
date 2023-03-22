@@ -6,3 +6,8 @@ export interface Player{
     userId: number;
     gameId: number;
 }
+
+export interface PlayerWithName{
+    player: Player,
+    username: string
+}

@@ -19,6 +19,7 @@ import { SquadInfoComponent } from './components/squad-info/squad-info.component
 import { MapPingComponent } from './components/map-ping/map-ping.component';
 import { SquadRegistrationComponent } from './components/squad-registration/squad-registration.component';
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
+import { SquadSelectComponent } from './components/squad-select/squad-select.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
     SquadInfoComponent,
     MapPingComponent,
     SquadRegistrationComponent,
-    PlayerEditComponent
+    PlayerEditComponent,
+    SquadSelectComponent
   ],
   imports: [
     BrowserModule,

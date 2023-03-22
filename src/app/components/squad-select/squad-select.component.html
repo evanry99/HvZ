@@ -1,0 +1,26 @@
+<div class="bg-dark text-center">
+    <p class="m-0">Squad Name</p>
+</div>
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">
+                <div class="float-end">
+                    <app-squad-registration class="me-2"></app-squad-registration>
+                    <button class="btn btn-dark" (click)="refresh()">Refresh</button>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let squad of _squads">
+            <td scope="row">{{squad.name}}</td>
+            <td>
+                <div class="float-end">
+                    <button class="btn btn-light">Join</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Player } from 'src/app/models/player.model';
+import { Player, PlayerWithName } from 'src/app/models/player.model';
 import { PlayerService } from 'src/app/services/player.service';
 
 @Component({
@@ -9,17 +9,18 @@ import { PlayerService } from 'src/app/services/player.service';
 })
 export class PlayerEditComponent {
 
-  _players: Player[] = [];
+  _players: PlayerWithName[] = [];
+  _
 
   constructor(private readonly playerService: PlayerService) { }
 
-  ngOnInit(){
-    this.playerService.getPlayers();
-    this._players = this.playerService.players;
+  async ngOnInit(){
+    this._players = await this.playerService.getPlayersWithName();
   }
 
   async changePatientZero(player: Player){
     player.isPatientZero = !player.isPatientZero;
+    player.isHuman = !player.isHuman;
     await this.playerService.updatePlayer(player);
   }
 

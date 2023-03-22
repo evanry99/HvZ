@@ -4,29 +4,29 @@
 <table class="table table-dark">
     <thead>
         <tr>
-            <th scope="col" class="col-3">Name</th>
+            <th scope="col" class="col-3">Username</th>
             <th scope="col" class="col-3">PatientZero</th>
             <th scope="col" class="col-3">State</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let player of _players">
-            <td scope="row">{{player.id}}</td>
+        <tr *ngFor="let p of _players">
+            <td scope="row">{{p.username}}</td>
             <td>
-                {{player.isPatientZero}}
-                <button class="btn btn-light ms-1" (click)="changePatientZero(player)">
+                {{p.player.isPatientZero}}
+                <button class="btn btn-light ms-1" (click)="changePatientZero(p.player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
             </td>
-            <td *ngIf="player.isHuman">
+            <td *ngIf="p.player.isHuman">
                 Human
-                <button class="btn btn-light ms-1" (click)="changeHuman(player)">
+                <button class="btn btn-light ms-1" (click)="changeHuman(p.player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
             </td>
-            <td *ngIf="!player.isHuman">
+            <td *ngIf="!p.player.isHuman">
                 Zombie
-                <button class="btn btn-light ms-1" (click)="changeHuman(player)">
+                <button class="btn btn-light ms-1" (click)="changeHuman(p.player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
             </td>

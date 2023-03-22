@@ -63,19 +63,22 @@ export class UserService {
 
   }
 
-  getUsers(): void {
+  public async getUsers(): Promise<void> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
-    this.http
-      .get<User[]>(`${apiUrl}/user`, { 'headers': headers })
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((users: User[]) => {
-        this._users = users;
+    await lastValueFrom(this.http
+        .get<User[]>(`${apiUrl}/user`, { 'headers': headers })
+        .pipe(
+          finalize(() => {
+            this._loading = false;
+          })
+        ))
+        .then((users: User[]) => {
+          this._users = users;
+          })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
   }
 

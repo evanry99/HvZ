@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Form } from '@angular/forms';
+import { SquadService } from 'src/app/services/squad.service';
 
 @Component({
   selector: 'app-squad-registration',
@@ -8,7 +9,12 @@ import { Form } from '@angular/forms';
   styleUrls: ['./squad-registration.component.css']
 })
 export class SquadRegistrationComponent {
-  onSubmit(form:NgForm){
-    console.log(form.value.SquadName)
+
+  constructor(
+    private readonly squadService: SquadService
+  ){}
+
+  async onSubmit(form:NgForm){
+    await this.squadService.createSquad(form.value.SquadName);
   }
 }

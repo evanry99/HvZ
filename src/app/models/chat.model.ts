@@ -15,5 +15,5 @@ export interface ChatDTO{
     isZombieGlobal: boolean;
     chatTime: Date;
     playerId: number;
-    squadId: number;
+    squadId?: number;
 }

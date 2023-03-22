@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Player } from '../models/player.model';
+import { Player, PlayerWithName } from '../models/player.model';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment.development';
 import { User, UserDTO } from '../models/user.model';
@@ -23,6 +23,7 @@ export class PlayerService {
 
   private _players: Player[] = [];
   private _playersInGame: Player[] = [];
+  private _playersInGameWithName: PlayerWithName[] = [];
   private _player: Player;
   private _error: string = "";
   private _loading = false;
@@ -33,6 +34,10 @@ export class PlayerService {
 
   get playersInGame(): Player[] {
     return this._playersInGame;
+  }
+
+  get playersInGameWithName(): PlayerWithName[]{
+    return this._playersInGameWithName;
   }
 
   get error(): string {
@@ -139,6 +144,18 @@ export class PlayerService {
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
+  }
+
+  public async getPlayersWithName(): Promise<PlayerWithName[]> {
+    await this.userService.getUsers();
+    await this.getPlayersFromGame();
+    const users: User[] = this.userService.users;
+    const playersWithName: PlayerWithName[] = this._playersInGame.map((player: Player) => {
+      let user: User = users.filter((u: User) => u.id === player.userId)[0];
+      return {player, username: user.userName};
+    })
+    this._playersInGameWithName = playersWithName;
+    return playersWithName;
   }
 }
 
