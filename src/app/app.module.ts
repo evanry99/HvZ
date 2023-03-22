@@ -21,6 +21,7 @@ import { SquadRegistrationComponent } from './components/squad-registration/squa
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import { SquadSelectComponent } from './components/squad-select/squad-select.component';
 import { CreateGameComponent } from './components/create-game/create-game.component';
+import { EditGameComponent } from './components/edit-game/edit-game.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { CreateGameComponent } from './components/create-game/create-game.compon
     SquadRegistrationComponent,
     PlayerEditComponent,
     SquadSelectComponent,
-    CreateGameComponent
+    CreateGameComponent,
+    EditGameComponent
   ],
   imports: [
     BrowserModule,

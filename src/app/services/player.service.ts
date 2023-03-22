@@ -56,7 +56,7 @@ export class PlayerService {
     this._player = p;
   }
 
-  public getPlayers(){
+  /*public getPlayers(){
     return this.http.get<Player[]>(apiUrl+"/player")
       .subscribe({
         next: (players: Player[]) => {
@@ -66,7 +66,7 @@ export class PlayerService {
           this._error = error.message;
         }
       })
-  }
+  }*/
 
   public async getPlayersFromGame(){
     const game = this.gameService.game;

@@ -16,7 +16,10 @@
             <td class="scalableFont">{{game.numberOfPlayers}}</td>
             <td class="scalableFont">{{game.gameState}}</td>
             <td class="scalableFont">{{timeToReadable(game.startTime)}}</td>
-            <td scope="row"><button class="btn btn-sucess scalableFont" id ="view-button" (click)="goToGame(game)">View</button></td>
+            <td scope="row">
+              <button class="btn btn-sucess scalableFont" id ="view-button" (click)="goToGame(game)">View</button>
+              <app-edit-game [game]="game"></app-edit-game>
+            </td>
           </tr>
     </tbody>
   </table>

@@ -5,7 +5,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="gmaeModalLabel">Create game</h5>
+            <h5 class="modal-title" id="gameModalLabel">Create game</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -17,17 +17,16 @@
                       <div *ngIf="gameName.errors && (gameName.dirty || gameName.touched)">
                           <div id="newGameHelp" class="form-text" *ngIf="gameName.errors['required']">Game name is required</div>
                           <div id="newGameHelp" class="form-text" *ngIf="gameName.errors['minlength']">Game name is too short</div>
-                      </div>
-                          
+                      </div> 
                   </div>
-                      <div class="mb-3">
-                      <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
-                      <div *ngIf="description.errors && (description.dirty || description.touched)">
-                          <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
-                          <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>
-                      </div>
-                  </div>
+                  <div class="mb-3">
+                    <label for="inputDescription" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
+                    <div *ngIf="description.errors && (description.dirty || description.touched)">
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>
+                    </div>
+                </div>
                   <div class="input-group mb-3">
                       <label for="nwInputLat" class="form-label">Nw Latitude:</label>
                       <input type="number" class="form-control rounded-1 me-2" name="nwLatitude" id="nwInputLat" ngModel>

@@ -15,7 +15,7 @@ export class SquadInfoComponent {
 
   ngOnInit(){
     //temp
-    this.playerService.getPlayers();
+    this.playerService.getPlayersFromGame();
     this._players = this.playerService.players;
   }
 

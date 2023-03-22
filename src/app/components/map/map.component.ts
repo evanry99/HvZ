@@ -40,7 +40,7 @@ export class MapComponent {
   }
 
   async ngOnInit(){
-    this.playerService.getPlayers();
+    this.playerService.getPlayersFromGame();
     await this.killService.getKills();
     this._game = this.gameService.game;
     this._kills = this.killService.kills;
