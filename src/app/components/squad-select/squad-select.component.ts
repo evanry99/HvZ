@@ -24,4 +24,7 @@ export class SquadSelectComponent {
     this._squads = this.squadService.squads;
   }
 
+  joinSquad(squadId:number){
+    this.squadService.joinSquad(squadId)
+  }
 }
