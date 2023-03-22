@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Player } from 'src/app/models/player.model';
+import { Squad } from 'src/app/models/squad.model';
 import { PlayerService } from 'src/app/services/player.service';
+import { SquadService } from 'src/app/services/squad.service';
 
 @Component({
   selector: 'app-squad-select',
@@ -9,14 +11,17 @@ import { PlayerService } from 'src/app/services/player.service';
 })
 export class SquadSelectComponent {
 
-  _players: Player[] = [];
+  _squads: Squad[] = [];
 
-  constructor(private readonly playerService: PlayerService) { }
+  constructor(private readonly squadService: SquadService) { }
 
-  ngOnInit(){
-    //temp
-    this.playerService.getPlayers();
-    this._players = this.playerService.players;
+  ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.squadService.getSquads();
+    this._squads = this.squadService.squads;
   }
 
 }
