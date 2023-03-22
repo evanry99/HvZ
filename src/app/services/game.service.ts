@@ -33,24 +33,22 @@ export class GameService {
     }
     return this._game;
   }
-  get loading(){
+  get loading() {
     return this._loading;
   }
-  get error(){
+  get error() {
     return this._error;
   }
 
-  get games(){
+  get games() {
     return this._games;
   }
 
   constructor(private readonly http: HttpClient) { }
 
   public getGames() {
-    let headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
 
-    return this.http.get<Game[]>(apiUrl + "/game", { 'headers':headers })
+    return this.http.get<Game[]>(apiUrl + "/game")
       .pipe(
         finalize(() => {
           this._loading = false;
@@ -69,23 +67,22 @@ export class GameService {
       })
   }
 
-  public getGameById(id:number){
-    return this._games.filter((game:Game) => game.id === id).pop();
+  public getGameById(id: number) {
+    return this._games.filter((game: Game) => game.id === id).pop();
   }
 
   public getNumberOfPlayersInGame(id: number) {
     return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
-    .subscribe({
-      next: (players: Player[]) => {
+      .subscribe({
+        next: (players: Player[]) => {
           this._game = this.getGameById(id);
           this._game.numberOfPlayers = players.length;
-      },
-      error: (error:HttpErrorResponse) =>{
-        this._error = error.message;
-      }
-    })
+        },
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+        }
+      })
   }
-
 
 }
 

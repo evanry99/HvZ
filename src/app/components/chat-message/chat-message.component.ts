@@ -15,21 +15,4 @@ export class ChatMessageComponent {
     return d.toLocaleString("en-GB");
   }
 
-  htmlEscape(str) {
-    return str
-      .replace(/&/g, '&amp')
-      .replace(/'/g, '&apos')
-      .replace(/"/g, '&quot')
-      .replace(/>/g, '&gt')
-      .replace(/</g, '&lt');
-  }
-
-  htmlUnescape(str) {
-    return str
-      .replace(/&amp/g, '&')
-      .replace(/&apos/g, "'")
-      .replace(/&quot/g, '"')
-      .replace(/&gt/g, '>')
-      .replace(/&lt/g, '<');
-  }
 }
