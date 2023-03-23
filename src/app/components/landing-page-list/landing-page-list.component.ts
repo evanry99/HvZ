@@ -29,8 +29,6 @@ export class LandingPageListComponent implements OnInit{
 
   ngOnInit() {
       this._user = this.userService.userResponse;
-      this._user.isAdmin = true;
-      console.log(this._user)
       this.gameService.getGames()
       console.log(this.gameService.games)
       this.gameService.games.forEach(game=>
@@ -40,6 +38,6 @@ export class LandingPageListComponent implements OnInit{
 
   timeToReadable(date: string): string {
     const d = new Date(date);
-    return d.toLocaleString("en-GB");
+    return d.toLocaleString("no");
   }
 }

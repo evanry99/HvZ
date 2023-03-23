@@ -33,7 +33,7 @@ export class KillService {
       .set('Authorization', 'Bearer ' + keycloak.token)
     const gameId: number = this.gameService.game.id;
     
-    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`, { 'headers': headers }))
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`))
       .then((kills: Kill[]) => {
         this._kills = kills;
       })
@@ -46,7 +46,7 @@ export class KillService {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
-    this.http.post<Kill>(`${apiUrl}/kill`, kill, { 'headers': headers })
+    this.http.post<Kill>(`${apiUrl}/kill`, kill)
       .subscribe({
         next: (kill: Kill) => {
           this._kills.push(kill);

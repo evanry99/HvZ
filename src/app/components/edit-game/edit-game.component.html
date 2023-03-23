@@ -21,11 +21,11 @@
                   </div>
                   <div class="mb-3">
                     <label for="inputState" class="form-label">Game state</label>
-                    <input type="text" class="form-control" name="state" id="inputState" aria-describedby="stateHelp" required ngModel #state="ngModel">
-                    <div *ngIf="description.errors && (description.dirty || description.touched)">
-                        <div id="stateHelp" class="form-text" *ngIf="description.errors['required']">Game state is required</div>
-                        <div id="stateHelp" class="form-text" *ngIf="description.errors['minlength']">Game state is too short</div>
-                    </div>
+                    <select class="form-select" name="state" id="inputState" aria-describedby="stateHelp" required [ngModel]="game.gameState" #state="ngModel">
+                        <option value="Registration">Registration</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Complete">Complete</option>
+                    </select>
                 </div>
                   <div class="mb-3">
                       <label for="inputDescription" class="form-label">Description</label>
@@ -50,8 +50,10 @@
                   <div class="input-group mb-3">
                       <label for="inputStartTime" class="form-label">Start time:</label>
                       <input type="datetime-local" class="form-control rounded-1 me-2" name="startTime" id="inputStartTime" [ngModel]="toLocalTime(game.startTime)">
+                  </div>
+                  <div class="input-group mb-3">
                       <label for="inputEndTime" class="form-label">End time:</label>
-                      <input type="datetime-local" class="form-control rounded-1 me-2" name="endTime" id="inputEndTime" ngModel>
+                      <input type="datetime-local" class="form-control rounded-1 me-2" name="endTime" id="inputEndTime" [ngModel]="toLocalTime(game.endTime)">
                   </div>
                       <button type="submit" [disabled]="newGameForm.invalid" class="btn btn-dark" data-bs-dismiss="modal">Submit edit</button>
               </form>
