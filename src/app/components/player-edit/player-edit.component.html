@@ -7,6 +7,7 @@
             <th scope="col" class="col-3">Username</th>
             <th scope="col" class="col-3">PatientZero</th>
             <th scope="col" class="col-3">State</th>
+            <th scope="col" class="col-3">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,9 @@
                 <button class="btn btn-light ms-1" (click)="changeHuman(p.player)">
                     <img class="image" src="../../../assets/images/swap.png" alt="swap">
                 </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deletePlayer(p.player)"></fa-icon></button>
             </td>
         </tr>
     </tbody>

@@ -4,7 +4,7 @@
             <h5>{{chatState}} Chat</h5>
             <button class="btn btn-dark" (click)="changeChatState('Global')">Global chat</button>
             <button class="btn btn-dark" (click)="changeChatState('Faction')">Faction chat</button>
-            <button class="btn btn-dark" (click)="changeChatState('Squad')">Squad chat</button>
+            <button class="btn btn-dark" (click)="changeChatState('Squad')" *ngIf="_squadMember">Squad chat</button>
         </div>
         <div class="card-body overflow-y-scroll">
             <app-chat-message *ngIf="chatState === 'Global'" id="chatBody" [chats]="chats"></app-chat-message>
