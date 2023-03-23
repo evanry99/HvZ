@@ -76,7 +76,7 @@ export class PlayerService {
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     const game = this.gameService.game;
-    await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`, { 'headers': headers }))
+    await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`))
       .then((players: Player[]) => {
         this._playersInGame = players;
       })
@@ -103,9 +103,7 @@ export class PlayerService {
   }
 
   public playerById(id: Number): Player | undefined {
-    console.log(this._players);
-
-    return this._players?.find((player: Player) => player.id === id);
+    return this._playersInGame?.find((player: Player) => player.id === id);
   }
 
   public async registerPlayer() {
@@ -113,12 +111,12 @@ export class PlayerService {
       .set('Authorization', 'Bearer ' + keycloak.token)
     const gameId: number = this.gameService.game.id;
 
+    let gameId = this.gameService.game.id;
+    
     let player = {
-      biteCode: "2",
       isPatientZero: false,
       isHuman: true,
       userId: this.userService.userResponse.id,
-      gameId: this.gameService.game.id
     }
     await lastValueFrom(this.http.post<Player>(`${apiUrl}/game/${gameId}/player`, player, { 'headers': headers }))
       .then((p: Player) => {
@@ -152,6 +150,7 @@ export class PlayerService {
   public async getPlayersWithName(): Promise<PlayerWithName[]> {
     await this.userService.getUsers();
     await this.getPlayersFromGame();
+
     const users: User[] = this.userService.users;
     const playersWithName: PlayerWithName[] = this._playersInGame.map((player: Player) => {
       let user: User = users.filter((u: User) => u.id === player.userId)[0];
@@ -159,6 +158,15 @@ export class PlayerService {
     })
     this._playersInGameWithName = playersWithName;
     return playersWithName;
+  }
+
+  public deletePlayer(player:Player){
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+    this.http.delete(`${apiUrl}/game/${player.gameId}/${player.id}`, { 'headers' : headers})
+    .subscribe(() => {
+      this._players = this._players.filter(p => p.id !== player.id)
+    })
   }
 }
 

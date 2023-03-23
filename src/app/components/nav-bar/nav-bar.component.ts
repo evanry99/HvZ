@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import keycloak from 'src/keycloak';
 import { User } from 'src/app/models/user.model';
+import { storageClear } from 'src/app/utils/storage.util';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -12,7 +13,8 @@ export class NavBarComponent {
   constructor(private readonly router: Router) { } 
 
   handleLogout() {
-    keycloak.logout()
+    keycloak.logout();
+    storageClear();
   }
 
 

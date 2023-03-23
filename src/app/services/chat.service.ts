@@ -37,9 +37,6 @@ export class ChatService {
   }
 
   public sendChat(chat: ChatDTO, gameId: number) {
-    console.log(keycloak.authenticated);
-    console.log(keycloak.token);
-    
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
@@ -57,9 +54,9 @@ export class ChatService {
 
   public getChat(gameId: number) {
     const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Authorization', 'Bearer ' + keycloak.token);
 
-    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`, { 'headers': headers })
+    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`, {'headers': headers})
       .pipe(
         finalize(() => {
           this._loading = false;

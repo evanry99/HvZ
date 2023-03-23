@@ -104,6 +104,7 @@ export class UserService {
   }
 
   async getUserByUsername(username: string) {
+    console.log(keycloak.token)
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
@@ -117,19 +118,16 @@ export class UserService {
       })
   }
 
-  addUser(user: UserDTO): void {
+  async addUser(user:UserDTO): Promise<void>{
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-
-    this.http.post<User>(`${apiUrl}/user`, user, { 'headers': headers })
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((user: User) => {
+    await lastValueFrom(this.http.post<User>(`${apiUrl}/user`,user, { 'headers': headers }))
+      .then((user: User) => {
         this._userResponse = user;
         storageSave(userKey, user);
+        })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
       })
   }
 
@@ -146,5 +144,12 @@ export class UserService {
           console.log(error.message)
         }
       })
+  }
+
+  public deleteUser(user:User){
+    this.http.delete(`${apiUrl}/user/${user.id}`)
+    .subscribe(() => {
+      this._users = this._users.filter(u => u.id !== user.id)
+    })
   }
 }
