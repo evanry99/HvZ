@@ -68,4 +68,13 @@ export class ChatService {
       })
   }
 
+  public deleteChat(chat:Chat){
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+    this.http.delete(`${apiUrl}/game/${chat.gameId}/chat/${chat.id}`, {'headers': headers})
+    .subscribe(() => {
+      this._chats = this._chats.filter(c => c.id !== chat.id)
+    })
+  }
+
 }

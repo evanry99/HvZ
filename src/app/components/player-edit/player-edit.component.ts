@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Player, PlayerWithName } from 'src/app/models/player.model';
 import { PlayerService } from 'src/app/services/player.service';
-
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-player-edit',
   templateUrl: './player-edit.component.html',
@@ -10,7 +10,7 @@ import { PlayerService } from 'src/app/services/player.service';
 export class PlayerEditComponent {
 
   _players: PlayerWithName[] = [];
-
+  faTrash = faTrash
   constructor(private readonly playerService: PlayerService) { }
 
   async ngOnInit(){

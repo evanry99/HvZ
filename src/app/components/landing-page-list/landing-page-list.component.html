@@ -20,6 +20,7 @@
             <td scope="row">
               <button class="btn btn-sucess scalableFont" id ="view-button" (click)="goToGame(game)">View</button>
               <app-edit-game [game]="game"></app-edit-game>
+              <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deleteGame(game)" *ngIf="_user && _user.isAdmin"></fa-icon></button>
             </td>
           </tr>
     </tbody>
