@@ -145,8 +145,9 @@ export class PlayerService {
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     await lastValueFrom(this.http.put<Player>(`${apiUrl}/game/${this.gameService.game.id}/player/${player.id}`, player, { 'headers': headers }))
-      .then(() => {
+      .then((p:Player) => { 
         this.getPlayersFromGame();
+        this._player = p
       })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
@@ -169,7 +170,7 @@ export class PlayerService {
   public deletePlayer(player:Player){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
-    this.http.delete(`${apiUrl}/game/${player.gameId}/${player.id}`, { 'headers' : headers})
+    this.http.delete(`${apiUrl}/game/${player.gameId}/player/${player.id}`, { 'headers' : headers})
     .subscribe(() => {
       this._players = this._players.filter(p => p.id !== player.id)
     })

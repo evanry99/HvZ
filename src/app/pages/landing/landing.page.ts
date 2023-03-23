@@ -22,6 +22,12 @@ export class LandingPage implements OnInit {
   }
 
   async ngOnInit() {
+    navigator.geolocation.getCurrentPosition(result=> {
+      console.log(result.coords.latitude)
+      console.log(result.coords.longitude)
+    }
+      
+      )
     this.gameService.getGames()
     if(this.isAuthenticated() === true){
       await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);

@@ -16,7 +16,6 @@ export class SquadInfoComponent {
   ngOnInit(){
     //temp
     this.playerService.getPlayersFromGame();
-    this._players = this.playerService.players;
+    this._players = this.playerService.players; //Todo filter for SquadMembers
   }
-
 }
