@@ -21,14 +21,11 @@ export class LandingPage implements OnInit {
     return this.gameService.games
   }
 
-
-
-
   async ngOnInit() {
     this.gameService.getGames()
     if(this.isAuthenticated() === true){
       await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
-      if(!this.userService.userResponse || this.userService.userResponse.firstName !== keycloak.tokenParsed.given_name){
+      if(!this.userService.userResponse || this.userService.userResponse.userName !== keycloak.tokenParsed.preferred_username){
         let user: UserDTO = {
         firstName: keycloak.tokenParsed.given_name,
         lastName: keycloak.tokenParsed.family_name,

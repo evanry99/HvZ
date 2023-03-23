@@ -22,7 +22,8 @@ export class EditGameComponent {
 
   toLocalTime(d: string): string{
     let date = new Date(d);
-    return date.toLocaleString("en-GB");
+    date.setHours(date.getHours() + 1)
+    return date.toISOString().slice(0, -1);
   }
 
 
