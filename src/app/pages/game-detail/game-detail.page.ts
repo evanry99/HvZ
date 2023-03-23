@@ -61,9 +61,8 @@ export class GameDetailPage {
 
   async checkPlayer() {
     this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
-    console.log(this._player)
-
     if(this._player){
+      console.log(this._player)
       this.humanOrZombie();
       this.squadService.getSquadMember();
     }
