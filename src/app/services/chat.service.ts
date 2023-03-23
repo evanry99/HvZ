@@ -37,7 +37,10 @@ export class ChatService {
   }
 
   public sendChat(chat: ChatDTO, gameId: number) {
-    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat, { 'headers': headers })
       .pipe(
         finalize(() => {
           this._loading = false;
@@ -51,9 +54,9 @@ export class ChatService {
 
   public getChat(gameId: number) {
     const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Authorization', 'Bearer ' + keycloak.token);
 
-    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`, { 'headers': headers })
+    return this.http.get<Chat[]>(`${apiUrl}/game/${gameId}/chat`, {'headers': headers})
       .pipe(
         finalize(() => {
           this._loading = false;

@@ -30,7 +30,9 @@ export class KillService {
 
   async getKills(): Promise<void>{
     const gameId: number = this.gameService.game.id;
-    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`))
+
+    
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`))
       .then((kills: Kill[]) => {
           this._kills = kills;
         })
@@ -39,18 +41,7 @@ export class KillService {
       })
   }
 
-  registerKill(kill:Kill){
-    this.http.post<Kill>(`${apiUrl}/kill`, kill)
-    .subscribe({
-      next: (kill:Kill) => {
-        this._kills.push(kill);
-        console.log(kill);
-      },
-      error: (error:HttpErrorResponse) => {
-        this._error = error.message;
-      }
-    })
-  }
+  
 
 
   public deleteKill(kill:Kill){
@@ -58,5 +49,21 @@ export class KillService {
     .subscribe(() => {
       this._kills = this._kills.filter(k => k.id !== kill.id)
     })
+
+  registerKill(kill: Kill) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.post<Kill>(`${apiUrl}/kill`, kill)
+      .subscribe({
+        next: (kill: Kill) => {
+          this._kills.push(kill);
+          console.log(kill);
+        },
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+        }
+      })
+
   }
 }

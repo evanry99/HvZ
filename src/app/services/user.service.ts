@@ -104,6 +104,7 @@ export class UserService {
   }
 
   async getUserByUsername(username: string) {
+    console.log(keycloak.token)
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
