@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Kill } from '../models/kill.model';
 import { GameService } from './game.service';
@@ -49,7 +49,7 @@ export class KillService {
     .subscribe(() => {
       this._kills = this._kills.filter(k => k.id !== kill.id)
     })
-
+  }
   registerKill(kill: Kill) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)

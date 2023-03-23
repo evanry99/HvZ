@@ -8,6 +8,8 @@ import { PlayerService } from 'src/app/services/player.service';
 import { UserService } from 'src/app/services/user.service';
 import * as signalR from "@microsoft/signalr"
 import { environment } from 'src/environments/environment';
+import { SquadMember } from 'src/app/models/squad-member.model';
+import { SquadService } from 'src/app/services/squad.service';
 
 const {apiUrlR} = environment
 @Component({
@@ -18,32 +20,39 @@ const {apiUrlR} = environment
 export class ChatComponent{
   public chatState = "Global"
   private hubConnection: signalR.HubConnection;
-
+  _squadMember: SquadMember
+  _player: Player
+  
+  
   get chats(): Chat[]{
     document.getElementById("chatBody").scrollIntoView(false);
     if(this.chatState === "Global"){
       return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
     }
     else if(this.chatState === "Faction"){
-      if(this.playerService.player.isHuman === true){
-        return this.chatService.chats.filter(c => c.isHumanGlobal === true && c.squadId === null && c.isZombieGlobal === false)
+      if(this._player.isHuman === true){
+        console.log(this.chatService.chats.filter(c => {c.isHumanGlobal === true && c.isZombieGlobal === false}))
+        return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
         }
         else{
           return this.chatService.chats.filter(c => c.isHumanGlobal === false && c.squadId === null && c.isZombieGlobal === true)
-
         }
     }
     else{
-      return this.chatService.chats.filter(c => c.squadId === 1)
+      this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
+      return this.chatService.chats.filter(c => c.squadId === this.squadService.squadMember.squadId)
     }
     
   }
 
 
 
-  constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private userService:UserService){}
+  constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private readonly squadService:SquadService){}
   
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
+    this._squadMember = this.squadService.squadMember
+    this._player = this.playerService.player
     console.log(this.playerService.player.isHuman)
     this.chatService.getChat(this.gameService.game.id);
       this.hubConnection = new signalR.HubConnectionBuilder()
@@ -68,6 +77,8 @@ export class ChatComponent{
   
   
   onSubmit(form:NgForm){
+    console.log(form.value.chat);
+    
     //let playerId =  this.playerService.playersInGame.filter((player:Player) => player.userId === this.userService.user.id).pop().id
     if(this.chatState === "Global"){
       let chat: ChatDTO = {
@@ -88,7 +99,7 @@ export class ChatComponent{
         isZombieGlobal: false,
         chatTime: new Date,
         playerId: this.playerService.player.id,
-        squadId: 1
+        squadId: this._squadMember.squadId
       }
       
       this.chatService.sendChat(chat, this.gameService.game.id)
@@ -117,6 +128,7 @@ export class ChatComponent{
           playerId: this.playerService.player.id,
           squadId : null
       }
+      
       this.chatService.sendChat(chat, this.gameService.game.id)
       form.reset();
       

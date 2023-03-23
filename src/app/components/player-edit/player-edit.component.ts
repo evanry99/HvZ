@@ -27,4 +27,8 @@ export class PlayerEditComponent {
     player.isHuman = !player.isHuman;
     await this.playerService.updatePlayer(player);
   }
+
+  deletePlayer(player:Player){
+    this.playerService.deletePlayer(player)
+  }
 }
