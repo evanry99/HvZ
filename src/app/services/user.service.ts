@@ -132,7 +132,10 @@ export class UserService {
   }
 
   editUser(user:User){
-    this.http.put(`${apiUrl}/user/${user.id}`, user)
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.put(`${apiUrl}/user/${user.id}`, user, { 'headers' : headers})
       .subscribe({
         next: ((user:User) =>{
           console.log(user)
@@ -144,7 +147,10 @@ export class UserService {
   }
 
   public deleteUser(user:User){
-    this.http.delete(`${apiUrl}/user/${user.id}`)
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.delete(`${apiUrl}/user/${user.id}`, { 'headers' : headers})
     .subscribe(() => {
       this._users = this._users.filter(u => u.id !== user.id)
     })

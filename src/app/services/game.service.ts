@@ -71,7 +71,10 @@ export class GameService {
   }
 
   public getNumberOfPlayersInGame(id: number) {
-    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`, { 'headers' : headers })
       .subscribe({
         next: (players: Player[]) => {
           this._game = this.getGameById(id);
@@ -88,6 +91,7 @@ export class GameService {
     .set('Authorization', 'Bearer ' + keycloak.token)
     await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, {'headers': headers}))
       .then((game: Game) => {
+        console.log(game)
         game.numberOfPlayers = 0;
         this._games.push(game);
         })
@@ -95,6 +99,20 @@ export class GameService {
         console.log(error.message);
       })
   }
+
+  async updateGame(game, id: number): Promise<void>{
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+    await lastValueFrom(this.http.put<Game>(`${apiUrl}/game/${id}`, game, { 'headers' : headers }))
+      .then(() => {
+        this.getGames();
+      })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
+      })
+  }
+
+
   public deleteGame(game:Game){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)

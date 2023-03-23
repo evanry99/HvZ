@@ -1,0 +1,63 @@
+<button type="button" 
+        class="btn btn-dark scalableFont" 
+        data-bs-toggle="modal" 
+        data-bs-target="#missionModal"
+        (click)="isClicked()">
+        New mission
+</button>
+
+
+<div class="modal fade" id="missionModal" tabindex="-1" aria-labelledby="missionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="missionModalLabel">Create mission</h5>
+            <button type="button" 
+                        class="btn-close btn-close-white" 
+                        (click)="removeMarker()"
+                        data-bs-dismiss="modal" 
+                        aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+                
+              <form #newMissionForm="ngForm" (ngSubmit)="onSubmit(newMissionForm)"> 
+                <div *ngIf="clicked">
+                    <div id="map"
+                    leaflet 
+                    [leafletOptions]="options"
+                    [leafletLayers]="layers"
+                    (leafletMapReady)="onMapReady($event)">
+                    </div>
+                </div>
+                  <div class="mb-3">
+                      <label for="inputmissionName" class="form-label">Mission name</label>
+                      <input type="text" class="form-control" name="missionName" id="inputmissionName" aria-describedby="newmissionHelp" ngModel minlength="1" required #missionName="ngModel">
+                      <div id="newMissionHelp" class="form-text">Please enter the name of the mission</div>
+                      <div *ngIf="missionName.errors && (missionName.dirty || missionName.touched)">
+                          <div id="newMissionHelp" class="form-text" *ngIf="missionName.errors['required']">Mission name is required</div>
+                          <div id="newMissionHelp" class="form-text" *ngIf="missionName.errors['minlength']">Mission name is too short</div>
+                      </div> 
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputDescription" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
+                    <div *ngIf="description.errors && (description.dirty || description.touched)">
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
+                        <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>
+                    </div>
+                </div>
+                  <div class="input-group mb-3">
+                      <label for="inputStartTime" class="form-label">Start time:</label>
+                      <input type="datetime-local" class="form-control rounded-1 me-2" name="startTime" id="inputStartTime" ngModel>
+                  </div>
+                  <div class="input-group mb-3">
+                      <label for="inputEndTime" class="form-label">End time:</label>
+                      <input type="datetime-local" class="form-control rounded-1 me-2" name="endTime" id="inputEndTime" ngModel>
+                  </div>
+                      <button type="submit" [disabled]="newMissionForm.invalid" class="btn btn-dark" data-bs-dismiss="modal">Create mission</button>
+              </form>
+          </div>
+      </div>
+    </div>
+</div>
