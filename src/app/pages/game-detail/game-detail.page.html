@@ -26,6 +26,7 @@
             </div>
           </div>
         <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
+        <app-create-mission *ngIf="_isAdmin" class="col text-end me-3"></app-create-mission>
     </div>
     <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
       <router-outlet></router-outlet>

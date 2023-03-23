@@ -24,6 +24,7 @@ import { CreateGameComponent } from './components/create-game/create-game.compon
 import { EditGameComponent } from './components/edit-game/edit-game.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CreateMissionComponent } from './components/create-mission/create-mission.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     SquadSelectComponent,
     CreateGameComponent,
     EditGameComponent,
-    UserEditComponent
+    UserEditComponent,
+    CreateMissionComponent
   ],
   imports: [
     BrowserModule,
