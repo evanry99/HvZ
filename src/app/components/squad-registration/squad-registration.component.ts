@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Form } from '@angular/forms';
 import { SquadService } from 'src/app/services/squad.service';
 
 @Component({

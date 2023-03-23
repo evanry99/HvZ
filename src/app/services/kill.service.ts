@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Kill } from '../models/kill.model';
 import { GameService } from './game.service';
@@ -7,7 +7,7 @@ import { lastValueFrom } from 'rxjs';
 import keycloak from 'src/keycloak';
 
 
-const { apiUrl } = environment;
+const {apiUrl} = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class KillService {
   get kills() {
     return this._kills;
   }
-  get error() {
+  get error(){
     return this._error;
   }
 
@@ -28,33 +28,35 @@ export class KillService {
     private readonly gameService: GameService,
     private readonly http: HttpClient) { }
 
-  async getKills(): Promise<void> {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
+  async getKills(): Promise<void>{
     const gameId: number = this.gameService.game.id;
-    
-    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`, { 'headers': headers }))
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kills`))
       .then((kills: Kill[]) => {
-        this._kills = kills;
-      })
+          this._kills = kills;
+        })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
   }
 
-  registerKill(kill: Kill) {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
+  registerKill(kill:Kill){
+    this.http.post<Kill>(`${apiUrl}/kill`, kill)
+    .subscribe({
+      next: (kill:Kill) => {
+        this._kills.push(kill);
+        console.log(kill);
+      },
+      error: (error:HttpErrorResponse) => {
+        this._error = error.message;
+      }
+    })
+  }
 
-    this.http.post<Kill>(`${apiUrl}/kill`, kill, { 'headers': headers })
-      .subscribe({
-        next: (kill: Kill) => {
-          this._kills.push(kill);
-          console.log(kill);
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
-      })
+
+  public deleteKill(kill:Kill){
+    this.http.delete(`${apiUrl}/kill/${kill.id}`)
+    .subscribe(() => {
+      this._kills = this._kills.filter(k => k.id !== kill.id)
+    })
   }
 }

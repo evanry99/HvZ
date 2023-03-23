@@ -4,7 +4,7 @@ import { Game } from "src/app/models/game.model";
 import { User } from "src/app/models/user.model";
 import { GameService } from "src/app/services/game.service";
 import { UserService } from "src/app/services/user.service";
-
+import{faTrash} from "@fortawesome/free-solid-svg-icons"
 @Component({
   selector: 'app-landing-page-list',
   templateUrl: './landing-page-list.component.html',
@@ -14,7 +14,7 @@ export class LandingPageListComponent implements OnInit{
   @Input() games: Game[] = [];
 
   _user: User;
-
+  faTrash = faTrash
  
   constructor(
     private readonly gameService: GameService,
@@ -41,5 +41,9 @@ export class LandingPageListComponent implements OnInit{
   timeToReadable(date: string): string {
     const d = new Date(date);
     return d.toLocaleString("en-GB");
+  }
+
+  deleteGame(game:Game){
+    this.gameService.deleteGame(game)
   }
 }
