@@ -8,7 +8,7 @@ import keycloak from 'src/keycloak';
 import { PlayerService } from './player.service';
 
 
-const { apiUrl } = environment;
+const {apiUrl} = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class KillService {
   get kills() {
     return this._kills;
   }
-  get error() {
+  get error(){
     return this._error;
   }
 
@@ -39,15 +39,22 @@ export class KillService {
     
     await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`, { 'headers' : headers}))
       .then((kills: Kill[]) => {
-        console.log(kills);
-        
-        this._kills = kills;
-      })
+          this._kills = kills;
+        })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
       })
   }
 
+  
+
+
+  public deleteKill(kill:Kill){
+    this.http.delete(`${apiUrl}/kill/${kill.id}`)
+    .subscribe(() => {
+      this._kills = this._kills.filter(k => k.id !== kill.id)
+    })
+  }
   registerKill(kill: Kill) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -64,5 +71,6 @@ export class KillService {
           this._error = error.message;
         }
       })
+
   }
 }

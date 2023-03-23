@@ -125,6 +125,7 @@ export class PlayerService {
     await lastValueFrom(this.http.post<Player>(`${apiUrl}/game/${gameId}/player`, player, { 'headers': headers }))
       .then((p: Player) => {
         storageSave<Player>(playerKey, p);
+        this._player = p
         this.getPlayersFromGame();
       })
       .catch((error: HttpErrorResponse) => {
@@ -134,7 +135,8 @@ export class PlayerService {
 
   public async getPlayerFromUser(userId: number): Promise<Player> {
     await this.getPlayersFromGame();
-    let player = this._playersInGame.filter((p: Player) => p.userId === userId)[0];
+    let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
+    this._player = player
     return player;
   }
 
@@ -142,7 +144,7 @@ export class PlayerService {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
-    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player, { 'headers': headers }))
+    await lastValueFrom(this.http.put<Player>(`${apiUrl}/game/${this.gameService.game.id}/player/${player.id}`, player, { 'headers': headers }))
       .then(() => {
         this.getPlayersFromGame();
       })

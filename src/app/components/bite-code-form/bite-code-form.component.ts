@@ -5,6 +5,7 @@ import { Player } from 'src/app/models/player.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
 import { PlayerService } from 'src/app/services/player.service';
+import {faSkullCrossbones} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-bite-code-form',
@@ -18,7 +19,7 @@ export class BiteCodeFormComponent {
     private readonly playerService:PlayerService){
 
   }
-  
+  faSkull = faSkullCrossbones
   onSubmit(form:NgForm){
     let players = this.playerService.playersInGame;
     let victim: Player = players.filter((player: Player) => form.value.biteCode === player.biteCode)[0];

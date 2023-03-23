@@ -25,8 +25,9 @@
               <a *ngIf="_isAdmin" class="dropdown-item text-black" routerLink="player-edit">Player Edit</a>
             </div>
           </div>
-        <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
         <app-create-mission *ngIf="_isAdmin" class="col text-end me-3"></app-create-mission>
+        <app-bite-code-form *ngIf="_player.isHuman === false"class="col text-end me-3"></app-bite-code-form>
+        <span *ngIf="_player.isHuman === true">{{_player.biteCode}}</span>
     </div>
     <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
       <router-outlet></router-outlet>

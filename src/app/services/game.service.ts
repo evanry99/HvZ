@@ -89,8 +89,7 @@ export class GameService {
   async addGame(game): Promise<void>{
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
-
-    await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, { 'headers' : headers }))
+    await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, {'headers': headers}))
       .then((game: Game) => {
         console.log(game)
         game.numberOfPlayers = 0;
@@ -114,6 +113,14 @@ export class GameService {
   }
 
 
+  public deleteGame(game:Game){
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+    this.http.delete(`${apiUrl}/game/${game.id}`, {'headers': headers})
+    .subscribe(() => {
+      this._games = this._games.filter(g => g.id !== game.id)
+    })
+  }
 
 }
 

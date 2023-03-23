@@ -9,6 +9,7 @@ import { PlayerService } from './player.service';
 import { lastValueFrom } from 'rxjs';
 import { SquadMember } from '../models/squad-member.model';
 import keycloak from 'src/keycloak';
+import { Game } from '../models/game.model';
 
 
 const {apiUrl} = environment;
@@ -90,11 +91,11 @@ public joinSquad(squadId:number) {
     })
   }
 
-public getSquadMember(){
+public getSquadMember(game:Game,player:Player){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
   
-  this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`, { 'headers' : headers})
+  this.http.get<SquadMember>(`${apiUrl}/game/${game.id}/squadMember/${player.id}`, { 'headers' : headers})
   .subscribe({
     next: (squadMember: SquadMember) => {
       this._squadMember = squadMember;

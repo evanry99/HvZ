@@ -64,7 +64,7 @@ export class GameDetailPage {
     if(this._player){
       console.log(this._player)
       this.humanOrZombie();
-      this.squadService.getSquadMember();
+      this.squadService.getSquadMember(this._game,this._player);
     }
   }
 
@@ -73,7 +73,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this._player = this.playerService.player;
     this.humanOrZombie();
-    this.squadService.getSquadMember();
+    this.squadService.getSquadMember(this._game,this._player);
   }
 
   humanOrZombie(): void {
