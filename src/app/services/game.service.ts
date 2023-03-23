@@ -71,7 +71,10 @@ export class GameService {
   }
 
   public getNumberOfPlayersInGame(id: number) {
-    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`)
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.get<Player[]>(`${apiUrl}/game/${id}/player`, { 'headers' : headers })
       .subscribe({
         next: (players: Player[]) => {
           this._game = this.getGameById(id);
@@ -84,8 +87,12 @@ export class GameService {
   }
 
   async addGame(game): Promise<void>{
-    await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game))
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+    await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, { 'headers' : headers }))
       .then((game: Game) => {
+        console.log(game)
         game.numberOfPlayers = 0;
         this._games.push(game);
         })
@@ -95,8 +102,9 @@ export class GameService {
   }
 
   async updateGame(game, id: number): Promise<void>{
-    console.log(game)
-    await lastValueFrom(this.http.put<Game>(`${apiUrl}/game/${id}`, game))
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+    await lastValueFrom(this.http.put<Game>(`${apiUrl}/game/${id}`, game, { 'headers' : headers }))
       .then(() => {
         this.getGames();
       })

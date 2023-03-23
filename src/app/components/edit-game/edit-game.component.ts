@@ -18,6 +18,8 @@ export class EditGameComponent {
 
   async onSubmit(form:NgForm){
     let value = form.value;
+    console.log(value)
+    console.log(this.game)
     let g = {
       name: value.gameName,
       gameState: value.state,
