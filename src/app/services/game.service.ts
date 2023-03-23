@@ -94,6 +94,18 @@ export class GameService {
       })
   }
 
+  async updateGame(game, id: number): Promise<void>{
+    console.log(game)
+    await lastValueFrom(this.http.put<Game>(`${apiUrl}/game/${id}`, game))
+      .then(() => {
+        this.getGames();
+      })
+      .catch((error: HttpErrorResponse) => {
+        console.log(error.message);
+      })
+  }
+
+
 
 }
 

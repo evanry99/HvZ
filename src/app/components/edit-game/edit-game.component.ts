@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Game } from 'src/app/models/game.model';
-import { SquadService } from 'src/app/services/squad.service';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-edit-game',
@@ -13,11 +13,23 @@ export class EditGameComponent {
   @Input() game: Game;
 
   constructor(
-    private readonly squadService: SquadService
+    private readonly gameService: GameService
   ){}
 
   async onSubmit(form:NgForm){
-    await this.squadService.createSquad(form.value.SquadName);
+    let value = form.value;
+    let g = {
+      name: value.gameName,
+      gameState: value.state,
+      description: value.description,
+      nw_Lat: value.nwLatitude,
+      nw_Lng: value.nwLongitude,
+      se_Lat: value.seLatitude,
+      se_Lng: value.seLongitude,
+      startTime: value.startTime,
+      endTime: value.endTime,
+    } 
+    await this.gameService.updateGame(g, this.game.id);
   }
 
   toLocalTime(d: string): string{
