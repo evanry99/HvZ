@@ -37,7 +37,13 @@ export class ChatService {
   }
 
   public sendChat(chat: ChatDTO, gameId: number) {
-    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat)
+    console.log(keycloak.authenticated);
+    console.log(keycloak.token);
+    
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    return this.http.post<Chat>(`${apiUrl}/game/${gameId}/chat`, chat, { 'headers': headers })
       .pipe(
         finalize(() => {
           this._loading = false;

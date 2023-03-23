@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Squad } from '../models/squad.model';
 import { GameService } from './game.service';
 import { UserService } from './user.service';
@@ -8,9 +8,10 @@ import { Player } from '../models/player.model';
 import { PlayerService } from './player.service';
 import { lastValueFrom } from 'rxjs';
 import { SquadMember } from '../models/squad-member.model';
+import keycloak from 'src/keycloak';
 
 
-const {apiUrl} = environment;
+const { apiUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +24,22 @@ export class SquadService {
     return this._squads;
   }
 
-  get squadMember(){
+  get squadMember() {
     return this._squadMember
   }
 
   constructor(
-    private readonly http:HttpClient,
+    private readonly http: HttpClient,
     private readonly gameService: GameService,
-    private readonly playerService: PlayerService){}
-    
-  public getSquads(){
+    private readonly playerService: PlayerService) { }
+
+  public getSquads() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
     const gameId: number = this.gameService.game.id;
-    
-    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`)
+
+    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`, {})
       .subscribe({
         next: (squads: Squad[]) => {
           this._squads = squads;
@@ -46,7 +50,9 @@ export class SquadService {
       })
   }
 
-  public async createSquad(name: string){
+  public async createSquad(name: string) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
     const gameId: number = this.gameService.game.id;
     const player: Player = this.playerService.player;
     const squad = {
@@ -56,42 +62,47 @@ export class SquadService {
         playerId: player.id
       }
     }
-    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad))
+    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers': headers }))
       .then((s: Squad) => {
         this._squads.push(s);
-        })
+      })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
         alert("You can only be leader of one squad at a time.")
       })
   }
 
-public joinSquad(squadId:number) {
-    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id})
+  public joinSquad(squadId: number) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+      
+    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`, { "playerId": this.playerService.player.id, 'header': headers })
       .subscribe({
-        next: (squadMember:SquadMember) =>{
-            this._squadMember = squadMember;
+        next: (squadMember: SquadMember) => {
+          this._squadMember = squadMember;
 
         },
-        error: (error:HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           console.log(error.message);
           this._squadMember = null;
         }
-        
-    })
+
+      })
   }
 
-public getSquadMember(){
-  this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`)
-  .subscribe({
-    next: (squadMember: SquadMember) => {
-      this._squadMember = squadMember;
-    },
-    error: (error: HttpErrorResponse) => {
-      console.log(error);
-      this._squadMember = null;
-    }
-  })
-}
+  public getSquadMember() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+    this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`, { 'headers': headers })
+      .subscribe({
+        next: (squadMember: SquadMember) => {
+          this._squadMember = squadMember;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          this._squadMember = null;
+        }
+      })
+  }
 
 }

@@ -17,7 +17,7 @@ import { UserService } from 'src/app/services/user.service';
 export class GameDetailPage {
 
   _title?: string;
-  _game? : Game
+  _game?: Game
   _player: Player;
   _inSquad: boolean;
   _state: string;
@@ -30,11 +30,11 @@ export class GameDetailPage {
     private readonly squadService: SquadService,
     private readonly router: Router,
     private readonly chatService: ChatService
-    ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.setGame();
-    if(!this._game){
+    if (!this._game) {
       this.router.navigateByUrl("/landing");
     }
     this.playerService.getPlayersWithName();
@@ -42,26 +42,26 @@ export class GameDetailPage {
     this.checkPlayer();
     this._isAdmin = true; //this.userService.user.isAdmin;
     this._inSquad = false; //temp
-    
+
   }
 
-  get chats(): Chat[]{
+  get chats(): Chat[] {
     return this.chatService.chats
   }
 
-  setGame(){
+  setGame() {
     try {
       this._game = this.gameService.game;
       this._title = this._game.name;
-    } 
+    }
     catch (error) {
-      console.log("Error: " + error.message) 
+      console.log("Error: " + error.message)
     }
   }
 
   async checkPlayer() {
     this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
-    if(this._player){
+    if (this._player) {
       this.humanOrZombie();
       this.squadService.getSquadMember();
     }
@@ -76,10 +76,11 @@ export class GameDetailPage {
   }
 
   humanOrZombie(): void {
-    if(this._player.isHuman){
+    if (this._player.isHuman) {
       this._state = "Human";
+    } else {
+      this._state = "Zombie";
     }
-    this._state = "Zombie";
   }
 }
 

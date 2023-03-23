@@ -70,22 +70,22 @@ export class UserService {
 
     let userList = []
     await lastValueFrom(this.http
-        .get<User[]>(`${apiUrl}/user`, { 'headers': headers })
-        .pipe(
-          finalize(() => {
-            this._loading = false;
-          })
-        ))
-        .then((users: User[]) => {
-          this._users = users;
+      .get<User[]>(`${apiUrl}/user`, { 'headers': headers })
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      ))
+      .then((users: User[]) => {
+        this._users = users;
         userList = users
-        
-          })
+
+      })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
-        
+
       })
-      return userList
+    return userList
   }
 
   async getUserById(id: number): Promise<User> {
@@ -133,10 +133,13 @@ export class UserService {
       })
   }
 
-  editUser(user:User){
-    this.http.put(`${apiUrl}/user/${user.id}`, user)
+  editUser(user: User) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.put(`${apiUrl}/user/${user.id}`, user, { 'headers': headers })
       .subscribe({
-        next: ((user:User) =>{
+        next: ((user: User) => {
           console.log(user)
         }),
         error: (error: HttpError) => {

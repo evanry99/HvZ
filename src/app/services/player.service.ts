@@ -58,11 +58,9 @@ export class PlayerService {
   }
 
   public getPlayers() {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
     const gameId: number = this.gameService.game.id;
 
-    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player", { 'headers': headers })
+    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player")
       .subscribe({
         next: (players: Player[]) => {
           this._players = players;
@@ -76,8 +74,6 @@ export class PlayerService {
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
-      .set('Access-Control-Allow-Origin:', ' *')
 
     const game = this.gameService.game;
     await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`, { 'headers': headers }))
@@ -92,7 +88,6 @@ export class PlayerService {
   public getPlayersInGame(gameId: number) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
 
 
     return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`, { 'headers': headers })
@@ -109,13 +104,14 @@ export class PlayerService {
 
   public playerById(id: Number): Player | undefined {
     console.log(this._players);
-    
+
     return this._players?.find((player: Player) => player.id === id);
   }
 
   public async registerPlayer() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
+    const gameId: number = this.gameService.game.id;
 
     let player = {
       biteCode: "2",
@@ -124,7 +120,7 @@ export class PlayerService {
       userId: this.userService.userResponse.id,
       gameId: this.gameService.game.id
     }
-    await lastValueFrom(this.http.post<Player>(`${apiUrl}/player`, player, { 'headers': headers }))
+    await lastValueFrom(this.http.post<Player>(`${apiUrl}/game/${gameId}/player`, player, { 'headers': headers }))
       .then((p: Player) => {
         storageSave<Player>(playerKey, p);
         this.getPlayersFromGame();
