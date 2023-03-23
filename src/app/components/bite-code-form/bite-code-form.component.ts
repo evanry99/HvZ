@@ -1,38 +1,55 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Kill } from 'src/app/models/kill.model';
+import { Player } from 'src/app/models/player.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
+
 import {faSkullCrossbones} from "@fortawesome/free-solid-svg-icons"
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { PlayerService } from 'src/app/services/player.service';
+
+
+
 @Component({
   selector: 'app-bite-code-form',
   templateUrl: './bite-code-form.component.html',
   styleUrls: ['./bite-code-form.component.css']
 })
 export class BiteCodeFormComponent {
+
   latitude:number
   longitude:number 
   constructor(private gameService:GameService, private killService:KillService){
+
+  constructor(
+    private gameService:GameService, 
+    private killService:KillService,
+    private readonly playerService:PlayerService){
+
 
   }
   faSkull = faSkullCrossbones
   faLocationDot = faLocationDot
   onSubmit(form:NgForm){
-    let kill:Kill = {
-    gameId : this.gameService.game.id,
-    story : form.value.description,
-    victimId : form.value.biteCode,
-    lat : form.value.latitude,
-    lng : form.value.longitude,
-    //TODO: This is hard coded. Need to be able to get active user to recieve victim
-    killerId: 1,
-    timeOfDeath: new Date()
+    let players = this.playerService.playersInGame;
+    let victim: Player = players.filter((player: Player) => form.value.biteCode === player.biteCode)[0];
+    if(victim){
+      let kill:Kill = {
+        gameId : this.gameService.game.id,
+        story : form.value.description,
+        victimId : victim.id,
+        lat : form.value.latitude,
+        lng : form.value.longitude,
+        killerId: this.playerService.player.id,
+        timeOfDeath: new Date()
+        }
+        
+        this.killService.registerKill(kill);
     }
-    
-    this.killService.registerKill(kill);
-    
-
+    else{
+      alert("Invalid bitecode");
+    }
   }
 
   getPosition(){
