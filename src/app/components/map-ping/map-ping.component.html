@@ -19,15 +19,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div *ngIf="clicked">
-                    <div id="map"
-                    leaflet 
-                    [leafletOptions]="options"
-                    [leafletLayers]="layers"
-                    (leafletMapReady)="onMapReady($event)">
-                    </div>
+                <div *ngIf="clicked && hasCoordinates()">
+                    <form #checkInForm="ngForm" (ngSubmit)="checkIn(checkInForm)"> 
+                        <div class="map mb-3"
+                            leaflet 
+                            [leafletOptions]="options"
+                            [leafletLayers]="layers"
+                            (leafletMapReady)="onMapReady($event)">
+                        </div>
+                        <button class="btn btn-light getPos" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
+                        <div class="input-group mb-3">
+                            <label for="inputStartTime" class="form-label me-2">Start time:</label>
+                            <input type="datetime-local" class="form-control rounded-1" name="startTime" id="inputStartTime" ngModel required #startTime="ngModel">
+                        </div>
+                        <div *ngIf="startTime.errors && (startTime.dirty || startTime.touched)">
+                            <div id="newMissionHelp" class="form-text" *ngIf="startTime.errors['required']">Start time is required</div>
+                        </div> 
+                        <div class="input-group mb-3">
+                            <label for="inputEndTime" class="form-label me-2">End time:</label>
+                            <input type="datetime-local" class="form-control rounded-1" name="endTime" id="inputEndTime" ngModel required #endTime="ngModel">
+                        </div>
+                        <div *ngIf="endTime.errors && (endTime.dirty || endTime.touched)">
+                            <div id="newMissionHelp" class="form-text" *ngIf="endTime.errors['required']">End time is required</div>
+                        </div> 
+                        <button type="submit" [disabled]="checkInForm.invalid" class="btn btn-light" data-bs-dismiss="modal">Check In</button>
+                    </form>
                 </div>
-                <button class="btn btn-light refreshMap" type="button">Check In</button>
+                <div *ngIf="!hasCoordinates()" class="map d-flex align-items-center">
+                    <h1 class="m-auto">Map not set</h1>
+                </div>
             </div>
         </div>
     </div>
