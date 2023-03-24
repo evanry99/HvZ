@@ -9,7 +9,7 @@ import { storageRead } from 'src/app/utils/storage.util';
 import { playerKey } from 'src/app/variables/storage-keys';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ChatService } from 'src/app/services/chat.service';
-
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-chat-message',
   templateUrl: './chat-message.component.html',
@@ -21,7 +21,7 @@ export class ChatMessageComponent {
   faTrash = faTrash
   private _playersWithName: PlayerWithName[];
   public _username = {}
-
+  faUser = faUser
 
   constructor(
     private readonly playerService: PlayerService,
