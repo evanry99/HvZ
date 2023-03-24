@@ -5,11 +5,13 @@ import { Game } from 'src/app/models/game.model';
 import { Kill } from 'src/app/models/kill.model';
 import { Mission } from 'src/app/models/mission.model';
 import { Player } from 'src/app/models/player.model';
+import { SquadCheckIn } from 'src/app/models/squad-check-in.model';
 import { User } from 'src/app/models/user.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
 import { MissionService } from 'src/app/services/mission.service';
 import { PlayerService } from 'src/app/services/player.service';
+import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -22,6 +24,7 @@ export class MapComponent {
   private _game: Game;
   private _kills: Kill[] = [];
   private _missions: Mission[] = [];
+  private _squadCheckIns: SquadCheckIn[] = [];
   mapReady: boolean = false;
   options = {};
   layers: any= []
@@ -35,12 +38,21 @@ export class MapComponent {
    })
   };
 
-  flagIcon = {
+  missionIcon = {
     icon: icon({
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
       popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/flag.png',
+      iconUrl: '../../assets/images/mission.png',
+   })
+  };
+
+  pingIcon = {
+    icon: icon({
+      iconSize:     [38, 38],
+      iconAnchor:  [19, 38],
+      popupAnchor:  [0, -39],
+      iconUrl: '../../assets/images/location.png',
    })
   };
 
@@ -49,36 +61,62 @@ export class MapComponent {
     private readonly gameService: GameService,
     private readonly userService: UserService,
     private readonly missionService: MissionService,
+    private readonly squadService: SquadService,
     private readonly playerService: PlayerService){
   }
 
   async ngOnInit(){
     this.playerService.getPlayersFromGame();
-    await this.killService.getKills();
-    await this.missionService.getMissions();
     this._game = this.gameService.game;
-    this._kills = this.killService.kills;
-    this._missions = this.missionService.missions;
     if(this.hasCoordinates()){
       await this.mapInit();
     }
   }
 
-  async updateKills(){
+  async updateMap() {
     await this.killService.getKills();
-    const kills: Kill[] = this.killService.kills;
-    const newKills: Kill[] = kills.filter((kill: Kill) => !this._kills.includes(kill));
-    console.log(newKills)
-    for(let kill of newKills){
+    await this.missionService.getMissions();
+    await this.squadService.getSquadCheckIns();
+    this._kills = this.killService.kills;
+    this._squadCheckIns = this.squadService.squadCheckIns;
+    this._missions = this.missionService.missions;
+    this.layers = this.layers.splice(0, 1);
+    for(let kill of this._kills){
       let player = this.playerService.playerById(kill.victimId);
+      console.log(player);
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`${user.firstName} ${user.lastName}:\n${kill.story},\n${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
+        .bindPopup(`
+        <b>${user.userName}:</b><br>
+        ${kill.story}<br>
+        ${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
         .openPopup()
       );
     }
-    this._kills = kills;
+    for(let mission of this._missions){
+      this.layers.push(
+        marker([mission.lat, mission.lng], this.missionIcon)
+        .bindPopup(`
+        <b>${mission.name}:</b><br>
+        ${mission.description}<br>
+        Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
+        End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
+        `)
+        .openPopup()
+      );
+    }
+    for(let checkIn of this._squadCheckIns){
+      this.layers.push(
+        marker([checkIn.lat, checkIn.lng], this.pingIcon)
+        .bindPopup(`
+        <b>Check in: ${checkIn.squadMemberId}:</b><br>
+        Start time: ${new Date(checkIn.startTime).toLocaleString("en-GB")}<br>
+        End time: ${new Date(checkIn.endTime).toLocaleString("en-GB")}
+        `)
+        .openPopup()
+      );
+    }
   }
 
   hasCoordinates(): boolean{
@@ -109,32 +147,7 @@ export class MapComponent {
         [[ this._game.nw_Lat, this._game.nw_Lng ], [ this._game.nw_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.nw_Lng ]]
       ]).setStyle({color: '#FF0000'}),
     );
-
-    for(let kill of this._kills){
-      let player = this.playerService.playerById(kill.victimId);
-      console.log(player);
-      let user: User = await this.userService.getUserById(player.userId);
-      this.layers.push(
-        marker([kill.lat, kill.lng], this.gravestoneIcon)
-        .bindPopup(`
-        <b>${user.userName}:</b><br>
-        ${kill.story}<br>
-        ${new Date(kill.timeOfDeath).toLocaleString("en-GB")}`)
-        .openPopup()
-      );
-    }
-    for(let mission of this._missions){
-      this.layers.push(
-        marker([mission.lat, mission.lng], this.flagIcon)
-        .bindPopup(`
-        <b>${mission.name}:</b><br>
-        ${mission.description}<br>
-        Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
-        End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
-        `)
-        .openPopup()
-      );
-    }
     this.mapReady = true;
+    this.updateMap();
   }
 }

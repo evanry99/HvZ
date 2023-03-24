@@ -22,6 +22,7 @@ const {apiUrl} = environment;
 export class SquadService {
   private _squadMember: SquadMember
   private _squads: Squad[] = [];
+  private _squadCheckIns: SquadCheckIn[] = [];
   private _squadMembers: SquadMember[] = [];
 
   get squads(): Squad[] {
@@ -33,6 +34,10 @@ export class SquadService {
   }
   get squadMembers(){
     return this._squadMembers;
+  }
+
+  get squadCheckIns(): SquadCheckIn[] {
+    return this._squadCheckIns;
   }
 
   constructor(
@@ -115,11 +120,27 @@ public getSquadMember(game:Game,player:Player){
   console.log(this._squadMember)
 }
 
+async getSquadCheckIns(): Promise<void> {
+  const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
+
+  let gameId: number = this.gameService.game.id;
+  let squadId: number = this._squadMember.squadId;
+  
+  await lastValueFrom(this.http.get<SquadCheckIn[]>(`${apiUrl}/game/${gameId}/squad/${squadId}/check-in`, { 'headers' : headers}))
+    .then((checkIns: SquadCheckIn[]) => {
+      this._squadCheckIns = checkIns;
+    })
+    .catch((error: HttpErrorResponse) => {
+      console.log(error.message);
+    })
+}
+
 public createSquadCheckIn(checkIn: SquadCheckIn){
   const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
 
-  this.http.post(`${apiUrl}/game/${checkIn.gameId}/squad/${checkIn.squadId}(checkIn)`, checkIn , { 'headers' : headers})
+  this.http.post(`${apiUrl}/game/${checkIn.gameId}/squad/${checkIn.squadId}/check-in`, checkIn , { 'headers' : headers})
     .subscribe({
       next: ((check: SquadCheckIn) =>{
         console.log(check)
