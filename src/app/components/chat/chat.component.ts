@@ -39,7 +39,7 @@ export class ChatComponent{
         }
     }
     else{
-      this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
+      //this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
       return this.chatService.chats.filter(c => c.squadId === this.squadService.squadMember.squadId)
     }
     
