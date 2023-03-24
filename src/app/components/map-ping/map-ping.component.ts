@@ -12,9 +12,16 @@ export class MapPingComponent {
 
   private _game: Game;
   private _map: Map;
+  _lat: number;
+  _lng: number;
+
+  get map(): Map{
+    return this._map;
+  }
 
   clicked: boolean = false;
   hasMarker: boolean = false;
+  ready: boolean = false;
   options = {};
   layers: any= [];
   marker: Marker;
@@ -24,7 +31,7 @@ export class MapPingComponent {
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
       popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/flag.png',
+      iconUrl: '../../assets/images/location.png',
    })
   };
 
@@ -55,16 +62,18 @@ export class MapPingComponent {
 
   onMapClick(map: Map) {
     map.on('click', e => {
-      if(!this.hasMarker){
-        let m = marker(e.latlng, {
-          draggable: true,
-          autoPan: true,
-          icon: this.flagIcon.icon
-        })
-        m.addTo(map);
-        this.marker = m;
-        this.hasMarker = true;
+      if(this.hasMarker){
+        this.removeMarker();
       }
+      let m = marker(e.latlng, {
+        autoPan: true,
+        icon: this.flagIcon.icon
+      })
+      m.addTo(map);
+      this.marker = m;
+      this.hasMarker = true;
+      this._lat = e.latlng.lat;
+      this._lng = e.latlng.lng;
     })
   }
 

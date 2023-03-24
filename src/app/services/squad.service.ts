@@ -105,6 +105,7 @@ public getSquadMember(game:Game,player:Player){
       this._squadMember = null;
     }
   })
+  console.log(this._squadMember)
 }
 
 public deleteSquad(squad:Squad){

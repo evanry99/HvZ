@@ -43,6 +43,7 @@ export class SquadSelectComponent {
   joinSquad(squadId:number){
     this.squadService.joinSquad(squadId)
   }
+  
   deleteSquad(squad:Squad){
     this.squadService.deleteSquad(squad)
   }
