@@ -20,7 +20,7 @@ export class BiteCodeFormComponent {
 
   latitude:number
   longitude:number 
-  constructor(private gameService:GameService, private killService:KillService){
+  
 
   constructor(
     private gameService:GameService, 
