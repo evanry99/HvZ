@@ -1,4 +1,11 @@
 #map {
     height: 40vh;
     width: 100%;
+    z-index: 0;
+}
+
+.refreshMap {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
 }

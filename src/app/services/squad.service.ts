@@ -105,13 +105,14 @@ public getSquadMember(game:Game,player:Player){
       this._squadMember = null;
     }
   })
+  console.log(this._squadMember)
 }
 
 public deleteSquad(squad:Squad){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
   
-  this.http.delete(`${apiUrl}/game/squad/${squad.gameId}/${squad.id}`, { 'headers' : headers})
+  this.http.delete(`${apiUrl}/game/${squad.gameId}/squad/${squad.id}`, { 'headers' : headers})
   .subscribe(() => {
     this._squads = this._squads.filter(s => s.id !== squad.id)
   })

@@ -71,6 +71,9 @@ export class KillService {
           this._error = error.message;
         }
       })
+    let player = this.playerService.playerById(kill.victimId);
+    player.isHuman = false;
+    this.playerService.updatePlayer(player);
 
   }
 }

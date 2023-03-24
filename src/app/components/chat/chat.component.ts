@@ -31,8 +31,7 @@ export class ChatComponent{
     }
     else if(this.chatState === "Faction"){
       if(this._player.isHuman === true){
-        console.log(this.chatService.chats.filter(c => {c.isHumanGlobal === true && c.isZombieGlobal === false}))
-        return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
+        return this.chatService.chats.filter(c => c.isHumanGlobal === true && c.isZombieGlobal === false && c.squadId === null)
         }
         else{
           return this.chatService.chats.filter(c => c.isHumanGlobal === false && c.squadId === null && c.isZombieGlobal === true)
