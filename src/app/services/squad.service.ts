@@ -20,6 +20,7 @@ const {apiUrl} = environment;
 export class SquadService {
   private _squadMember: SquadMember
   private _squads: Squad[] = [];
+  private _squadMembers: SquadMember[] = [];
 
   get squads(): Squad[] {
     return this._squads;
@@ -27,6 +28,9 @@ export class SquadService {
 
   get squadMember(){
     return this._squadMember
+  }
+  get squadMembers(){
+    return this._squadMembers;
   }
 
   constructor(
@@ -66,6 +70,7 @@ export class SquadService {
     await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers' : headers}))
       .then((s: Squad) => {
         this._squads.push(s);
+        this.getSquadMember(this.gameService.game,this.playerService.player)
         })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);
@@ -116,6 +121,23 @@ public deleteSquad(squad:Squad){
   .subscribe(() => {
     this._squads = this._squads.filter(s => s.id !== squad.id)
   })
+}
+
+public getSquadMembers(gameId:number,squadId:number){
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer ' + keycloak.token)
+  
+  this.http.get<SquadMember[]>(`${apiUrl}/game/${gameId}/squadMembers/${squadId}`, {'headers' : headers})
+  .subscribe({
+    next: (squadMembers: SquadMember[]) => {
+      this._squadMembers = squadMembers;
+    },
+    error: (error: HttpErrorResponse) => {
+      console.log(error);
+      this._squadMembers = [];
+    }
+  })
+  console.log(this._squadMember)
 }
 
 }
