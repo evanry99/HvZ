@@ -27,7 +27,7 @@ export class MapPingComponent {
   layers: any= [];
   marker: Marker;
 
-  flagIcon = {
+  pingIcon = {
     icon: icon({
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
@@ -75,7 +75,7 @@ export class MapPingComponent {
         this.removeMarker();
       }
       let m = marker(e.latlng, {
-        icon: this.flagIcon.icon
+        icon: this.pingIcon.icon
       })
       m.addTo(map);
       this.marker = m;
@@ -94,7 +94,7 @@ export class MapPingComponent {
 
   mapInit(){
     let m = marker([this._lat, this._lng], {
-      icon: this.flagIcon.icon
+      icon: this.pingIcon.icon
     })
     this.marker = m;
     this.hasMarker = true;
@@ -121,15 +121,17 @@ export class MapPingComponent {
   }
 
   checkIn(form: NgForm){
+    let value = form.value;
     let checkIn: SquadCheckIn = {
       lat: this._lat,
       lng: this._lng,
-      startTime: '',
-      endTime: '',
+      startTime: value.startTime,
+      endTime: value.endTime,
       squadId: this.squadService.squadMember.squadId,
       gameId: this.gameService.game.id,
       squadMemberId: this.squadService.squadMember.id
     }
+    this.squadService.createSquadCheckIn(checkIn);
   }
 
   getPosition(){
@@ -141,7 +143,7 @@ export class MapPingComponent {
         this.removeMarker();
       }
       let m = marker([this._lat, this._lng], {
-        icon: this.flagIcon.icon
+        icon: this.pingIcon.icon
       })
       m.addTo(this._map);
       this.marker = m;
