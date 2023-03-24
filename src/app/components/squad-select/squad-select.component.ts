@@ -26,12 +26,18 @@ export class SquadSelectComponent {
     private readonly playerService: PlayerService
     ) { }
 
+  get squadMember():SquadMember{
+    return this.squadService.squadMember;
+  
+  }
+
   ngOnInit() {
     this._user = this.userService.userResponse
     this.refresh();
     this._player = this.playerService.player
     this.squadService.getSquadMember(this.gameService.game,this._player)
     this._squadMember = this.squadService.squadMember
+    console.log(this._squadMember)
         
   }
   
