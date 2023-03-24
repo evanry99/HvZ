@@ -4,7 +4,6 @@ import { Kill } from 'src/app/models/kill.model';
 import { Player } from 'src/app/models/player.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
-
 import {faSkullCrossbones} from "@fortawesome/free-solid-svg-icons"
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/services/player.service';
@@ -20,15 +19,11 @@ export class BiteCodeFormComponent {
 
   latitude:number
   longitude:number 
-  
-
   constructor(
     private gameService:GameService, 
     private killService:KillService,
-    private readonly playerService:PlayerService){
+    private readonly playerService:PlayerService){}
 
-
-  }
   faSkull = faSkullCrossbones
   faLocationDot = faLocationDot
   onSubmit(form:NgForm){
