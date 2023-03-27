@@ -11,6 +11,10 @@ import keycloak from "src/keycloak";
   styleUrls: ['./landing.page.css']
 })
 export class LandingPage implements OnInit {
+  
+  //Variables
+  showUserEdit: boolean = false;
+ 
   /**
    * Constructor with dependency injection
    * @param gameService 
@@ -28,6 +32,10 @@ export class LandingPage implements OnInit {
     return this.gameService.games
   }
 
+  get user(): UserDTO {
+    return this.userService.userResponse;
+  }
+
   /**
    * Function that runs on the initialization of the page. Checks if the user is authenticated, if not, the user needs to log in with keycloak to proceed to another page. A user object is sent to the addUser function when a user is authenticated where the API POST request is handled
    */
@@ -42,10 +50,10 @@ export class LandingPage implements OnInit {
         userName: keycloak.tokenParsed.preferred_username,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
         }
-        await this.userService.addUser(user)
+        await this.userService.addUser(user);
+        await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
       }
     }
-
   }
 
   /**
@@ -54,5 +62,8 @@ export class LandingPage implements OnInit {
    */
   isAuthenticated(): boolean {
     return keycloak.authenticated
+  }
+  setUserEdit() {
+    this.showUserEdit = !this.showUserEdit;
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Player, PlayerWithName } from 'src/app/models/player.model';
 import { PlayerService } from 'src/app/services/player.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { SquadService } from 'src/app/services/squad.service';
 @Component({
   selector: 'app-player-edit',
   templateUrl: './player-edit.component.html',
@@ -17,8 +18,8 @@ export class PlayerEditComponent {
 
   //Constructor with dependency injection
   constructor(
-    private readonly playerService: PlayerService)
-    { }
+    private readonly playerService: PlayerService,
+    private readonly squadService: SquadService) { }
 
   //Function that runs on the initialization of the component. Updates the private variable with the players in the game with the current games players with username.
   async ngOnInit(){
@@ -48,7 +49,14 @@ export class PlayerEditComponent {
    * Function to handle the delete player button click. Calls the deletePlayer function in the playerService that handles the API DELETE request.
    * @param player 
    */
-  deletePlayer(player:Player){
-    this.playerService.deletePlayer(player)
+  async deletePlayer(player:Player){
+    await this.squadService.deleteSquadMember(player);
+    this.playerService.deletePlayer(player);
+    this._players = await this.playerService.getPlayersWithName();
+  }
+
+  async refresh() {
+    this._players = await this.playerService.getPlayersWithName();
+
   }
 }

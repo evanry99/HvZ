@@ -1,6 +1,7 @@
 <div>
+    <h1 *ngIf="_game.gameState==='Complete'" class="text-center">!Game is finished!</h1>
     <h1>Game description:</h1>
-    <p>{{_description}}</p>
+    <p>{{_game.description}}</p>
     <h1>Rules:</h1>
     <ul>
         <li>When a human is bitten by a zombie, the human must give the zombie their bite code in order for the zombie to register the kill. The human is now transferred to the zombie team</li>

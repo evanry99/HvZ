@@ -19,7 +19,6 @@ export class GameDetailPage {
 
   _title?: string;
   _game? : Game
-  _player: Player;
   _inSquad: SquadMember;
   _state: string;
   _isAdmin: boolean;
@@ -77,14 +76,11 @@ export class GameDetailPage {
    */
   async checkPlayer() {
     await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
-    this._player = this.playerService.player;
-    if(this._player && this.player.gameId === this._game.id){
-      this.humanOrZombie();
-      this.squadService.getSquadMember(this._game,this._player);
+    if(this.player && this.player.gameId === this._game.id){
+      this.squadService.getSquadMember(this._game,this.player);
     }
     else{
       this.playerService.player = null;
-      this._player = null;
     }
   }
   /**
@@ -93,21 +89,9 @@ export class GameDetailPage {
   async register() {
     await this.playerService.registerPlayer();
     this.playerService.getPlayersWithName();
-    this._player = this.playerService.player;
-    this.humanOrZombie();
-    this.squadService.getSquadMember(this._game,this._player);
+    this.squadService.getSquadMember(this._game, this.player);
   }
-   /**
-    * Function to get the faction of a player
-    */
-  humanOrZombie(): void {
-    if(this._player.isHuman){
-      this._state = "Human";
-    }
-    else {
-      this._state = "Zombie";
-    }
-  }
+
 }
 
 

@@ -16,14 +16,14 @@ const { apiUrl } = environment;
   providedIn: 'root'
 })
 export class PlayerService {
-  
+
   //Private variables
   private _playersInGame: Player[] = [];
   private _playersInGameWithName: PlayerWithName[] = [];
   private _player: Player;
   private _error: string = "";
   private _loading = false;
-
+  
   //Getters and setters
   get playersInGame(): Player[] {
     return this._playersInGame;
@@ -56,9 +56,6 @@ export class PlayerService {
     private readonly gameService: GameService,
     private readonly userService: UserService) { }
   
-  
-  
-
   /**
   * Gets all players from a game with an API GET request. Updates the playersInGame private variable with the response. 
   */
@@ -119,7 +116,10 @@ export class PlayerService {
   public async getPlayerFromUser(userId: number){
     await this.getPlayersFromGame();
     let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
-    this._player = player;
+    console.log(this.playersInGame)
+    console.log(userId)
+    console.log(player)
+    this.player = player;
   }
 
   /**
@@ -127,14 +127,15 @@ export class PlayerService {
    * @param player 
    */
   public async updatePlayer(player: Player) {
-    this._player = player;
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     await lastValueFrom(this.http.put<Player>(`${apiUrl}/game/${this.gameService.game.id}/player/${player.id}`, player, { 'headers': headers }))
-      .then((p:Player) => { 
+      .then(() => { 
         this.getPlayersFromGame();
-        this._player = p
+        if(this.player.id === player.id){
+          this.player = player;
+        }
       })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
@@ -168,6 +169,9 @@ export class PlayerService {
     this.http.delete(`${apiUrl}/game/${player.gameId}/player/${player.id}`, { 'headers' : headers})
     .subscribe(() => {
       this._playersInGame = this._playersInGame.filter(p => p.id !== player.id)
+      if(player.id === this.player.id){
+        this.player = null;
+      }
     })
   }
 }
