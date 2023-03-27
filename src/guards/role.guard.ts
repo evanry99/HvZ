@@ -16,7 +16,6 @@ export class RoleGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (!keycloak.authenticated) {
-      alert("You have to log in to see the game page!");
       this.router.navigateByUrl("/");
       return false;
     }

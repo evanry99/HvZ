@@ -1,7 +1,7 @@
-<div class="bg-dark text-center">
+<div *ngIf="squad" class="bg-dark text-center">
     <p class="m-0">{{squad.name}}</p>
 </div>
-<table class="table table-dark">
+<table *ngIf="squad" class="table table-dark">
     <thead>
         <tr>
             <th scope="col" class="col-3">Name</th>
@@ -10,16 +10,17 @@
             <th scope="col" class="">
                 <div class="float-end">
                     <app-map-ping class="me-2">Ping</app-map-ping>
-                    <button class="btn btn-light scalableFont">Leave</button>
+                    <button class="btn btn-light scalableFont" (click)="leaveSquad()">Leave</button>
                 </div>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let squadMember of squadMembers">
-            <td scope="row">{{squadMember.id}}</td>
-            <td>{{squadMember.rank}}</td>
+            <td scope="row">{{squadMember.username}}</td>
+            <td>{{squadMember.squadMember.rank}}</td>
             <td>Alive</td>
+            <td></td>
         </tr>
     </tbody>
 </table>

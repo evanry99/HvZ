@@ -55,7 +55,8 @@ export class KillService {
       this._kills = this._kills.filter(k => k.id !== kill.id)
     })
   }
-  registerKill(kill: Kill) {
+
+  public registerKill(kill: Kill) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
     

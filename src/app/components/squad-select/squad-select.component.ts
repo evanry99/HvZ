@@ -19,6 +19,7 @@ export class SquadSelectComponent {
   _squads: Squad[] = [];
   _squadMember : SquadMember
   faTrash = faTrash
+  
   constructor(
     private readonly squadService: SquadService,
     private readonly userService: UserService,
@@ -36,9 +37,7 @@ export class SquadSelectComponent {
     this.refresh();
     this._player = this.playerService.player
     this.squadService.getSquadMember(this.gameService.game,this._player)
-    this._squadMember = this.squadService.squadMember
-    console.log(this._squadMember)
-        
+    this._squadMember = this.squadService.squadMember        
   }
   
   refresh() {

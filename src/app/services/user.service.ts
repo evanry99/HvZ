@@ -121,9 +121,10 @@ export class UserService {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
     await lastValueFrom(this.http.post<User>(`${apiUrl}/user`,user, { 'headers': headers }))
-      .then((user: User) => {
-        this._userResponse = user;
-        storageSave(userKey, user);
+      .then((u: User) => {
+        this._userResponse = u;
+        console.log(user)
+        storageSave(userKey, u);
         })
       .catch((error: HttpErrorResponse) => {
         console.log(error.message);

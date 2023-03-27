@@ -30,11 +30,9 @@ export class MissionService {
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     const gameId: number = this.gameService.game.id;
-    console.log(gameId)
     
     await lastValueFrom(this.http.get<Mission[]>(`${apiUrl}/game/${gameId}/mission`, { 'headers' : headers}))
       .then((missions: Mission[]) => {
-        console.log(missions);
         this._missions = missions;
       })
       .catch((error: HttpErrorResponse) => {
@@ -52,7 +50,6 @@ export class MissionService {
       .subscribe({
         next: (mission: Mission) => {
           this._missions.push(mission);
-          console.log(mission);
         },
         error: (error: HttpErrorResponse) => {
           console.log(error.message);

@@ -48,10 +48,12 @@ export class PlayerService {
     return this._loading;
   }
   get player(): Player {
+    this._player = storageRead<Player>(playerKey);
     return this._player;
   }
 
   set player(p: Player) {
+    storageSave<Player>(playerKey, p);
     this._player = p;
   }
 

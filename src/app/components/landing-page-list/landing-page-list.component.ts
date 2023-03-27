@@ -5,6 +5,7 @@ import { User } from "src/app/models/user.model";
 import { GameService } from "src/app/services/game.service";
 import { UserService } from "src/app/services/user.service";
 import{faTrash} from "@fortawesome/free-solid-svg-icons"
+import keycloak from "src/keycloak";
 @Component({
   selector: 'app-landing-page-list',
   templateUrl: './landing-page-list.component.html',
@@ -22,7 +23,9 @@ export class LandingPageListComponent implements OnInit{
     private readonly router: Router){}
 
   async goToGame(game: Game){
-    //console.log(game)
+    if(!keycloak.authenticated){
+      keycloak.login()
+    }
     this.gameService.game = game;
     this.router.navigateByUrl("/game-detail")
   }
@@ -30,7 +33,6 @@ export class LandingPageListComponent implements OnInit{
   ngOnInit() {
       this._user = this.userService.userResponse;
       this.gameService.getGames()
-      console.log(this.gameService.games)
       this.gameService.games.forEach(game=>
           this.gameService.getNumberOfPlayersInGame(game.id)
         )

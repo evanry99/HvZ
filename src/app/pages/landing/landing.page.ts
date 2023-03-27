@@ -33,10 +33,8 @@ export class LandingPage implements OnInit {
         userName: keycloak.tokenParsed.preferred_username,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
         }
-      await this.userService.addUser(user)
+        await this.userService.addUser(user)
       }
-      console.log(this.userService.userResponse);
-
     }
 
   }

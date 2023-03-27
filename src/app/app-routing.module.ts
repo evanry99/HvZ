@@ -53,6 +53,7 @@ const routes: Routes = [
         path: 'player-edit',
         component: PlayerEditComponent,
       },
+
     ]
   },
   {

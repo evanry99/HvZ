@@ -4,14 +4,16 @@ import { Squad } from '../models/squad.model';
 import { GameService } from './game.service';
 import { UserService } from './user.service';
 import { environment } from 'src/environments/environment.development';
-import { Player } from '../models/player.model';
+import { Player, PlayerWithName } from '../models/player.model';
 import { PlayerService } from './player.service';
 import { lastValueFrom } from 'rxjs';
-import { SquadMember } from '../models/squad-member.model';
+import { SquadMember, SquadMemberWithName } from '../models/squad-member.model';
 import keycloak from 'src/keycloak';
 import { Game } from '../models/game.model';
 import { SquadCheckIn } from '../models/squad-check-in.model';
 import { HttpError } from '@microsoft/signalr';
+import { storageRead, storageSave } from '../utils/storage.util';
+import { squadMemberKey } from '../variables/storage-keys';
 
 
 const {apiUrl} = environment;
@@ -24,16 +26,28 @@ export class SquadService {
   private _squads: Squad[] = [];
   private _squadCheckIns: SquadCheckIn[] = [];
   private _squadMembers: SquadMember[] = [];
+  private _squadMembersWithName: SquadMemberWithName[] = [];
 
   get squads(): Squad[] {
     return this._squads;
   }
 
   get squadMember(){
+    this._squadMember = storageRead(squadMemberKey);
     return this._squadMember
   }
+
+  set squadMember(member: SquadMember){
+    storageSave(squadMemberKey, member);
+    this._squadMember = member;
+  }
+
   get squadMembers(){
     return this._squadMembers;
+  }
+
+  get squadMembersWithName(){
+    return this._squadMembersWithName;
   }
 
   get squadCheckIns(): SquadCheckIn[] {
@@ -92,32 +106,33 @@ public joinSquad(squadId:number) {
     this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id}, {'headers' : headers})
       .subscribe({
         next: (squadMember:SquadMember) =>{
-            this._squadMember = squadMember;
+            this.squadMember = squadMember;
 
         },
         error: (error:HttpErrorResponse) => {
           console.log(error.message);
-          this._squadMember = null;
+          this.squadMember = null;
         }
         
     })
   }
 
-public getSquadMember(game:Game,player:Player){
+public getSquadMember(game:Game, player:Player){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
   
   this.http.get<SquadMember>(`${apiUrl}/game/${game.id}/squadMember/${player.id}`, { 'headers' : headers})
   .subscribe({
     next: (squadMember: SquadMember) => {
-      this._squadMember = squadMember;
+      this.squadMember = squadMember;
     },
     error: (error: HttpErrorResponse) => {
-      console.log(error);
-      this._squadMember = null;
+      if(error.status === 404){
+        console.log("Player not in squad");
+      }
+      this.squadMember = null;
     }
   })
-  console.log(this._squadMember)
 }
 
 async getSquadCheckIns(): Promise<void> {
@@ -164,18 +179,35 @@ public deleteSquad(squad:Squad){
 public getSquadMembers(gameId:number,squadId:number){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
+
+  let players = this.playerService.playersInGameWithName;
   
   this.http.get<SquadMember[]>(`${apiUrl}/game/${gameId}/squadMembers/${squadId}`, {'headers' : headers})
   .subscribe({
     next: (squadMembers: SquadMember[]) => {
       this._squadMembers = squadMembers;
+      this._squadMembersWithName = squadMembers.map((squadMember: SquadMember) => {
+        let name = players.filter((player: PlayerWithName) => {
+          return player.player.id === squadMember.playerId})[0];
+        return {squadMember, 
+                username: name.username}
+        })
     },
     error: (error: HttpErrorResponse) => {
       console.log(error);
       this._squadMembers = [];
     }
   })
-  console.log(this._squadMember)
+}
+
+public deleteSquadMember(){
+  let squadMember = this._squadMember;
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer ' + keycloak.token)
+  this.http.delete(`${apiUrl}/game/${squadMember.gameId}/squadMember/${squadMember.id}`, { 'headers' : headers})
+  .subscribe(() => {
+    this.squadMember = null;
+  })
 }
 
 }

@@ -25,12 +25,12 @@ export class CreateMissionComponent {
   layers: any= [];
   marker: Marker;
 
-  flagIcon = {
+  missionIcon = {
     icon: icon({
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
       popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/flag.png',
+      iconUrl: '../../assets/images/mission.png',
    })
   };
 
@@ -68,7 +68,7 @@ export class CreateMissionComponent {
       }
       let m = marker(e.latlng, {
         autoPan: true,
-        icon: this.flagIcon.icon
+        icon: this.missionIcon.icon
       })
       m.addTo(map);
       this.marker = m;
