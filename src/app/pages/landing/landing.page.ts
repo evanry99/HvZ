@@ -11,14 +11,23 @@ import keycloak from "src/keycloak";
   styleUrls: ['./landing.page.css']
 })
 export class LandingPage implements OnInit {
-
+  
+  //Variables
+  showUserEdit: boolean = false;
+ 
+  /**
+   * Constructor with dependency injection
+   * @param gameService 
+   * @param userService 
+   */
   constructor(
     readonly gameService: GameService,
     readonly userService: UserService
   ) { }
-
-  showUserEdit: boolean = false;
-
+  
+  /**
+   * Getter for the games
+   */
   get games(): Game[] {
     return this.gameService.games
   }
@@ -27,8 +36,10 @@ export class LandingPage implements OnInit {
     return this.userService.userResponse;
   }
 
+  /**
+   * Function that runs on the initialization of the page. Checks if the user is authenticated, if not, the user needs to log in with keycloak to proceed to another page. A user object is sent to the addUser function when a user is authenticated where the API POST request is handled
+   */
   async ngOnInit() {
-   
     this.gameService.getGames()
     if(this.isAuthenticated() === true){
       await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
@@ -45,6 +56,10 @@ export class LandingPage implements OnInit {
     }
   }
 
+  /**
+   * Checks if a user is authenticated.
+   * @returns {boolean}
+   */
   isAuthenticated(): boolean {
     return keycloak.authenticated
   }

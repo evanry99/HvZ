@@ -16,17 +16,19 @@ const { apiUrl } = environment;
   providedIn: 'root'
 })
 export class UserService {
-
+  //Private variables
   private _users: User[] = [];
   private _error: string = "";
   private _loading: boolean = false;
   private _user: UserDTO;
   private _userResponse: User;
 
+  //Constructor
   constructor(
     private readonly http: HttpClient
   ) { }
 
+  //Getters and setters
   get users(): User[] {
     return this._users;
   }
@@ -47,23 +49,11 @@ export class UserService {
   }
 
 
-  getUser(id): void {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
 
-    this.http
-      .get<User>(`${apiUrl}/user/${id}`, { 'headers': headers })
-      .pipe(
-        finalize(() => {
-          this._loading = false;
-        })
-      )
-      .subscribe((user: User) => {
-        this._user = user;
-      })
-
-  }
-
+  /**
+   * Gets all users from the database with an API GET request. Updates the private users variable with the response.
+   * @returns {Promise<User[]>}
+   */
   public async getUsers(): Promise<User[]> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -78,16 +68,21 @@ export class UserService {
         ))
         .then((users: User[]) => {
           this._users = users;
-        userList = users
+        userList = users;
         
           })
       .catch((error: HttpErrorResponse) => {
-        console.log(error.message);
+        this._error = error.message;
         
       })
       return userList
   }
 
+  /**
+   * Gets a user from the database by id with an API GET request. Sets the private user variable to the response.
+   * @param id 
+   * @returns {Promise<User>}
+   */
   async getUserById(id: number): Promise<User> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -98,11 +93,14 @@ export class UserService {
         user = u;
       })
       .catch((error: HttpErrorResponse) => {
-        console.log(error.message);
+        this._error = error.message;
       })
     return user;
   }
-
+  /**
+   * Gets a user by username from the database with an API GET request. Sets the private userResponse variable to the response and saves the user in session storage.
+   * @param username 
+   */
   async getUserByUsername(username: string) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -113,10 +111,14 @@ export class UserService {
         storageSave(userKey, user);
       })
       .catch((error: HttpErrorResponse) => {
-        console.log(error.message);
+        this._error = error.message;
       })
   }
 
+  /**
+   * Adds a new user to the database with an API POST request. Updates the private userResponse variable to the response and saves the response in the session storage.
+   * @param user 
+   */
   async addUser(user:UserDTO): Promise<void>{
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -126,10 +128,14 @@ export class UserService {
         storageSave(userKey, u);
         })
       .catch((error: HttpErrorResponse) => {
-        console.log(error.message);
+        this._error = error.message;
       })
   }
 
+  /**
+   * Edits a user in the database with an API PUT request. Updates the private user variable to the response.
+   * @param user 
+   */
   editUser(user:User){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -137,14 +143,18 @@ export class UserService {
     this.http.put(`${apiUrl}/user/${user.id}`, user, { 'headers' : headers})
       .subscribe({
         next: ((user:User) =>{
-          console.log(user)
+          this._user = user;
         }),
         error: (error: HttpError) => {
-          console.log(error.message)
+          this._error = error.message;
         }
       })
   }
 
+  /**
+   * Deletes a user from the database with an API DELETE request. Removes the deleted user from the private users array.
+   * @param user 
+   */
   public deleteUser(user:User){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)

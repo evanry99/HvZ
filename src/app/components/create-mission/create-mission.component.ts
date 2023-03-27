@@ -12,19 +12,20 @@ import { MissionService } from 'src/app/services/mission.service';
   styleUrls: ['./create-mission.component.css']
 })
 export class CreateMissionComponent {
-
+ 
+ 
+  //Variables
   private _game: Game;
   private _map: Map;
   _lat: number;
   _lng: number;
-
-
   clicked: boolean = false;
   hasMarker: boolean = false;
   options = {};
   layers: any= [];
   marker: Marker;
 
+  //Define icon
   missionIcon = {
     icon: icon({
       iconSize:     [38, 38],
@@ -34,21 +35,29 @@ export class CreateMissionComponent {
    })
   };
 
+  //Constructor with dependency injection
   constructor(
     private readonly missionService: MissionService,
     private readonly gameService: GameService,
   ){}
 
+  //Function that runs on the initialization of the component. Updates the private variable to the current game and calls the map init function.
   ngOnInit(){
     this._game = this.gameService.game;
     this.mapInit();
   }
-
+  /**
+   * Function to remove a marker from the map.
+   */
   removeMarker(){
     this._map.removeLayer(this.marker);
     this.hasMarker = false;
   }
 
+  /**
+   * Function to check if the map is initialized.
+   * @param map 
+   */
   onMapReady(map: Map) {
     setTimeout(() => {
       map.invalidateSize();
@@ -57,10 +66,17 @@ export class CreateMissionComponent {
     this._map = map;
   }
 
+  /**
+   * Function to update the click state when the map is clicked.
+   */
   isClicked(){
     this.clicked = true;
   }
 
+  /**
+   * Function to handle the behavior of the map when it is clicked and dragged.
+   * @param map 
+   */
   onMapClick(map: Map) {
     map.on('click', e => {
       if(this.hasMarker){
@@ -78,6 +94,9 @@ export class CreateMissionComponent {
     })
   }
 
+  /**
+   * Function to initialize the map. Sets map area to the specified area of the game and colors everything else red.
+   */
   mapInit(){
     this.options = {
       layers: [
@@ -100,6 +119,10 @@ export class CreateMissionComponent {
     );
   }
 
+  /**
+   * Function to handle the submit of the mission marker form. Creates a mission object with the form values and calls the registerMission function in the mission service that handles the API POST request.
+   * @param form 
+   */
   async onSubmit(form:NgForm){
     let value = form.value;
     let isHuman: boolean;

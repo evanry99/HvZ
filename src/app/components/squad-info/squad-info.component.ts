@@ -12,15 +12,23 @@ import { SquadService } from 'src/app/services/squad.service';
 })
 export class SquadInfoComponent {
   
+  //Getters and setters
   get squadMembers(){
     return this.squadService.squadMembersWithName;
   }
 
   get squad(){
-    return this.squadService.squads.filter(s => s.id === this.squadService.squadMember.squadId).pop()
+    return this.squadService.squads.filter(s => s.id === this.squadService.squadMember.squadId).pop();
   }
-  constructor(private readonly playerService: PlayerService, private readonly squadService:SquadService, private readonly gameService:GameService) { }
 
+  //Constructor with dependency injection
+  constructor(
+    private readonly playerService: PlayerService,
+    private readonly squadService:SquadService,
+    private readonly gameService:GameService)
+    { }
+
+  //Function that runs on initialization of the component. Updates the squad members and players to the current game.
   ngOnInit(){
     this.squadService.getSquadMembers(this.gameService.game.id,this.squadService.squadMember.squadId)
     this.playerService.getPlayersWithName();
@@ -29,6 +37,9 @@ export class SquadInfoComponent {
     }
   }
 
+  /**
+   *   Function to handle leave squad button click. Calls the deleteSquadMember in the squadService that handles the API DELETE request.
+   */
   leaveSquad(){
     this.squadService.deleteSquadMember();
   }

@@ -9,10 +9,15 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class GameInfoComponent {
 
+  //Variables
   _game?: Game;
+  
+  //Constructor with dependency injection
+  constructor(
+    private readonly gameService: GameService)
+    {}
 
-  constructor(private readonly gameService: GameService){}
-
+  //Runs on the initialization of the component. Sets the private variable to the current games description.
   ngOnInit(){
     this._game = this.gameService.game;
   }

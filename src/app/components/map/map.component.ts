@@ -22,6 +22,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MapComponent {
 
+  //Variables
   private _game: Game;
   private _kills: Kill[] = [];
   private _missions: Mission[] = [];
@@ -30,6 +31,7 @@ export class MapComponent {
   options = {};
   layers: any= []
 
+  // Define icons
   gravestoneIcon = {
     icon: icon({
       iconSize:     [38, 38],
@@ -57,6 +59,7 @@ export class MapComponent {
    })
   };
 
+  // Constructor with dependency injection
   constructor(
     private readonly killService: KillService,
     private readonly gameService: GameService,
@@ -66,6 +69,9 @@ export class MapComponent {
     private readonly playerService: PlayerService){
   }
 
+  /**
+   * Function that runs on the initialization of the map component. Updates the players in the game, sets the private game variable to the current game and initializes the map.
+   */
   async ngOnInit(){
     this.playerService.getPlayersFromGame();
     this._game = this.gameService.game;
@@ -74,6 +80,9 @@ export class MapComponent {
     }
   }
 
+  /**
+   * Function to update the map. Gets the kills, missions and squad check ins by calling function in the services and sets markers for each event in the map.
+   */
   async updateMap() {
     await this.killService.getKills();
     await this.missionService.getMissions();
@@ -126,7 +135,10 @@ export class MapComponent {
       );
     }
   }
-
+  /**
+   * Function to check if the current game has coordinates.
+   * @returns {boolean}
+   */
   hasCoordinates(): boolean{
     if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
           return false;
@@ -134,6 +146,9 @@ export class MapComponent {
     return true;
   }
 
+  /**
+   * Function to initialize the map. Sets the map area to the current games coordinates and makes the outside area red.
+   */
   async mapInit(){
     this.options = {
       layers: [

@@ -14,12 +14,11 @@ import { NgForm } from '@angular/forms';
 })
 export class MapPingComponent {
 
+  //Variables
   private _game: Game;
   private _map: Map;
-  faLocationDot = faLocationDot
   _lat: number;
   _lng: number;
-
   clicked: boolean = false;
   hasMarker: boolean = false;
   ready: boolean = false;
@@ -27,6 +26,8 @@ export class MapPingComponent {
   layers: any= [];
   marker: Marker;
 
+  //Declare icons
+  faLocationDot = faLocationDot;
   pingIcon = {
     icon: icon({
       iconSize:     [38, 38],
@@ -36,11 +37,14 @@ export class MapPingComponent {
    })
   };
 
+
+  //Constructor with dependency injection
   constructor(
     private readonly gameService: GameService,
     private readonly squadService: SquadService
     ){}
 
+  //Function that runs on the initialization of the component. Sets the private game variable to the current game and checks if the game has coordinates. If it has, the map initialization function is called.
   ngOnInit(){
     this._game = this.gameService.game;
     if(this.hasCoordinates()){
@@ -50,6 +54,9 @@ export class MapPingComponent {
     }
   }
 
+  /**
+   * Function to remove a marker from the map.
+   */
   removeMarker(){
     if(this.hasMarker){
       this._map.removeLayer(this.marker);
@@ -57,6 +64,10 @@ export class MapPingComponent {
     this.hasMarker = false;
   }
 
+  /**
+   * Function that runs after the initialization is done. Calls the onMapClick function to handle user events on the map.
+   * @param map
+   */
   onMapReady(map: Map) {
     setTimeout(() => {
       map.invalidateSize();
@@ -65,10 +76,17 @@ export class MapPingComponent {
     this._map = map;
   }
 
+  /**
+   * Function to change the state of the map when it is clicked.
+   */
   isClicked(){
     this.clicked = true;
   }
 
+  /**
+   * Function to handle the user events on the map when a user clicks and drags on the map.
+   * @param map 
+   */
   onMapClick(map: Map) {
     map.on('click', e => {
       if(this.hasMarker){
@@ -85,6 +103,10 @@ export class MapPingComponent {
     })
   }
 
+  /**
+   * Function too check if the current game has coordinates.
+   * @returns {boolean}
+   */
   hasCoordinates(): boolean{
     if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
           return false;
@@ -92,6 +114,9 @@ export class MapPingComponent {
     return true;
   }
 
+  /**
+   * Function to handle the initialization of the map. Sets the map area to the current games coordinates and makes the area outside the game area red.
+   */
   mapInit(){
     let m = marker([this._lat, this._lng], {
       icon: this.pingIcon.icon
@@ -120,6 +145,9 @@ export class MapPingComponent {
     );
   }
 
+  /**
+   *   Function to handle the check in form submit. Creates a new SquadCheckIn object and sends it to the squadService where the API POST request is handled.
+   */
   checkIn(form: NgForm){
     let value = form.value;
     let checkIn: SquadCheckIn = {
@@ -134,6 +162,9 @@ export class MapPingComponent {
     this.squadService.createSquadCheckIn(checkIn);
   }
 
+  /**
+   * Function to get the users position on button click. Then sets a marker on the map with the coordinates of the users position.
+   */
   getPosition(){
     console.log(2)
     navigator.geolocation.getCurrentPosition(result=> {

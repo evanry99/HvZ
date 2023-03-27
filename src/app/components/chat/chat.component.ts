@@ -18,42 +18,48 @@ const {apiUrlR} = environment
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent{
-  public chatState = "Global"
+  
+  //Variables
+  public chatState = "Global";
   private hubConnection: signalR.HubConnection;
-  _squadMember: SquadMember
-  _player: Player
+  _squadMember: SquadMember;
+  _player: Player;
   
-  
+  //Constructor with dependency injection
+  constructor(
+    private chatService:ChatService, 
+    private gameService:GameService,
+    private playerService:PlayerService,
+    private readonly squadService:SquadService)
+    {}
+
+  /**
+   * Getter to return the chats. It uses conditionals to filter the chats to fit the Global chat, faction chat and zombie chat.
+   */
   get chats(): Chat[]{
     document.getElementById("chatBody").scrollIntoView(false);
     if(this.chatState === "Global"){
-      return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true)
+      return this.chatService.chats.filter(c=> c.squadId === null && c.isHumanGlobal === true && c.isZombieGlobal === true);
     }
     else if(this.chatState === "Faction"){
       if(this._player.isHuman === true){
-        return this.chatService.chats.filter(c => c.isHumanGlobal === true && c.isZombieGlobal === false && c.squadId === null)
+        return this.chatService.chats.filter(c => c.isHumanGlobal === true && c.isZombieGlobal === false && c.squadId === null);
         }
         else{
-          console.log("Du er ikke human!!")
-          return this.chatService.chats.filter(c => c.isHumanGlobal === false && c.squadId === null && c.isZombieGlobal === true)
+          return this.chatService.chats.filter(c => c.isHumanGlobal === false && c.squadId === null && c.isZombieGlobal === true);
         }
     }
     else{
-      //this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
-      return this.chatService.chats.filter(c => c.squadId === this.squadService.squadMember.squadId)
+      return this.chatService.chats.filter(c => c.squadId === this.squadService.squadMember.squadId);
     }
     
-  }
-
-
-
-  constructor(private chatService:ChatService, private gameService:GameService, private playerService:PlayerService, private readonly squadService:SquadService){}
+  }  
   
+  //Loads on the initialization of the component. Updates the private variables to the current squadmember and player. Then it creates a web socket to create realtime chat functionality.
   async ngOnInit(): Promise<void> {
     await this.squadService.getSquadMember(this.gameService.game,this.playerService.player)
     this._squadMember = this.squadService.squadMember
     this._player = this.playerService.player
-    console.log(this.playerService.player.isHuman)
     this.chatService.getChat(this.gameService.game.id);
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(`${apiUrlR}/hub`, {
@@ -66,20 +72,19 @@ export class ChatComponent{
         .then(() => console.log("Connection started"))
         .catch((err) => console.log(err.message))
         this.hubConnection.on("chat", (data) =>{
-        this.chatService.getChat(this.gameService.game.id)
-        console.log(data)
-
+        this.chatService.getChat(this.gameService.game.id);
     })
   }
    
     
     
   
-  
+  /**
+   * Function to handle the chat message form. Creates a suitable chat object depending on which of the three different chats the user is typing in.
+   * @param form 
+   */
   onSubmit(form:NgForm){
-    console.log(form.value.chat);
     
-    //let playerId =  this.playerService.playersInGame.filter((player:Player) => player.userId === this.userService.user.id).pop().id
     if(this.chatState === "Global"){
       let chat: ChatDTO = {
       message: form.value.chat,
@@ -129,7 +134,7 @@ export class ChatComponent{
           squadId : null
       }
       
-      this.chatService.sendChat(chat, this.gameService.game.id)
+      this.chatService.sendChat(chat, this.gameService.game.id);
       form.reset();
       
     }
@@ -137,11 +142,14 @@ export class ChatComponent{
 
 }
   
-
+  /**
+   * Function to update the chat state(Global, Squad or Faction)
+   * @param value 
+   */
   changeChatState(value:string){
-    this.chatState = value
-    console.log(this.chatState)
-
+    this.chatState = value;
   }
+
+  
 }
 
