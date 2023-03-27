@@ -91,17 +91,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this.squadService.getSquadMember(this._game, this.player);
   }
-   /**
-    * Function to get the faction of a player
-    */
-  humanOrZombie(): void {
-    if(this._player.isHuman){
-      this._state = "Human";
-    }
-    else {
-      this._state = "Zombie";
-    }
-  }
+
 }
 
 
