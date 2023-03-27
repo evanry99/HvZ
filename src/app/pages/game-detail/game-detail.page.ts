@@ -65,10 +65,13 @@ export class GameDetailPage {
   async checkPlayer() {
     await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
     this._player = this.playerService.player;
-    if(this._player){
-      console.log(this._player)
+    if(this._player && this.player.gameId === this._game.id){
       this.humanOrZombie();
       this.squadService.getSquadMember(this._game,this._player);
+    }
+    else{
+      this.playerService.player = null;
+      this._player = null;
     }
   }
 

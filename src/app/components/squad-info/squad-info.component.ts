@@ -11,11 +11,9 @@ import { SquadService } from 'src/app/services/squad.service';
   styleUrls: ['./squad-info.component.css']
 })
 export class SquadInfoComponent {
-
-  _players: Player[] = [];
   
   get squadMembers(){
-    return this.squadService.squadMembers;
+    return this.squadService.squadMembersWithName;
   }
 
   get squad(){
@@ -24,10 +22,13 @@ export class SquadInfoComponent {
   constructor(private readonly playerService: PlayerService, private readonly squadService:SquadService, private readonly gameService:GameService) { }
 
   ngOnInit(){
-    //temp
     this.squadService.getSquadMembers(this.gameService.game.id,this.squadService.squadMember.squadId)
-    
-    this.playerService.getPlayersFromGame();
-    this._players = this.playerService.players; //Todo filter for SquadMembers
+    this.playerService.getPlayersWithName();
   }
+
+  leaveSquad(){
+    this.squadService.deleteSquadMember();
+  }
+
+  
 }

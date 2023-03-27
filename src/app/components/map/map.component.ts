@@ -76,7 +76,9 @@ export class MapComponent {
   async updateMap() {
     await this.killService.getKills();
     await this.missionService.getMissions();
-    await this.squadService.getSquadCheckIns();
+    if(this.squadService.squadMember){
+      await this.squadService.getSquadCheckIns();
+    }
     this._kills = this.killService.kills;
     this._squadCheckIns = this.squadService.squadCheckIns;
     this._missions = this.missionService.missions;
