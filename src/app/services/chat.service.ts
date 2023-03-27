@@ -13,10 +13,15 @@ const { apiUrl } = environment
   providedIn: 'root'
 })
 export class ChatService {
+
+  //Private variables.
   private _loading = false;
   private _chats: Chat[] = []
 
+  //Constructor with dependency injection.
   constructor(private readonly http: HttpClient, private readonly playerService:PlayerService) { }
+
+  //Getters and setters.
   get chats() {
     return this._chats;
   }
@@ -24,7 +29,12 @@ export class ChatService {
     return this._loading;
   }
 
-
+  /**
+   * Sends the API POST request to chat. Then adds the new chat to the private chat array.
+   * @param chat 
+   * @param gameId 
+   * @returns {void}
+   */
   public sendChat(chat: ChatDTO, gameId: number) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -40,7 +50,11 @@ export class ChatService {
       })
   }
 
-
+  /**
+   * Gets all chats in the game with an API get request.
+   * @param gameId 
+   * @returns {void}
+   */
   public getChat(gameId: number) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token);
@@ -57,6 +71,10 @@ export class ChatService {
       })
   }
 
+  /**
+   * Deletes a chat in a game. Removes it from the private variable.
+   * @param chat 
+   */
   public deleteChat(chat:Chat){
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -65,5 +83,6 @@ export class ChatService {
       this._chats = this._chats.filter(c => c.id !== chat.id)
     })
   }
+  
 
 }

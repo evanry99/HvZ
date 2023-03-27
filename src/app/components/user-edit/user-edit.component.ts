@@ -9,18 +9,26 @@ import { faCrown } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent implements OnInit{
-  
+  //Constructor with dependency injection
   constructor(private readonly userService:UserService){}
-  _users:User[] = []
-  faCrown= faCrown
-  async ngOnInit(){
-    
-    this._users = await this.userService.getUsers()
+  
+  //Private variables
+  _users:User[] = [];
+
+  //Icon declaration
+  faCrown= faCrown;
+  
+  //Function that runs on initialization of the component. Sets the private array of users to the current users.
+  async ngOnInit(){  
+    this._users = await this.userService.getUsers();
   }
 
+  /**
+   * Function to make a user admin. Updates the isAdmin entity in the user and calls the editUser in the userService that handles the API PUT request.
+   * @param user 
+   */
   makeAdmin(user:User){
-    user.isAdmin = true
-    console.log(user)
-    this.userService.editUser(user)
+    user.isAdmin = true;
+    this.userService.editUser(user);
   }
 }

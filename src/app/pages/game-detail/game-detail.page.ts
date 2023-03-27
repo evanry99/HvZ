@@ -38,6 +38,9 @@ export class GameDetailPage {
     ){}
 
   async ngOnInit(){
+    /**
+     * Setter for the private game variable
+     */
     this.setGame();
     if(!this._game){
       this.router.navigateByUrl("/landing");
@@ -48,10 +51,17 @@ export class GameDetailPage {
     this._isAdmin = this.userService.userResponse.isAdmin;    
   }
 
+  /**
+   * Getter for a games chats
+   * @returns {Chat[]}
+   */
   get chats(): Chat[]{
     return this.chatService.chats
   }
 
+  /**
+   * Setter for the private variable for the game
+   */
   setGame(){
     try {
       this._game = this.gameService.game;
@@ -62,6 +72,9 @@ export class GameDetailPage {
     }
   }
 
+  /**
+   * Function to check if the user has a player in the game. Calls the getPlayerFromUser in the userService to handle the API GET request. Sets the current player to null if it doesn't exist.
+   */
   async checkPlayer() {
     await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
     this._player = this.playerService.player;
@@ -74,7 +87,9 @@ export class GameDetailPage {
       this._player = null;
     }
   }
-
+  /**
+   * Function to register a new player. Calls the registerPlayer in the playerService and sets the private variables for player and SquadMember.
+   */
   async register() {
     await this.playerService.registerPlayer();
     this.playerService.getPlayersWithName();
@@ -82,7 +97,9 @@ export class GameDetailPage {
     this.humanOrZombie();
     this.squadService.getSquadMember(this._game,this._player);
   }
-
+   /**
+    * Function to get the faction of a player
+    */
   humanOrZombie(): void {
     if(this._player.isHuman){
       this._state = "Human";
