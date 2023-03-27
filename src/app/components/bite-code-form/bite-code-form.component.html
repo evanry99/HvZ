@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Register kill</button>
+<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"><fa-icon [icon]="faSkull" class="me-2"></fa-icon>Register kill</button>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -30,9 +30,10 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="inputLat" class="form-label">Latitude</label>
-                    <input type="number" class="form-control" name="latitude" id="inputLat" required ngModel>
+                    <input type="number" class="form-control" name="latitude" id="inputLat" required [(ngModel)]="latitude">
                     <label for="inputLng" class="form-label">Longitude</label>
-                    <input type="number" class="form-control" name="longitude" id="inputLng" required ngModel>
+                    <input type="number" class="form-control" name="longitude" id="inputLng" required [(ngModel)]="longitude">
+                    <button class="btn btn-dark" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
                 </div>
                     <button type="submit" [disabled]="registerKillForm.invalid" class="btn btn-dark" data-bs-dismiss="modal">Submit Kill</button>
             </form>

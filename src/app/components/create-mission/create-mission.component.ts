@@ -1,59 +1,51 @@
 import { Component } from '@angular/core';
-import { latLng, latLngBounds, marker, polygon, tileLayer, Map, icon, Marker } from 'leaflet';
-import { Game } from 'src/app/models/game.model';
-import { GameService } from 'src/app/services/game.service';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { SquadCheckIn } from 'src/app/models/squad-check-in.model';
-import { SquadService } from 'src/app/services/squad.service';
 import { NgForm } from '@angular/forms';
+import { marker, tileLayer, latLng, polygon, Map, Marker, icon } from 'leaflet';
+import { Game } from 'src/app/models/game.model';
+import { Mission } from 'src/app/models/mission.model';
+import { GameService } from 'src/app/services/game.service';
+import { MissionService } from 'src/app/services/mission.service';
 
 @Component({
-  selector: 'app-map-ping',
-  templateUrl: './map-ping.component.html',
-  styleUrls: ['./map-ping.component.css']
+  selector: 'app-create-mission',
+  templateUrl: './create-mission.component.html',
+  styleUrls: ['./create-mission.component.css']
 })
-export class MapPingComponent {
+export class CreateMissionComponent {
 
   private _game: Game;
   private _map: Map;
-  faLocationDot = faLocationDot
   _lat: number;
   _lng: number;
 
+
   clicked: boolean = false;
   hasMarker: boolean = false;
-  ready: boolean = false;
   options = {};
   layers: any= [];
   marker: Marker;
 
-  pingIcon = {
+  missionIcon = {
     icon: icon({
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
       popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/location.png',
+      iconUrl: '../../assets/images/mission.png',
    })
   };
 
   constructor(
+    private readonly missionService: MissionService,
     private readonly gameService: GameService,
-    private readonly squadService: SquadService
-    ){}
+  ){}
 
   ngOnInit(){
     this._game = this.gameService.game;
-    if(this.hasCoordinates()){
-      this._lat = (this._game.nw_Lat + this._game.se_Lat)/2;
-      this._lng = (this._game.nw_Lng + this._game.se_Lng)/2;
-      this.mapInit();
-    }
+    this.mapInit();
   }
 
   removeMarker(){
-    if(this.hasMarker){
-      this._map.removeLayer(this.marker);
-    }
+    this._map.removeLayer(this.marker);
     this.hasMarker = false;
   }
 
@@ -75,7 +67,8 @@ export class MapPingComponent {
         this.removeMarker();
       }
       let m = marker(e.latlng, {
-        icon: this.pingIcon.icon
+        autoPan: true,
+        icon: this.missionIcon.icon
       })
       m.addTo(map);
       this.marker = m;
@@ -85,19 +78,7 @@ export class MapPingComponent {
     })
   }
 
-  hasCoordinates(): boolean{
-    if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
-          return false;
-        }
-    return true;
-  }
-
   mapInit(){
-    let m = marker([this._lat, this._lng], {
-      icon: this.pingIcon.icon
-    })
-    this.marker = m;
-    this.hasMarker = true;
     this.options = {
       layers: [
           tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
@@ -116,38 +97,24 @@ export class MapPingComponent {
         [[90, -180], [90, 180], [-90, 180], [-90, -180]],
         [[ this._game.nw_Lat, this._game.nw_Lng ], [ this._game.nw_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.nw_Lng ]]
       ]).setStyle({color: '#FF0000'}),
-      m
     );
   }
 
-  checkIn(form: NgForm){
+  async onSubmit(form:NgForm){
     let value = form.value;
-    let checkIn: SquadCheckIn = {
+    let mission: Mission = {
+      name: value.missionName,
+      description: value.description,
+      isHumanVisible: false,
+      isZombieVisible: false,
       lat: this._lat,
       lng: this._lng,
       startTime: value.startTime,
       endTime: value.endTime,
-      squadId: this.squadService.squadMember.squadId,
-      gameId: this.gameService.game.id,
-      squadMemberId: this.squadService.squadMember.id
-    }
-    this.squadService.createSquadCheckIn(checkIn);
+    } 
+    await this.missionService.registerMission(mission);
+    form.resetForm();
+    this.removeMarker();
   }
 
-  getPosition(){
-    console.log(2)
-    navigator.geolocation.getCurrentPosition(result=> {
-      this._lat = result.coords.latitude
-      this._lng = result.coords.longitude
-      if(this.hasMarker){
-        this.removeMarker();
-      }
-      let m = marker([this._lat, this._lng], {
-        icon: this.pingIcon.icon
-      })
-      m.addTo(this._map);
-      this.marker = m;
-      this.hasMarker = true;
-    })
-  }
 }

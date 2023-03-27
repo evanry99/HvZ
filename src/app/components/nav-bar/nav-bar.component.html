@@ -3,18 +3,9 @@
         <img src="../../../assets/images/chasing.png" width="30" height="30" class="d-inline-block align-top" alt="">
         <span class="headerFont ms-3">HvZ</span>
       </a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li>
-                <a class="nav-item nav-link" id="nav-main"*ngIf="isNotLanding()"  (click)="goToLanding()">Main</a>
-            </li>
-            <li>
-                <a  class="nav-item nav-link"*ngIf="isAuthenticated() === true" (click)="handleLogout()">Logout</a>
-            </li>
-            <li>
-                <a class ="nav-item nav-link "*ngIf="isAuthenticated() === false"  (click)="handleLogin()">Login</a>
-            </li>
-        </ul>
-        
+    <div class="float-end me-3 d-flex">
+        <button class="btn btn-dark" *ngIf="isNotLanding()"  (click)="goToLanding()">Main</button>
+        <button  class="btn btn-dark"*ngIf="isAuthenticated()" (click)="handleLogout()">Logout</button>
+        <button class ="btn btn-dark"*ngIf="!isAuthenticated()"  (click)="handleLogin()">Login</button>
     </div>
 </nav>

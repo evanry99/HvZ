@@ -48,7 +48,7 @@ export class PlayerService {
     return this._loading;
   }
   get player(): Player {
-    this._player = storageRead(playerKey);
+    this._player = storageRead<Player>(playerKey);
     return this._player;
   }
 
@@ -94,7 +94,6 @@ export class PlayerService {
       .subscribe({
         next: (players: Player[]) => {
           this._playersInGame = players;
-          console.log(players);
         },
         error: (error: HttpErrorResponse) => {
           this._error = error.message;
@@ -119,6 +118,7 @@ export class PlayerService {
     await lastValueFrom(this.http.post<Player>(`${apiUrl}/game/${gameId}/player`, player, { 'headers': headers }))
       .then((p: Player) => {
         storageSave<Player>(playerKey, p);
+        this._player = p
         this.getPlayersFromGame();
       })
       .catch((error: HttpErrorResponse) => {
@@ -126,23 +126,25 @@ export class PlayerService {
       })
   }
 
-  public async getPlayerFromUser(userId: number): Promise<Player> {
+  public async getPlayerFromUser(userId: number){
     await this.getPlayersFromGame();
-    let player = this._playersInGame.filter((p: Player) => p.userId === userId)[0];
-    return player;
+    let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
+    this._player = player;
   }
 
   public async updatePlayer(player: Player) {
+    this._player = player;
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
-    await lastValueFrom(this.http.put<Player>(`${apiUrl}/player/${player.id}`, player, { 'headers': headers }))
-      .then(() => {
+    await lastValueFrom(this.http.put<Player>(`${apiUrl}/game/${this.gameService.game.id}/player/${player.id}`, player, { 'headers': headers }))
+      .then((p:Player) => { 
         this.getPlayersFromGame();
+        this._player = p
       })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
-      })
+      })    
   }
 
   public async getPlayersWithName(): Promise<PlayerWithName[]> {
@@ -161,7 +163,7 @@ export class PlayerService {
   public deletePlayer(player:Player){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
-    this.http.delete(`${apiUrl}/game/${player.gameId}/${player.id}`, { 'headers' : headers})
+    this.http.delete(`${apiUrl}/game/${player.gameId}/player/${player.id}`, { 'headers' : headers})
     .subscribe(() => {
       this._players = this._players.filter(p => p.id !== player.id)
     })

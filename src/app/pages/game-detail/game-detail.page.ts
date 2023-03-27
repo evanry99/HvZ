@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Chat } from 'src/app/models/chat.model';
 import { Game } from 'src/app/models/game.model';
 import { Player } from 'src/app/models/player.model';
+import { SquadMember } from 'src/app/models/squad-member.model';
 import { ChatService } from 'src/app/services/chat.service';
 import { GameService } from 'src/app/services/game.service';
 import { PlayerService } from 'src/app/services/player.service';
@@ -19,9 +20,13 @@ export class GameDetailPage {
   _title?: string;
   _game?: Game
   _player: Player;
-  _inSquad: boolean;
+  _inSquad: SquadMember;
   _state: string;
   _isAdmin: boolean;
+
+  get player(): Player{
+    return this.playerService.player;
+  }
 
   constructor(
     private readonly gameService: GameService,
@@ -40,9 +45,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this.squadService.getSquads();
     await this.checkPlayer();
-    this._isAdmin = true; //this.userService.user.isAdmin;
-    this._inSquad = false; //temp
-
+    this._isAdmin = this.userService.userResponse.isAdmin;    
   }
 
   get chats(): Chat[] {
@@ -60,10 +63,15 @@ export class GameDetailPage {
   }
 
   async checkPlayer() {
-    this._player = await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
-    if (this._player) {
+    await this.playerService.getPlayerFromUser(this.userService.userResponse.id);
+    this._player = this.playerService.player;
+    if(this._player && this.player.gameId === this._game.id){
       this.humanOrZombie();
-      this.squadService.getSquadMember();
+      this.squadService.getSquadMember(this._game,this._player);
+    }
+    else{
+      this.playerService.player = null;
+      this._player = null;
     }
   }
 
@@ -72,7 +80,7 @@ export class GameDetailPage {
     this.playerService.getPlayersWithName();
     this._player = this.playerService.player;
     this.humanOrZombie();
-    this.squadService.getSquadMember();
+    this.squadService.getSquadMember(this._game,this._player);
   }
 
   humanOrZombie(): void {

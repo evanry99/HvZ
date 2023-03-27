@@ -3,7 +3,8 @@
     <div class="row">
         <h2 class="col-sm ms-3">{{_title}}</h2>
         <div class="col-sm">
-          <p *ngIf="_player" class="text-center my-auto">Faction: {{_state}}</p>
+          <p *ngIf="_player && _player.isHuman" class="text-center my-auto">Faction: Human</p>
+          <p *ngIf="_player && !_player.isHuman" class="text-center my-auto">Faction: Zombie</p>
         </div>
         <div class="col-sm grid me-1">
             <div class="row">
@@ -15,17 +16,18 @@
     <div class="row ms-0">
         <div class="dropdown col">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown button
+              Game Menu
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item text-black" routerLink="map">Map</a>
               <a *ngIf="_player" class="dropdown-item text-black" routerLink="chat">Chat</a>
-              <a *ngIf="_player && !_inSquad" class="dropdown-item text-black" routerLink="squad-select">Squad Select</a>
-              <a *ngIf="_inSquad" class="dropdown-item text-black" routerLink="squad-info">Squad Info</a>
+              <a *ngIf="_player" class="dropdown-item text-black" routerLink="squad-select">Squad</a>
               <a *ngIf="_isAdmin" class="dropdown-item text-black" routerLink="player-edit">Player Edit</a>
             </div>
           </div>
-        <app-bite-code-form class="col text-end me-3"></app-bite-code-form>
+        <app-create-mission *ngIf="_isAdmin" class="col text-end me-3"></app-create-mission>
+        <app-bite-code-form *ngIf="_player && _player.isHuman === false"class="col text-end me-3"></app-bite-code-form>
+        <span *ngIf="_player && _player.isHuman === true">Bite code: {{_player.biteCode}}</span>
     </div>
     <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
       <router-outlet></router-outlet>
