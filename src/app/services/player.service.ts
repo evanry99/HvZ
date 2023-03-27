@@ -16,22 +16,15 @@ const { apiUrl } = environment;
   providedIn: 'root'
 })
 export class PlayerService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly gameService: GameService,
-    private readonly userService: UserService) { }
-
-  private _players: Player[] = [];
+  
+  //Private variables
   private _playersInGame: Player[] = [];
   private _playersInGameWithName: PlayerWithName[] = [];
   private _player: Player;
   private _error: string = "";
   private _loading = false;
 
-  get players(): Player[] {
-    return this._players!;
-  }
-
+  //Getters and setters
   get playersInGame(): Player[] {
     return this._playersInGame;
   }
@@ -57,22 +50,18 @@ export class PlayerService {
     this._player = p;
   }
 
-  public getPlayers() {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
-    const gameId: number = this.gameService.game.id;
+  //Contructor with dependency injection
+  constructor(
+    private readonly http: HttpClient,
+    private readonly gameService: GameService,
+    private readonly userService: UserService) { }
+  
+  
+  
 
-    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player", { 'headers': headers })
-      .subscribe({
-        next: (players: Player[]) => {
-          this._players = players;
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
-      })
-  }
-
+  /**
+  * Gets all players from a game with an API GET request. Updates the playersInGame private variable with the response. 
+  */
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -89,27 +78,18 @@ export class PlayerService {
       })
   }
 
-  public getPlayersInGame(gameId: number) {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
-
-
-    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`, { 'headers': headers })
-      .subscribe({
-        next: (players: Player[]) => {
-          this._playersInGame = players;
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
-      })
-  }
-
+  /**
+   * Gets a player by ID.
+   * @param id 
+   * @returns {Player}
+   */
   public playerById(id: Number): Player | undefined {
     return this._playersInGame?.find((player: Player) => player.id === id);
   }
 
+  /**
+   * Adds a new player to the database with an API POST request. Adds the new player to the private playersInGame array.
+   */
   public async registerPlayer() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -132,12 +112,20 @@ export class PlayerService {
       })
   }
 
+  /**
+   * Gets a player from a user and updates the private player variable.
+   * @param userId 
+   */
   public async getPlayerFromUser(userId: number){
     await this.getPlayersFromGame();
     let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
     this._player = player;
   }
 
+  /**
+   * Updates a player in the database with an API PUT request. Updates the players array and the private player variable so they contain the new user.
+   * @param player 
+   */
   public async updatePlayer(player: Player) {
     this._player = player;
     const headers = new HttpHeaders()
@@ -153,6 +141,10 @@ export class PlayerService {
       })    
   }
 
+  /**
+   * Gets a list of players with their names. Updates the private playersInGameWithName variable with the response
+   * @returns {Promise<PlayerWithName[]>}
+   */
   public async getPlayersWithName(): Promise<PlayerWithName[]> {
     await this.userService.getUsers();
     await this.getPlayersFromGame();
@@ -166,12 +158,16 @@ export class PlayerService {
     return playersWithName;
   }
 
+  /**
+   * Deletes a player from the database with an API DELETE request. Removes the player from the private playersInGame variable.
+   * @param player 
+   */
   public deletePlayer(player:Player){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
     this.http.delete(`${apiUrl}/game/${player.gameId}/player/${player.id}`, { 'headers' : headers})
     .subscribe(() => {
-      this._players = this._players.filter(p => p.id !== player.id)
+      this._playersInGame = this._playersInGame.filter(p => p.id !== player.id)
     })
   }
 }

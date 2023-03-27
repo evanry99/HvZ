@@ -9,13 +9,17 @@ import { GameService } from 'src/app/services/game.service';
   styleUrls: ['./edit-game.component.css']
 })
 export class EditGameComponent {
-
+  //Input
   @Input() game: Game;
 
+  //Constructor with dependency injection
   constructor(
     private readonly gameService: GameService
   ){}
 
+  /**
+   * Function to handle the submit of the form. Creates a new game object and calls the updateGame function in the gameService that handles the API PUT request.
+   */
   async onSubmit(form:NgForm){
     let value = form.value;
     console.log(value)
@@ -34,6 +38,11 @@ export class EditGameComponent {
     await this.gameService.updateGame(g, this.game.id);
   }
 
+  /**
+   * Function to make the date picker show the norwegian time.
+   * @param d 
+   * @returns {string}
+   */
   toLocalTime(d: string): string{
     let date = new Date(d);
     date.setHours(date.getHours() + 1)

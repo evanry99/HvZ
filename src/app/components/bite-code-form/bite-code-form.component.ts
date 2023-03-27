@@ -16,16 +16,24 @@ import { PlayerService } from 'src/app/services/player.service';
   styleUrls: ['./bite-code-form.component.css']
 })
 export class BiteCodeFormComponent {
-
-  latitude:number
-  longitude:number 
+  //Variables
+  latitude:number;
+  longitude:number;
+  
+  //Constructor with dependency injection
   constructor(
     private gameService:GameService, 
     private killService:KillService,
     private readonly playerService:PlayerService){}
+  
+  // Declaring fontawsome icons
+  faSkull = faSkullCrossbones;
+  faLocationDot = faLocationDot;
 
-  faSkull = faSkullCrossbones
-  faLocationDot = faLocationDot
+  /**
+   * Function to handle the form submit. Calls a function in the kill service that handles the API POST request.
+   * @param form 
+   */
   onSubmit(form:NgForm){
     let players = this.playerService.playersInGame;
     let victim: Player = players.filter((player: Player) => form.value.biteCode === player.biteCode)[0];
@@ -43,14 +51,17 @@ export class BiteCodeFormComponent {
         this.killService.registerKill(kill);
     }
     else{
-      alert("Invalid bitecode");
+      alert("Invalid bite code");
     }
   }
 
+  /**
+   * Function that updates the private variables to the users current location.
+   */
   getPosition(){
     navigator.geolocation.getCurrentPosition(result=> {
-      this.latitude = result.coords.latitude
-      this.longitude = result.coords.longitude
+      this.latitude = result.coords.latitude;
+      this.longitude = result.coords.longitude;
     }
       
   )

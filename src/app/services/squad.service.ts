@@ -22,19 +22,22 @@ const {apiUrl} = environment;
   providedIn: 'root'
 })
 export class SquadService {
+  //Private variables
   private _squadMember: SquadMember
   private _squads: Squad[] = [];
   private _squadCheckIns: SquadCheckIn[] = [];
   private _squadMembers: SquadMember[] = [];
   private _squadMembersWithName: SquadMemberWithName[] = [];
 
+
+  //Getters and setters
   get squads(): Squad[] {
     return this._squads;
   }
 
   get squadMember(){
     this._squadMember = storageRead(squadMemberKey);
-    return this._squadMember
+    return this._squadMember;
   }
 
   set squadMember(member: SquadMember){
@@ -54,11 +57,15 @@ export class SquadService {
     return this._squadCheckIns;
   }
 
+  //Constructor with dependency injection
   constructor(
     private readonly http:HttpClient,
     private readonly gameService: GameService,
     private readonly playerService: PlayerService){}
     
+  /**
+   * Gets all squads from the database with an API GET request. Updates the private squads variable with the response.
+   */
   public getSquads(){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -75,6 +82,10 @@ export class SquadService {
       })
   }
 
+  /**
+   * Adds a new squad to the database with an API POST request. Adds the new squad to the private squads array.
+   * @param name 
+   */
   public async createSquad(name: string){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -99,24 +110,33 @@ export class SquadService {
       })
   }
 
-public joinSquad(squadId:number) {
-  const headers = new HttpHeaders()
-  .set('Authorization', 'Bearer ' + keycloak.token)
+  /**
+   * Adds a new player to a squad with an API POST request. Updates the private squadMember variable with the response.
+   * @param squadId 
+   */
+  public joinSquad(squadId:number) {
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer ' + keycloak.token)
 
-    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id}, {'headers' : headers})
-      .subscribe({
-        next: (squadMember:SquadMember) =>{
-            this.squadMember = squadMember;
+      this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id}, {'headers' : headers})
+        .subscribe({
+          next: (squadMember:SquadMember) =>{
+              this.squadMember = squadMember;
 
-        },
-        error: (error:HttpErrorResponse) => {
-          console.log(error.message);
-          this.squadMember = null;
-        }
+          },
+          error: (error:HttpErrorResponse) => {
+            console.log(error.message);
+            this.squadMember = null;
+          }
         
-    })
+      })
   }
 
+/**
+ * Gets a SquadMember from a game and a player with an API GET request. Updates the private SquadMember variable with the response.
+ * @param game 
+ * @param player 
+ */
 public getSquadMember(game:Game, player:Player){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
@@ -135,6 +155,9 @@ public getSquadMember(game:Game, player:Player){
   })
 }
 
+/**
+ * Gets all squad check-ins from a squad with an API GET request. Updates the private squadCheckIns variable with the response.
+ */
 async getSquadCheckIns(): Promise<void> {
   const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -151,6 +174,10 @@ async getSquadCheckIns(): Promise<void> {
     })
 }
 
+/**
+ * Adds a new check-in to a squad in the database with an API POST request. Adds the new check in to the private squadCheckIns array.
+ * @param checkIn 
+ */
 public createSquadCheckIn(checkIn: SquadCheckIn){
   const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -158,14 +185,18 @@ public createSquadCheckIn(checkIn: SquadCheckIn){
   this.http.post(`${apiUrl}/game/${checkIn.gameId}/squad/${checkIn.squadId}/check-in`, checkIn , { 'headers' : headers})
     .subscribe({
       next: ((check: SquadCheckIn) =>{
-        console.log(check)
+        this._squadCheckIns.push(check)
       }),
       error: (error: HttpErrorResponse) => {
-        console.log(error.message)
+        window.alert(error.message)
       }
     })
 }
 
+/**
+ * Deletes a squad from the database with an API DELETE request. Removes the squad from the private squads array.
+ * @param squad 
+ */
 public deleteSquad(squad:Squad){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
@@ -176,6 +207,11 @@ public deleteSquad(squad:Squad){
   })
 }
 
+/**
+ * Gets all members from a squad in a game with an API POST request. Updates the private squadMembers variables and the squadMembersWithName which contains the array mapped with their username.
+ * @param gameId 
+ * @param squadId 
+ */
 public getSquadMembers(gameId:number,squadId:number){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
@@ -200,6 +236,9 @@ public getSquadMembers(gameId:number,squadId:number){
   })
 }
 
+/**
+ * Deletes a squad member from the database with an API DELETE request. Sets the private squadMember to null.
+ */
 public deleteSquadMember(){
   let squadMember = this._squadMember;
   const headers = new HttpHeaders()

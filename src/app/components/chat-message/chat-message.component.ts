@@ -16,24 +16,29 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./chat-message.component.css']
 })
 export class ChatMessageComponent {
-  _user: User;
+  //Input
   @Input() chats: Chat[] = [];
-  faTrash = faTrash
+  
+  //variables
+  _user: User;
   private _playersWithName: PlayerWithName[];
   public _username = {}
+
+  //Define icons
+  faTrash = faTrash
   faUser = faUser
 
+  //Constructor with dependency injection
   constructor(
     private readonly playerService: PlayerService,
     private readonly userService: UserService,
     private readonly chatService: ChatService
     ){}
 
-  timeToReadable(date: Date): string {
-    const d = new Date(date);
-    return d.toLocaleString("en-GB");
-  }
+   
 
+
+  //Function that runs on the initialization of the component. Updates the private variables to the players in the game with all the usernames and sets the user variable to the current user.
   ngOnInit(){
     this._playersWithName = this.playerService.playersInGameWithName;
     for(let p of this._playersWithName){
@@ -42,7 +47,21 @@ export class ChatMessageComponent {
     this._user = this.userService.userResponse
   }
 
+  /**
+   * Function to handle the delete button click. Calls the chat service where the API DELETE call is handled.
+   * @param chat 
+   */
   deleteChat(chat:Chat){
     this.chatService.deleteChat(chat)
+  }
+
+  /**
+   * Function to format the date and time to make it more readable for the end user.
+   * @param date 
+   * @returns {string}
+   */
+  timeToReadable(date: Date): string {
+    const d = new Date(date);
+    return d.toLocaleString("en-GB");
   }
 }
