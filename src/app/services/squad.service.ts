@@ -31,14 +31,14 @@ export class SquadService {
   constructor(
     private readonly http: HttpClient,
     private readonly gameService: GameService,
-    private readonly playerService: PlayerService){}
-    
-  public getSquads(){
+    private readonly playerService: PlayerService) { }
+
+  public getSquads() {
     const headers = new HttpHeaders()
-    .set('Authorization', 'Bearer ' + keycloak.token)
-    
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
     const gameId: number = this.gameService.game.id;
-    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`, { 'headers' : headers})
+    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`, { 'headers': headers })
       .subscribe({
         next: (squads: Squad[]) => {
           this._squads = squads;
@@ -49,9 +49,9 @@ export class SquadService {
       })
   }
 
-  public async createSquad(name: string){
+  public async createSquad(name: string) {
     const headers = new HttpHeaders()
-    .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Authorization', 'Bearer ' + keycloak.token)
 
     const gameId: number = this.gameService.game.id;
     const player: Player = this.playerService.player;
@@ -62,7 +62,7 @@ export class SquadService {
         playerId: player.id
       }
     }
-    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers' : headers}))
+    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers': headers }))
       .then((s: Squad) => {
         this._squads.push(s);
       })
@@ -72,11 +72,11 @@ export class SquadService {
       })
   }
 
-public joinSquad(squadId:number) {
-  const headers = new HttpHeaders()
-  .set('Authorization', 'Bearer ' + keycloak.token)
+  public joinSquad(squadId: number) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
 
-    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`,{"playerId" : this.playerService.player.id}, {'headers' : headers})
+    this.http.post<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squad/${squadId}/join`, { "playerId": this.playerService.player.id }, { 'headers': headers })
       .subscribe({
         next: (squadMember: SquadMember) => {
           this._squadMember = squadMember;
@@ -86,34 +86,32 @@ public joinSquad(squadId:number) {
           console.log(error.message);
           this._squadMember = null;
         }
-
       })
   }
 
-public getSquadMember(){
-  const headers = new HttpHeaders()
-  .set('Authorization', 'Bearer ' + keycloak.token)
-  
-  this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`, { 'headers' : headers})
-  .subscribe({
-    next: (squadMember: SquadMember) => {
-      this._squadMember = squadMember;
-    },
-    error: (error: HttpErrorResponse) => {
-      console.log(error);
-      this._squadMember = null;
-    }
-  })
-}
+  public getSquadMember() {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
 
-public deleteSquad(squad:Squad){
-  const headers = new HttpHeaders()
-  .set('Authorization', 'Bearer ' + keycloak.token)
-  
-  this.http.delete(`${apiUrl}/game/squad/${squad.gameId}/${squad.id}`, { 'headers' : headers})
-  .subscribe(() => {
-    this._squads = this._squads.filter(s => s.id !== squad.id)
-  })
-}
+    this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${this.playerService.player.id}`, { 'headers': headers })
+      .subscribe({
+        next: (squadMember: SquadMember) => {
+          this._squadMember = squadMember;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          this._squadMember = null;
+        }
+      })
+  }
 
+  public deleteSquad(squad: Squad) {
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
+    this.http.delete(`${apiUrl}/game/squad/${squad.gameId}/${squad.id}`, { 'headers': headers })
+      .subscribe(() => {
+        this._squads = this._squads.filter(s => s.id !== squad.id)
+      })
+  }
 }

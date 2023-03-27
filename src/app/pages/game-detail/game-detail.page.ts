@@ -81,9 +81,6 @@ export class GameDetailPage {
     } else {
       this._state = "Zombie";
     }
-    else {
-      this._state = "Zombie";
-    }
   }
 }
 

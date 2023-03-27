@@ -110,8 +110,6 @@ export class PlayerService {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
     const gameId: number = this.gameService.game.id;
-
-    let gameId = this.gameService.game.id;
     
     let player = {
       isPatientZero: false,
