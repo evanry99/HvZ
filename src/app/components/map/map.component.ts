@@ -6,6 +6,7 @@ import { Kill } from 'src/app/models/kill.model';
 import { Mission } from 'src/app/models/mission.model';
 import { Player } from 'src/app/models/player.model';
 import { SquadCheckIn } from 'src/app/models/squad-check-in.model';
+import { SquadMemberWithName } from 'src/app/models/squad-member.model';
 import { User } from 'src/app/models/user.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
@@ -77,6 +78,7 @@ export class MapComponent {
     await this.killService.getKills();
     await this.missionService.getMissions();
     if(this.squadService.squadMember){
+      this.squadService.getSquadMembers(this.gameService.game.id, this.squadService.squadMember.squadId)
       await this.squadService.getSquadCheckIns();
     }
     this._kills = this.killService.kills;
@@ -97,22 +99,26 @@ export class MapComponent {
       );
     }
     for(let mission of this._missions){
-      this.layers.push(
-        marker([mission.lat, mission.lng], this.missionIcon)
-        .bindPopup(`
-        <b>${mission.name}:</b><br>
-        ${mission.description}<br>
-        Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
-        End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
-        `)
-        .openPopup()
-      );
+      if(this.playerService.player.isHuman === mission.isHumanVisible){
+        this.layers.push(
+          marker([mission.lat, mission.lng], this.missionIcon)
+          .bindPopup(`
+          <b>${mission.name}:</b><br>
+          ${mission.description}<br>
+          Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
+          End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
+          `)
+          .openPopup()
+        );
+      }
     }
     for(let checkIn of this._squadCheckIns){
+      let squadMemberName: string = this.squadService.squadMembersWithName.filter(
+        (squadMember: SquadMemberWithName) => squadMember.squadMember.id === checkIn.squadMemberId).pop().username;
       this.layers.push(
         marker([checkIn.lat, checkIn.lng], this.pingIcon)
         .bindPopup(`
-        <b>Check in: ${checkIn.squadMemberId}:</b><br>
+        <b>Check in: ${squadMemberName}:</b><br>
         Start time: ${new Date(checkIn.startTime).toLocaleString("en-GB")}<br>
         End time: ${new Date(checkIn.endTime).toLocaleString("en-GB")}
         `)

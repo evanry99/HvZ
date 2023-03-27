@@ -17,8 +17,14 @@ export class LandingPage implements OnInit {
     readonly userService: UserService
   ) { }
 
+  showUserEdit: boolean = false;
+
   get games(): Game[] {
     return this.gameService.games
+  }
+
+  get user(): UserDTO {
+    return this.userService.userResponse;
   }
 
   async ngOnInit() {
@@ -33,13 +39,16 @@ export class LandingPage implements OnInit {
         userName: keycloak.tokenParsed.preferred_username,
         isAdmin: keycloak.tokenParsed.realm_access.roles.includes("admin")
         }
-        await this.userService.addUser(user)
+        await this.userService.addUser(user);
+        await this.userService.getUserByUsername(keycloak.tokenParsed.preferred_username);
       }
     }
-
   }
 
   isAuthenticated(): boolean {
     return keycloak.authenticated
+  }
+  setUserEdit() {
+    this.showUserEdit = !this.showUserEdit;
   }
 }

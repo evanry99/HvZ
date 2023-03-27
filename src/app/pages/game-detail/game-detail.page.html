@@ -3,12 +3,12 @@
     <div class="row">
         <h2 class="col-sm ms-3">{{_title}}</h2>
         <div class="col-sm">
-          <p *ngIf="_player && _player.isHuman" class="text-center my-auto">Faction: Human</p>
-          <p *ngIf="_player && !_player.isHuman" class="text-center my-auto">Faction: Zombie</p>
+          <p *ngIf="player && player.isHuman" class="text-center my-auto">Faction: Human</p>
+          <p *ngIf="player && !player.isHuman" class="text-center my-auto">Faction: Zombie</p>
         </div>
         <div class="col-sm grid me-1">
             <div class="row">
-                <button *ngIf="!_player" class="btn col seeThrough" (click)="register()">Register</button>
+                <button *ngIf="!player && _game.gameState === 'Registration'" class="btn col seeThrough" (click)="register()">Register</button>
                 <button class="btn col seeThrough" [routerLink]="'info'">Info</button>
             </div>
         </div>
@@ -20,14 +20,14 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item text-black" routerLink="map">Map</a>
-              <a *ngIf="_player" class="dropdown-item text-black" routerLink="chat">Chat</a>
-              <a *ngIf="_player" class="dropdown-item text-black" routerLink="squad-select">Squad</a>
+              <a *ngIf="player" class="dropdown-item text-black" routerLink="chat">Chat</a>
+              <a *ngIf="player" class="dropdown-item text-black" routerLink="squad-select">Squad</a>
               <a *ngIf="_isAdmin" class="dropdown-item text-black" routerLink="player-edit">Player Edit</a>
             </div>
           </div>
-        <app-create-mission *ngIf="_isAdmin" class="col text-end me-3"></app-create-mission>
-        <app-bite-code-form *ngIf="_player && _player.isHuman === false"class="col text-end me-3"></app-bite-code-form>
-        <span *ngIf="_player && _player.isHuman === true">Bite code: {{_player.biteCode}}</span>
+        <app-create-mission *ngIf="_isAdmin" class="col me-3"></app-create-mission>
+        <app-bite-code-form *ngIf="player && player.isHuman === false"class="col text-end me-3"></app-bite-code-form>
+        <span *ngIf="player && player.isHuman === true">Bite code: {{player.biteCode}}</span>
     </div>
     <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
       <router-outlet></router-outlet>

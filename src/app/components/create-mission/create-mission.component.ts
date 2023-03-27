@@ -102,11 +102,18 @@ export class CreateMissionComponent {
 
   async onSubmit(form:NgForm){
     let value = form.value;
+    let isHuman: boolean;
+    if(value.faction === "Human"){
+      isHuman = true;
+    }
+    else {
+      isHuman = false;
+    }
     let mission: Mission = {
       name: value.missionName,
       description: value.description,
-      isHumanVisible: false,
-      isZombieVisible: false,
+      isHumanVisible: isHuman,
+      isZombieVisible: !isHuman,
       lat: this._lat,
       lng: this._lng,
       startTime: value.startTime,

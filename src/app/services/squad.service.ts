@@ -200,14 +200,31 @@ public getSquadMembers(gameId:number,squadId:number){
   })
 }
 
-public deleteSquadMember(){
-  let squadMember = this._squadMember;
+public async deleteSquadMember(otherPlayer?: Player){
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer ' + keycloak.token)
-  this.http.delete(`${apiUrl}/game/${squadMember.gameId}/squadMember/${squadMember.id}`, { 'headers' : headers})
-  .subscribe(() => {
-    this.squadMember = null;
-  })
+  let squadMember = this._squadMember;
+  if(otherPlayer){
+    await lastValueFrom(this.http.get<SquadMember>(`${apiUrl}/game/${this.gameService.game.id}/squadMember/${otherPlayer.id}`, { 'headers' : headers}))
+      .then((member: SquadMember) => {
+         squadMember = member;
+        })
+      .catch((error: HttpErrorResponse) => {
+        if(error.status === 404){
+          console.log("Player not in squad");
+        }
+        this.squadMember = null;
+      })
+  }
+  if(squadMember){
+    this.http.delete(`${apiUrl}/game/${squadMember.gameId}/squadMember/${squadMember.id}`, { 'headers' : headers})
+    .subscribe(() => {
+      if(!otherPlayer){
+        this.squadMember = null;
+      }
+    })
+  }
 }
+
 
 }

@@ -24,6 +24,9 @@ export class SquadInfoComponent {
   ngOnInit(){
     this.squadService.getSquadMembers(this.gameService.game.id,this.squadService.squadMember.squadId)
     this.playerService.getPlayersWithName();
+    if(this.squad.isHuman !== this.playerService.player.isHuman){
+      this.squadService.deleteSquadMember();
+    }
   }
 
   leaveSquad(){

@@ -7,6 +7,7 @@ import { KillService } from 'src/app/services/kill.service';
 import {faSkullCrossbones} from "@fortawesome/free-solid-svg-icons"
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/services/player.service';
+import { SquadService } from 'src/app/services/squad.service';
 
 
 
@@ -22,14 +23,16 @@ export class BiteCodeFormComponent {
   constructor(
     private gameService:GameService, 
     private killService:KillService,
+    private squadService:SquadService,
     private readonly playerService:PlayerService){}
 
   faSkull = faSkullCrossbones
   faLocationDot = faLocationDot
+
   onSubmit(form:NgForm){
     let players = this.playerService.playersInGame;
     let victim: Player = players.filter((player: Player) => form.value.biteCode === player.biteCode)[0];
-    if(victim){
+    if(victim && victim.isHuman){
       let kill:Kill = {
         gameId : this.gameService.game.id,
         story : form.value.description,
@@ -39,7 +42,6 @@ export class BiteCodeFormComponent {
         killerId: this.playerService.player.id,
         timeOfDeath: new Date()
         }
-        
         this.killService.registerKill(kill);
     }
     else{

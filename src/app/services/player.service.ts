@@ -21,16 +21,11 @@ export class PlayerService {
     private readonly gameService: GameService,
     private readonly userService: UserService) { }
 
-  private _players: Player[] = [];
   private _playersInGame: Player[] = [];
   private _playersInGameWithName: PlayerWithName[] = [];
   private _player: Player;
   private _error: string = "";
   private _loading = false;
-
-  get players(): Player[] {
-    return this._players!;
-  }
 
   get playersInGame(): Player[] {
     return this._playersInGame;
@@ -57,22 +52,6 @@ export class PlayerService {
     this._player = p;
   }
 
-  public getPlayers() {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
-    const gameId: number = this.gameService.game.id;
-
-    return this.http.get<Player[]>(apiUrl + "/game/" + gameId + "/player", { 'headers': headers })
-      .subscribe({
-        next: (players: Player[]) => {
-          this._players = players;
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
-      })
-  }
-
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -86,23 +65,6 @@ export class PlayerService {
       })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
-      })
-  }
-
-  public getPlayersInGame(gameId: number) {
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
-
-
-    return this.http.get<Player[]>(`${apiUrl}/game/${gameId}/player`, { 'headers': headers })
-      .subscribe({
-        next: (players: Player[]) => {
-          this._playersInGame = players;
-        },
-        error: (error: HttpErrorResponse) => {
-          this._error = error.message;
-        }
       })
   }
 
@@ -135,18 +97,22 @@ export class PlayerService {
   public async getPlayerFromUser(userId: number){
     await this.getPlayersFromGame();
     let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
-    this._player = player;
+    console.log(this.playersInGame)
+    console.log(userId)
+    console.log(player)
+    this.player = player;
   }
 
   public async updatePlayer(player: Player) {
-    this._player = player;
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     await lastValueFrom(this.http.put<Player>(`${apiUrl}/game/${this.gameService.game.id}/player/${player.id}`, player, { 'headers': headers }))
-      .then((p:Player) => { 
+      .then(() => { 
         this.getPlayersFromGame();
-        this._player = p
+        if(this.player.id === player.id){
+          this.player = player;
+        }
       })
       .catch((error: HttpErrorResponse) => {
         this._error = error.message;
@@ -171,7 +137,10 @@ export class PlayerService {
     .set('Authorization', 'Bearer ' + keycloak.token)
     this.http.delete(`${apiUrl}/game/${player.gameId}/player/${player.id}`, { 'headers' : headers})
     .subscribe(() => {
-      this._players = this._players.filter(p => p.id !== player.id)
+      this._playersInGame = this._playersInGame.filter(p => p.id !== player.id)
+      if(player.id === this.player.id){
+        this.player = null;
+      }
     })
   }
 }
