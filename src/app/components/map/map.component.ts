@@ -96,7 +96,6 @@ export class MapComponent {
     this.layers = this.layers.splice(0, 1);
     for(let kill of this._kills){
       let player = this.playerService.playerById(kill.victimId);
-      console.log(player);
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
