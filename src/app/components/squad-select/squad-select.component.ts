@@ -57,10 +57,15 @@ export class SquadSelectComponent {
 
   /**
    * Function to handle the join button click. Calls the joinSquad function in the squadService that handles the API POST request
-   * @param squadId 
+   * @param squad
    */
-  joinSquad(squadId:number){
-    this.squadService.joinSquad(squadId);
+  joinSquad(squad:Squad){
+    if(squad.isHuman === this.playerService.player.isHuman){
+      this.squadService.joinSquad(squad.id);
+    }
+    else {
+      alert("You can only join a squad with the same faction as you!")
+    }
   }
   
   /**
