@@ -23,6 +23,9 @@ export class GameDetailPage {
   _state: string;
   _isAdmin: boolean;
 
+  /**
+   * Getter for player
+   */
   get player(): Player{
     return this.playerService.player;
   }

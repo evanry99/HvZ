@@ -116,9 +116,6 @@ export class PlayerService {
   public async getPlayerFromUser(userId: number){
     await this.getPlayersFromGame();
     let player = this._playersInGame.filter((p: Player) => p.userId === userId).pop();
-    console.log(this.playersInGame)
-    console.log(userId)
-    console.log(player)
     this.player = player;
   }
 
