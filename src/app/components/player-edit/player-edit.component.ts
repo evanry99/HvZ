@@ -54,6 +54,9 @@ export class PlayerEditComponent {
     this._players = await this.playerService.getPlayersWithName();
   }
 
+  /**
+   * Function to refresh list of players.
+   */
   async refresh() {
     this._players = await this.playerService.getPlayersWithName();
 

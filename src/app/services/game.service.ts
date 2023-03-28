@@ -111,7 +111,6 @@ export class GameService {
     .set('Authorization', 'Bearer ' + keycloak.token)
     await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, {'headers': headers}))
       .then((game: Game) => {
-        console.log(game)
         game.numberOfPlayers = 0;
         this._games.push(game);
         })

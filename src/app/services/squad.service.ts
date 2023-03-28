@@ -16,7 +16,7 @@ import { storageRead, storageSave } from '../utils/storage.util';
 import { squadMemberKey } from '../variables/storage-keys';
 
 
-const {apiUrl} = environment;
+const { apiUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +59,7 @@ export class SquadService {
 
   //Constructor with dependency injection
   constructor(
-    private readonly http:HttpClient,
+    private readonly http: HttpClient,
     private readonly gameService: GameService,
     private readonly playerService: PlayerService){}
     
@@ -68,10 +68,10 @@ export class SquadService {
    */
   public getSquads(){
     const headers = new HttpHeaders()
-    .set('Authorization', 'Bearer ' + keycloak.token)
-    
+      .set('Authorization', 'Bearer ' + keycloak.token)
+
     const gameId: number = this.gameService.game.id;
-    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`, { 'headers' : headers})
+    this.http.get<Squad[]>(`${apiUrl}/game/${gameId}/squad`, { 'headers': headers })
       .subscribe({
         next: (squads: Squad[]) => {
           this._squads = squads;
@@ -88,7 +88,7 @@ export class SquadService {
    */
   public async createSquad(name: string){
     const headers = new HttpHeaders()
-    .set('Authorization', 'Bearer ' + keycloak.token)
+      .set('Authorization', 'Bearer ' + keycloak.token)
 
     const gameId: number = this.gameService.game.id;
     const player: Player = this.playerService.player;
@@ -99,7 +99,7 @@ export class SquadService {
         playerId: player.id
       }
     }
-    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers' : headers}))
+    await lastValueFrom(this.http.post<Squad>(`${apiUrl}/game/${gameId}/squad`, squad, { 'headers': headers }))
       .then((s: Squad) => {
         this._squads.push(s);
         this.getSquadMember(this.gameService.game,this.playerService.player)

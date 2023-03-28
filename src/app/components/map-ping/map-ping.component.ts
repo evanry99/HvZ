@@ -166,7 +166,6 @@ export class MapPingComponent {
    * Function to get the users position on button click. Then sets a marker on the map with the coordinates of the users position.
    */
   getPosition(){
-    console.log(2)
     navigator.geolocation.getCurrentPosition(result=> {
       this._lat = result.coords.latitude
       this._lng = result.coords.longitude

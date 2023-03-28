@@ -8,6 +8,8 @@ import {
 import { from, Observable, switchMap } from 'rxjs';
 import keycloak from 'src/keycloak';
 
+// Whenever the user interacts with the app their tokens lifespan is reset to 1 hour
+// Given they are authorized and their token isn't expired
 @Injectable()
 export class RefreshTokenHttpInterceptor implements HttpInterceptor {
 

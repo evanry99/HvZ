@@ -62,8 +62,6 @@ export class PlayerService {
   public async getPlayersFromGame() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-      .set('Content-Type: ', 'application/x-www-form-urlencoded; charset=UTF-8')
-      .set('Access-Control-Allow-Origin:', ' *')
 
     const game = this.gameService.game;
     await lastValueFrom(this.http.get<Player[]>(`${apiUrl}/game/${game.id}/player`))
@@ -90,9 +88,8 @@ export class PlayerService {
   public async registerPlayer() {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
-
-    let gameId = this.gameService.game.id;
-
+    const gameId: number = this.gameService.game.id;
+    
     let player = {
       isPatientZero: false,
       isHuman: true,

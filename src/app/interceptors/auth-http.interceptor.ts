@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import keycloak from 'src/keycloak';
 
+
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
 
@@ -24,7 +25,4 @@ export class AuthHttpInterceptor implements HttpInterceptor {
 
     return next.handle(authRequest)
   }
-
-
-
 }

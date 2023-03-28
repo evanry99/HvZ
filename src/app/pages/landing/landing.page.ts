@@ -32,6 +32,9 @@ export class LandingPage implements OnInit {
     return this.gameService.games
   }
 
+  /**
+   * Getter for the user
+   */
   get user(): UserDTO {
     return this.userService.userResponse;
   }
@@ -63,6 +66,10 @@ export class LandingPage implements OnInit {
   isAuthenticated(): boolean {
     return keycloak.authenticated
   }
+
+  /**
+   * Function that changes showUserEdit to the opposite boolean value.
+   */
   setUserEdit() {
     this.showUserEdit = !this.showUserEdit;
   }
