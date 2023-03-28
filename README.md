@@ -1,4 +1,4 @@
-# Humans Vs Zombies (HvZ) backend part for Team HvZ.NET 
+# Humans Vs Zombies (HvZ) frontend part for Team HvZ.NET 
 
 
 ## Project Description
@@ -50,6 +50,9 @@ ng serve -o
 ```
 + This will open the webapp on http://localhost:4200/
 
+## Backend
+
+* https://gitlab.com/experis-case/hvz_backend
 
 ## Contributing
 
