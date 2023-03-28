@@ -33,7 +33,7 @@
                     <input type="number" class="form-control me-2 rounded-2" name="latitude" id="inputLat" required [(ngModel)]="latitude">
                     <label for="inputLng" class="form-label">Longitude</label>
                     <input type="number" class="form-control rounded-start-2" name="longitude" id="inputLng" required [(ngModel)]="longitude">
-                    <button class="btn btn-dark" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
+                    <button type ="button" class="btn btn-dark" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
                 </div>
                     <button type="submit" [disabled]="registerKillForm.invalid" class="btn btn-dark" data-bs-dismiss="modal">Submit Kill</button>
             </form>

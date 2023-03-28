@@ -27,7 +27,7 @@
                             [leafletLayers]="layers"
                             (leafletMapReady)="onMapReady($event)">
                         </div>
-                        <button class="btn btn-light getPos" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
+                        <button type="button" class="btn btn-light getPos" (click)="getPosition()"><fa-icon [icon]="faLocationDot" class="me-2"></fa-icon></button>
                         <div class="input-group mb-3">
                             <label for="inputStartTime" class="form-label me-2">Start time:</label>
                             <input type="datetime-local" class="form-control rounded-1" name="startTime" id="inputStartTime" ngModel required #startTime="ngModel">
