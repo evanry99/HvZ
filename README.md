@@ -64,7 +64,7 @@ git git@gitlab.com:experis-case/hvz-frontend.git
 npm install
 ```
 
-3. To add your own API. Substitute the ApiURL in the environment folder, with your own ApiURLs
+3. To add your own API. Substitute the ApiURLs in the environment folder, with your own ApiURLs
 
 4. Then to run the program locally, in the vs code terminal run:
 ```
