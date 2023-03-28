@@ -21,7 +21,7 @@
             <td *ngIf="!squad.isHuman" scope="row">Zombie</td>
             <td>
                 <div class="float-end">
-                    <button class="btn btn-light" (click)="joinSquad(squad.id)">Join</button>
+                    <button class="btn btn-light" (click)="joinSquad(squad)">Join</button>
                     <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deleteSquad(squad)" *ngIf="_user.isAdmin"></fa-icon></button>
                 </div>
             </td>

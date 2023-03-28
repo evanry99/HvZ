@@ -1,34 +1,60 @@
-# HvZ
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
-
-## Table of content
-- [Background](#background)
-- [Development server](#development-server)
+# Humans Vs Zombies (HvZ) backend part for Team HvZ.NET 
 
 
-## Background
+## Project Description
+The goal of this project is to design and implement a software solution for managing the state and communication of one or more concurrent games of HvZ. For the frontend, an angular web application has been created to display all the different parts of the game and player states. The web application includes a landing page where all games are displayed, and a game detail page which displays the game info, a game map, a chat an functionality to register for a game and perform different actions. To ensure the security of the frontend, a Keycloak instance has been implemented.
 
-## Development server
+## Table of Contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Technologies](#technologies)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-## Code scaffolding
+## Technologies
+* Angular
+* Typescript
+* Visual Studio Code 2022
+* SignalR
+* Bootstrap
+* Leaflet
+* Keycloak
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation
 
-## Build
+Download and install:
+* Visual Studio Code
+* Node.js
+* npm
+* Angular Cli with:
+```
+npm install -g @angular/cli
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Usage
+Usage guide:
 
-## Running unit tests
+1. Clone this repository with: 
+```
+git git@gitlab.com:experis-case/hvz-frontend.git
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. In the vs code terminal run:
+```
+npm install
+```
 
-## Running end-to-end tests
+3. Then to run the program locally, in the vs code terminal run:
+```
+ng serve -o
+```
++ This will open the webapp on http://localhost:4200/
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+## Contributing
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* [Håvard Madland](https://gitlab.com/havardmad/ "Håvard gitlab")
+* [Erlend Halsne Dahl](https://gitlab.com/Erlend-Halsne-Dahl "Erlend gitlab")
+* [Sondre Eftedal](https://gitlab.com/SondreEftedal "Sondre gitlab")
+* [Vilhelm Assersen](https://gitlab.com/Vilhelm-Assersen "Vilhelm gitlab")
+* [An Binh Nguyen](https://gitlab.com/anbinhnguy/ "An gitlab")
