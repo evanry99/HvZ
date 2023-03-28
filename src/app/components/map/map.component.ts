@@ -55,24 +55,6 @@ export class MapComponent {
       iconSize:     [38, 38],
       iconAnchor:  [19, 38],
       popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/gravestone.png',
-   })
-  };
-
-  missionIcon = {
-    icon: icon({
-      iconSize:     [38, 38],
-      iconAnchor:  [19, 38],
-      popupAnchor:  [0, -39],
-      iconUrl: '../../assets/images/mission.png',
-   })
-  };
-
-  pingIcon = {
-    icon: icon({
-      iconSize:     [38, 38],
-      iconAnchor:  [19, 38],
-      popupAnchor:  [0, -39],
       iconUrl: '../../assets/images/location.png',
    })
   };
