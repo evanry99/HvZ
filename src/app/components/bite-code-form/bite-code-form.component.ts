@@ -7,6 +7,7 @@ import { KillService } from 'src/app/services/kill.service';
 import {faSkullCrossbones} from "@fortawesome/free-solid-svg-icons"
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/services/player.service';
+import { SquadService } from 'src/app/services/squad.service';
 
 
 
@@ -16,20 +17,29 @@ import { PlayerService } from 'src/app/services/player.service';
   styleUrls: ['./bite-code-form.component.css']
 })
 export class BiteCodeFormComponent {
-
-  latitude:number
-  longitude:number 
+  //Variables
+  latitude:number;
+  longitude:number;
+  
+  //Constructor with dependency injection
   constructor(
     private gameService:GameService, 
     private killService:KillService,
+    private squadService:SquadService,
     private readonly playerService:PlayerService){}
+  
+  // Declaring fontawsome icons
+  faSkull = faSkullCrossbones;
+  faLocationDot = faLocationDot;
 
-  faSkull = faSkullCrossbones
-  faLocationDot = faLocationDot
+  /**
+   * Function to handle the form submit. Calls a function in the kill service that handles the API POST request.
+   * @param form 
+   */
   onSubmit(form:NgForm){
     let players = this.playerService.playersInGame;
     let victim: Player = players.filter((player: Player) => form.value.biteCode === player.biteCode)[0];
-    if(victim){
+    if(victim && victim.isHuman){
       let kill:Kill = {
         gameId : this.gameService.game.id,
         story : form.value.description,
@@ -39,18 +49,20 @@ export class BiteCodeFormComponent {
         killerId: this.playerService.player.id,
         timeOfDeath: new Date()
         }
-        
         this.killService.registerKill(kill);
     }
     else{
-      alert("Invalid bitecode");
+      alert("Invalid bite code");
     }
   }
 
+  /**
+   * Function that updates the private variables to the users current location.
+   */
   getPosition(){
     navigator.geolocation.getCurrentPosition(result=> {
-      this.latitude = result.coords.latitude
-      this.longitude = result.coords.longitude
+      this.latitude = result.coords.latitude;
+      this.longitude = result.coords.longitude;
     }
       
   )

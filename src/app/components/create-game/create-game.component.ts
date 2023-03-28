@@ -10,10 +10,15 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class CreateGameComponent {
   
+  //Constructor with dependency injection
   constructor(
     private readonly gameService: GameService
   ){}
 
+  /**
+   * Function that handles the submit of the create game form. Creates a new game object with the form values and sends it to the add game function in the game service that handles the API POST request.
+   * @param form 
+   */
   async onSubmit(form:NgForm){
     let value = form.value;
     let game = {

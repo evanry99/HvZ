@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Game } from 'src/app/models/game.model';
 import { GameService } from 'src/app/services/game.service';
 
 @Component({
@@ -8,12 +9,17 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class GameInfoComponent {
 
-  _description?: string;
+  //Variables
+  _game?: Game;
+  
+  //Constructor with dependency injection
+  constructor(
+    private readonly gameService: GameService)
+    {}
 
-  constructor(private readonly gameService: GameService){}
-
+  //Runs on the initialization of the component. Sets the private variable to the current games description.
   ngOnInit(){
-    this._description = this.gameService.game.description;
+    this._game = this.gameService.game;
   }
 
 }

@@ -6,6 +6,7 @@ import { Kill } from 'src/app/models/kill.model';
 import { Mission } from 'src/app/models/mission.model';
 import { Player } from 'src/app/models/player.model';
 import { SquadCheckIn } from 'src/app/models/squad-check-in.model';
+import { SquadMemberWithName } from 'src/app/models/squad-member.model';
 import { User } from 'src/app/models/user.model';
 import { GameService } from 'src/app/services/game.service';
 import { KillService } from 'src/app/services/kill.service';
@@ -21,6 +22,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MapComponent {
 
+  //Variables
   private _game: Game;
   private _kills: Kill[] = [];
   private _missions: Mission[] = [];
@@ -29,6 +31,7 @@ export class MapComponent {
   options = {};
   layers: any = []
 
+  // Define icons
   gravestoneIcon = {
     icon: icon({
       iconSize: [38, 38],
@@ -74,6 +77,7 @@ export class MapComponent {
    })
   };
 
+  // Constructor with dependency injection
   constructor(
     private readonly killService: KillService,
     private readonly gameService: GameService,
@@ -83,6 +87,9 @@ export class MapComponent {
     private readonly playerService: PlayerService){
   }
 
+  /**
+   * Function that runs on the initialization of the map component. Updates the players in the game, sets the private game variable to the current game and initializes the map.
+   */
   async ngOnInit(){
     this.playerService.getPlayersFromGame();
     this._game = this.gameService.game;
@@ -91,10 +98,14 @@ export class MapComponent {
     }
   }
 
+  /**
+   * Function to update the map. Gets the kills, missions and squad check ins by calling function in the services and sets markers for each event in the map.
+   */
   async updateMap() {
     await this.killService.getKills();
     await this.missionService.getMissions();
     if(this.squadService.squadMember){
+      this.squadService.getSquadMembers(this.gameService.game.id, this.squadService.squadMember.squadId)
       await this.squadService.getSquadCheckIns();
     }
     this._kills = this.killService.kills;
@@ -103,7 +114,6 @@ export class MapComponent {
     this.layers = this.layers.splice(0, 1);
     for(let kill of this._kills){
       let player = this.playerService.playerById(kill.victimId);
-      console.log(player);
       let user: User = await this.userService.getUserById(player.userId);
       this.layers.push(
         marker([kill.lat, kill.lng], this.gravestoneIcon)
@@ -115,22 +125,26 @@ export class MapComponent {
       );
     }
     for(let mission of this._missions){
-      this.layers.push(
-        marker([mission.lat, mission.lng], this.missionIcon)
-        .bindPopup(`
-        <b>${mission.name}:</b><br>
-        ${mission.description}<br>
-        Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
-        End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
-        `)
-        .openPopup()
-      );
+      if(this.playerService.player.isHuman === mission.isHumanVisible){
+        this.layers.push(
+          marker([mission.lat, mission.lng], this.missionIcon)
+          .bindPopup(`
+          <b>${mission.name}:</b><br>
+          ${mission.description}<br>
+          Start time: ${new Date(mission.startTime).toLocaleString("en-GB")}<br>
+          End time: ${new Date(mission.endTime).toLocaleString("en-GB")}
+          `)
+          .openPopup()
+        );
+      }
     }
     for(let checkIn of this._squadCheckIns){
+      let squadMemberName: string = this.squadService.squadMembersWithName.filter(
+        (squadMember: SquadMemberWithName) => squadMember.squadMember.id === checkIn.squadMemberId).pop().username;
       this.layers.push(
         marker([checkIn.lat, checkIn.lng], this.pingIcon)
         .bindPopup(`
-        <b>Check in: ${checkIn.squadMemberId}:</b><br>
+        <b>Check in: ${squadMemberName}:</b><br>
         Start time: ${new Date(checkIn.startTime).toLocaleString("en-GB")}<br>
         End time: ${new Date(checkIn.endTime).toLocaleString("en-GB")}
         `)
@@ -138,15 +152,21 @@ export class MapComponent {
       );
     }
   }
-
-  hasCoordinates(): boolean {
-    if (!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng) {
-      return false;
-    }
+  /**
+   * Function to check if the current game has coordinates.
+   * @returns {boolean}
+   */
+  hasCoordinates(): boolean{
+    if(!this._game || !this._game.nw_Lat || !this._game.nw_Lng || !this._game.se_Lat || !this._game.se_Lng ){
+          return false;
+        }
     return true;
   }
 
-  async mapInit() {
+  /**
+   * Function to initialize the map. Sets the map area to the current games coordinates and makes the outside area red.
+   */
+  async mapInit(){
     this.options = {
       layers: [
         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

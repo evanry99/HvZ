@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th scope="col">Name</th>
+            <th scope="col">Faction</th>
             <th scope="col">
                 <div class="float-end">
                     <app-squad-registration class="me-2"></app-squad-registration>
@@ -16,9 +17,11 @@
     <tbody>
         <tr *ngFor="let squad of _squads">
             <td scope="row">{{squad.name}}</td>
+            <td *ngIf="squad.isHuman" scope="row">Human</td>
+            <td *ngIf="!squad.isHuman" scope="row">Zombie</td>
             <td>
                 <div class="float-end">
-                    <button class="btn btn-light" (click)="joinSquad(squad.id)">Join</button>
+                    <button class="btn btn-light" (click)="joinSquad(squad)">Join</button>
                     <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deleteSquad(squad)" *ngIf="_user.isAdmin"></fa-icon></button>
                 </div>
             </td>

@@ -14,17 +14,23 @@ const { apiUrl } = environment
 })
 export class MissionService {
 
+  //Private variables
   private _missions: Mission[] = [];
 
+  //Getters and setters.
   get missions() {
     return this._missions;
   }
 
+  //Constructor with dependency injection
   constructor(
     private readonly gameService: GameService,
-    private readonly playerService: PlayerService,
-    private readonly http: HttpClient) { }
+     private readonly http: HttpClient
+   ) { }
 
+   /**
+    * Get all missions from the database with an API GET request. Updates the missions private array with the response.
+    */
   async getMissions(): Promise<void> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -40,6 +46,10 @@ export class MissionService {
       })
   }
 
+  /**
+   * Adds a new mission to the database with an API POST request. Adds the new mission to the private missions array.
+   * @param mission 
+   */
   registerMission(mission: Mission) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)

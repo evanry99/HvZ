@@ -15,9 +15,12 @@ const {apiUrl} = environment;
 })
 export class KillService {
 
+  //Private variables
   private _kills: Kill[] = [];
   private _error: string = "";
 
+
+  //Getters and setters
   get kills() {
     return this._kills;
   }
@@ -25,18 +28,24 @@ export class KillService {
     return this._error;
   }
 
+  //Constructor with dependency injection
   constructor(
     private readonly gameService: GameService,
     private readonly playerService: PlayerService,
     private readonly http: HttpClient) { }
 
+
+
+  /**
+   * Gets all kills from the database with an API GET request. Updates the private variable with the response.
+   */
   async getKills(): Promise<void> {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     const gameId: number = this.gameService.game.id;
-
-    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`, { 'headers': headers }))
+    
+    await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`, { 'headers' : headers}))
       .then((kills: Kill[]) => {
           this._kills = kills;
         })
@@ -47,7 +56,10 @@ export class KillService {
 
   
 
-
+  /**
+   * Deletes a kill from the database with an API DELETE request. Also removes it from the private kills array.
+   * @param kill 
+   */
   public deleteKill(kill:Kill){
     this.http.delete(`${apiUrl}/kill/${kill.id}`)
     .subscribe(() => {
@@ -55,6 +67,10 @@ export class KillService {
     })
   }
 
+  /**
+   * Adds a new kill to the database with an API POST request. Adds the new game to the private kills array.
+   * @param kill 
+   */
   public registerKill(kill: Kill) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + keycloak.token)
@@ -65,7 +81,6 @@ export class KillService {
       .subscribe({
         next: (kill: Kill) => {
           this._kills.push(kill);
-          console.log(kill);
         },
         error: (error: HttpErrorResponse) => {
           this._error = error.message;

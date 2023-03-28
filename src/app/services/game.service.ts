@@ -15,12 +15,13 @@ const { apiUrl } = environment
 })
 export class GameService {
 
+  //Private variables
   private _games: Game[] = [];
   private _game: Game;
   private _error = ""
   private _loading = false;
 
-
+  //Getters and setters.
   set game(g: Game) {
     this._game = g;
     storageSave<Game>(gameKey, g);
@@ -44,8 +45,13 @@ export class GameService {
     return this._games;
   }
 
+  //Constructor with dependency injection
   constructor(private readonly http: HttpClient) { }
 
+  /**
+   * Handles the API GET request to get all games. Updates the private variable with the response.
+   * @returns {void}
+   */
   public getGames() {
     return this.http.get<Game[]>(apiUrl + "/game")
       .pipe(
@@ -66,10 +72,20 @@ export class GameService {
       })
   }
 
+  /**
+   * Gets a game by its ID.
+   * @param id 
+   * @returns {Game}
+   */
   public getGameById(id: number) {
     return this._games.filter((game: Game) => game.id === id).pop();
   }
 
+  /**
+   * Gets the number of players in a game with an API GET request. Updates the private variable.
+   * @param id 
+   * @returns {void}
+   */
   public getNumberOfPlayersInGame(id: number) {
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -86,12 +102,15 @@ export class GameService {
       })
   }
 
+  /**
+   * Add a new game to the database with a API POST request. Also pushes the game to the private game array in the service.
+   * @param game 
+   */
   async addGame(game): Promise<void>{
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
     await lastValueFrom(this.http.post<Game>(`${apiUrl}/game`, game, {'headers': headers}))
       .then((game: Game) => {
-        console.log(game)
         game.numberOfPlayers = 0;
         this._games.push(game);
         })
@@ -99,7 +118,12 @@ export class GameService {
         console.log(error.message);
       })
   }
-
+  
+  /**
+   * Updates a game with an API PUT request. Then updates the private game array.
+   * @param game 
+   * @param id 
+   */
   async updateGame(game, id: number): Promise<void>{
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
@@ -112,7 +136,10 @@ export class GameService {
       })
   }
 
-
+  /**
+   * Deletes a game from the database with an API DELETE request. Removes the game from the private game array.
+   * @param game 
+   */
   public deleteGame(game:Game){
     const headers = new HttpHeaders()
     .set('Authorization', 'Bearer ' + keycloak.token)
