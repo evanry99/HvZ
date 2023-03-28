@@ -7,7 +7,7 @@
         <th scope="col">Game state</th>
         <th scope="col">Start date</th>
         <th scope="col">
-          <app-create-game *ngIf="_user && _user.isAdmin"></app-create-game>
+          <app-create-game *ngIf="user && user.isAdmin"></app-create-game>
         </th>
       </tr>
     </thead>
@@ -19,8 +19,8 @@
             <td class="scalableFont">{{timeToReadable(game.startTime)}}</td>
             <td scope="row">
               <button class="btn btn-sucess scalableFont" id ="view-button" (click)="goToGame(game)">View</button>
-              <app-edit-game *ngIf="_user && _user.isAdmin" [game]="game"></app-edit-game>
-              <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deleteGame(game)" *ngIf="_user && _user.isAdmin"></fa-icon></button>
+              <app-edit-game *ngIf="user && user.isAdmin" [game]="game"></app-edit-game>
+              <button type="button" class="btn btn-dark"><fa-icon [icon]="faTrash" class="me-2" (click)="deleteGame(game)" *ngIf="user && user.isAdmin"></fa-icon></button>
             </td>
           </tr>
     </tbody>

@@ -50,7 +50,6 @@ export class PlayerEditComponent {
    * @param player 
    */
   async deletePlayer(player:Player){
-    await this.squadService.deleteSquadMember(player);
     this.playerService.deletePlayer(player);
     this._players = await this.playerService.getPlayersWithName();
   }

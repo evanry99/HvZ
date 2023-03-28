@@ -44,7 +44,6 @@ export class KillService {
       .set('Authorization', 'Bearer ' + keycloak.token)
 
     const gameId: number = this.gameService.game.id;
-    console.log(gameId)
     
     await lastValueFrom(this.http.get<Kill[]>(`${apiUrl}/game/${gameId}/kill`, { 'headers' : headers}))
       .then((kills: Kill[]) => {
@@ -82,7 +81,6 @@ export class KillService {
       .subscribe({
         next: (kill: Kill) => {
           this._kills.push(kill);
-          console.log(kill);
         },
         error: (error: HttpErrorResponse) => {
           this._error = error.message;

@@ -15,8 +15,10 @@ export class LandingPageListComponent implements OnInit{
   //Input
   @Input() games: Game[] = [];
 
-  //Variables
-  _user: User;
+  //Get user
+  get user(): User{
+    return this.userService.userResponse;
+  }
 
   //Declare icons
   faTrash = faTrash
@@ -31,7 +33,6 @@ export class LandingPageListComponent implements OnInit{
 
   //Runs on the initialization of the component. Updates the user variable to the current user and calls the game service to get all games and to get the number of players in each game.
   ngOnInit() {
-      this._user = this.userService.userResponse;
       this.gameService.getGames();
       this.gameService.games.forEach(game=>
           this.gameService.getNumberOfPlayersInGame(game.id)
