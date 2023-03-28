@@ -37,14 +37,14 @@ export class GameDetailPage {
     private readonly squadService: SquadService,
     private readonly router: Router,
     private readonly chatService: ChatService
-    ){}
+  ) { }
 
   async ngOnInit(){
     /**
      * Setter for the private game variable
      */
     this.setGame();
-    if(!this._game){
+    if (!this._game) {
       this.router.navigateByUrl("/landing");
     }
     this.playerService.getPlayersWithName();
@@ -68,9 +68,9 @@ export class GameDetailPage {
     try {
       this._game = this.gameService.game;
       this._title = this._game.name;
-    } 
+    }
     catch (error) {
-      console.log("Error: " + error.message) 
+      console.log("Error: " + error.message)
     }
   }
 

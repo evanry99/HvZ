@@ -29,16 +29,16 @@ export class MapComponent {
   private _squadCheckIns: SquadCheckIn[] = [];
   mapReady: boolean = false;
   options = {};
-  layers: any= []
+  layers: any = []
 
   // Define icons
   gravestoneIcon = {
     icon: icon({
-      iconSize:     [38, 38],
-      iconAnchor:  [19, 38],
-      popupAnchor:  [0, -39],
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -39],
       iconUrl: '../../assets/images/gravestone.png',
-   })
+    })
   };
 
   missionIcon = {
@@ -151,23 +151,23 @@ export class MapComponent {
   async mapInit(){
     this.options = {
       layers: [
-          tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-            maxZoom: 19, 
-            minZoom: 3, 
-            attribution: '...' 
-          })
+        tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          minZoom: 3,
+          attribution: '...'
+        })
       ],
       zoom: 5,
       center: latLng(
-        (this._game.nw_Lat + this._game.se_Lat)/2,
-        (this._game.nw_Lng + this._game.se_Lng)/2),
+        (this._game.nw_Lat + this._game.se_Lat) / 2,
+        (this._game.nw_Lng + this._game.se_Lng) / 2),
     };
 
     this.layers.push(
       polygon([
         [[90, -180], [90, 180], [-90, 180], [-90, -180]],
-        [[ this._game.nw_Lat, this._game.nw_Lng ], [ this._game.nw_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.se_Lng ], [ this._game.se_Lat, this._game.nw_Lng ]]
-      ]).setStyle({color: '#FF0000'}),
+        [[this._game.nw_Lat, this._game.nw_Lng], [this._game.nw_Lat, this._game.se_Lng], [this._game.se_Lat, this._game.se_Lng], [this._game.se_Lat, this._game.nw_Lng]]
+      ]).setStyle({ color: '#FF0000' }),
     );
     this.mapReady = true;
     this.updateMap();
