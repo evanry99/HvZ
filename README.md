@@ -30,7 +30,6 @@ Download and install:
 ```
 npm install -g @angular/cli
 ```
-
 * Keycloak:
 
 In order to deploy keycloak run the following command in the terminal
