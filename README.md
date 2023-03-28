@@ -44,11 +44,14 @@ git git@gitlab.com:experis-case/hvz-frontend.git
 npm install
 ```
 
-3. Then to run the program locally, in the vs code terminal run:
+3. To add your own API. Substitute the ApiURL in the environment folder, with your own ApiURLs
+
+4. Then to run the program locally, in the vs code terminal run:
 ```
 ng serve -o
 ```
 + This will open the webapp on http://localhost:4200/
+
 
 
 ## Contributing
@@ -75,8 +78,7 @@ In order to deploy keycloak run the following command in the terminal
 ```
 docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.0.1 start-dev
 ```
-
-Now keycloak is running on docker an admin account has been created.
++ Now keycloak is running on docker an admin account has been created.
 
 Go to [Admin Console](http://localhost:8080/) and login with username: admin, password: admin
 
@@ -90,10 +92,6 @@ http://localhost:4200/* and http://localhost:4200
 ```
 
 In the same client, go to "Installation" and choose "Keycloak OICD JSON". Copy this and replace the keycloak.json files content with this code
-
-## Usage
-
-To add your own API. Substitute the ApiURL in the environment folder, with your own ApiURLs
 
 ## Contributing
 
