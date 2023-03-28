@@ -51,6 +51,31 @@ Download and install:
 * Visual Studio Code
 * Extensions
     * Angular
+* Keycloak
+
+In order to deploy keycloak run the following command in the terminal
+```
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.0.1 start-dev
+```
+
+Now keycloak is running on docker an admin account has been created.
+
+Go to [Admin Console](http://localhost:8080/) and login with username: admin, password: admin
+
+After keycloak has been deployed, create a new Realm
+
+Create a new client
+
+In your newly created client, add "Valid Redirect URI" and "Web Origins". These can be set to the following link or your own websites links
+```
+http://localhost:4200/* and http://localhost:4200
+```
+
+In the same client, go to "Installation" and choose "Keycloak OICD JSON". Copy this and replace the keycloak.json files content with this code
+
+## Usage
+
+To add your own API. Substitute the ApiURL in the environment folder, with your own ApiURLs
 
 ## Contributing
 
@@ -61,18 +86,3 @@ Download and install:
 * [Vilhelm Assersen](https://gitlab.com/Vilhelm-Assersen "Vilhelm gitlab")
 
 
-
-
-
-## Project Description
-The goal of this project is to design and implement a software solution for managing the state and communication of one or more concurrent games of HvZ. For the backend, a suitable database has been created using a code-first approach, and a RESTful API service has been developed to allow the frontend to interact with the database. To ensure the security of the backend, a Keycloak instance has been implemented. The database and API are deployed in Azure.
-
-The RESTful API includes seven main API fields: Chat, Game, Kill, Mission, Player, Squad, and User. Documentation for each API endpoint and instructions on how to use them are provided in the GitLab project.
-
-## Usage
-Usage guide:
-
-1. Clone this repository with: 
-```
-git clone git@gitlab.com:experis-case/hvz-frontend.git
-```
