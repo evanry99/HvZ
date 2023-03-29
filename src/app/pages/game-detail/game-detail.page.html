@@ -26,7 +26,7 @@
             </div>
           </div>
         <app-create-mission *ngIf="_isAdmin" class="col me-3"></app-create-mission>
-        <app-bite-code-form *ngIf="player && player.isHuman === false && (_game.gameState === 'In Progress')"class="col text-end me-3"></app-bite-code-form>
+        <app-bite-code-form *ngIf="player && player.isHuman === false"class="col text-end me-3"></app-bite-code-form>
         <span *ngIf="player && player.isHuman === true">Bite code: {{player.biteCode}}</span>
     </div>
     <div class="fragment mt-3 border-top border-bottom border-3 border-dark shadow">
