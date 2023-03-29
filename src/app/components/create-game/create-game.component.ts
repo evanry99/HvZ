@@ -20,6 +20,7 @@ export class CreateGameComponent {
    * @param form 
    */
   async onSubmit(form:NgForm){
+    let exists = false;
     let value = form.value;
     let game = {
       name: value.gameName,
@@ -32,6 +33,15 @@ export class CreateGameComponent {
       startTime: value.startTime,
       endTime: value.endTime,
     } 
-    await this.gameService.addGame(game);
+    this.gameService.games.forEach(g => {
+      if(g.name === value.gameName){
+        exists = true;
+        window.alert("A game with that name already exists")
+      }
+    })
+    if(exists === false){
+      await this.gameService.addGame(game);
+    }
+    
   }
 }
