@@ -20,6 +20,16 @@ export class SquadRegistrationComponent {
    * @param form 
    */
   async onSubmit(form:NgForm){
-    await this.squadService.createSquad(form.value.SquadName);
+    let exists = false
+    this.squadService.squads.forEach(s => {
+      if(s.name === form.value.SquadName){
+        window.alert("There is already a squad with that name");
+        exists = true;
+      }
+    })
+    if(exists === false){
+      await this.squadService.createSquad(form.value.SquadName);
+    }
+    
   }
 }
