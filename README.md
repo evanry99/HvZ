@@ -1,7 +1,7 @@
 # Humans Vs Zombies (HvZ) frontend part for Team HvZ.NET 
 
 ## Project Description
-The goal of this project is to design and implement a software solution for managing the state and communication of one or more concurrent games of HvZ. For the frontend, an angular web application has been created to display all the different parts of the game and player states. The web application includes a landing page where all games are displayed, and a game detail page which displays the game info, a game map, a chat and functionality to register for a game and perform different actions. To ensure the security of the frontend, a Keycloak instance has been implemented to handle login and registration of users.
+The goal of this project is to design and implement a software solution for managing the state and communication of one or more concurrent games of HvZ. For the frontend, an angular web application has been created to display all the different parts of the game and player states. The web application includes a landing page where all games are displayed, and a game detail page which displays the game info, a game map, a chat and functionality to register for a game and perform different actions. To ensure the security of the frontend, a Keycloak instance has been implemented to handle login and registration of users. The hosted website can be found here: [hvz.no](https://www.hvz.no/ "Humans vs Zombies website").
 
 ## Table of Contents
 
