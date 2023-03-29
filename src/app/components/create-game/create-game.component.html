@@ -12,7 +12,7 @@
               <form #newGameForm="ngForm" (ngSubmit)="onSubmit(newGameForm)"> 
                   <div class="mb-3">
                       <label for="inputgameName" class="form-label">Game name</label>
-                      <input type="text" class="form-control" name="gameName" id="inputgameName" aria-describedby="newGameHelp" ngModel minlength="1" required #gameName="ngModel">
+                      <input type="text" class="form-control" name="gameName" maxlength="20" id="inputgameName" aria-describedby="newGameHelp" ngModel minlength="1" required #gameName="ngModel">
                       <div id="newGameHelp" class="form-text">Please enter the name of the game</div>
                       <div *ngIf="gameName.errors && (gameName.dirty || gameName.touched)">
                           <div id="newGameHelp" class="form-text" *ngIf="gameName.errors['required']">Game name is required</div>
@@ -21,7 +21,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="inputDescription" class="form-label">Description</label>
-                    <input type="text" class="form-control" name="description" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
+                    <input type="text" class="form-control" name="description" maxLength="400" id="inputDescription" aria-describedby="descriptionHelp" required ngModel #description="ngModel">
                     <div *ngIf="description.errors && (description.dirty || description.touched)">
                         <div id="descriptionHelp" class="form-text" *ngIf="description.errors['required']">Description is required</div>
                         <div id="descriptionHelp" class="form-text" *ngIf="description.errors['minlength']">Description is too short</div>

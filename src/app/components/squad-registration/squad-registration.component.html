@@ -12,7 +12,7 @@
             <form #registerSquadForm="ngForm" (ngSubmit)="onSubmit(registerSquadForm)"> 
                 <div class="mb-3">
                     <label for="inputSquadName" class="form-label">Squad name</label>
-                    <input type="text" class="form-control" name="SquadName" id="inputSquadName" aria-describedby="SquadNameHelp" ngModel minlength="3" required #SquadName="ngModel">
+                    <input type="text" class="form-control" name="SquadName" maxLength="20" id="inputSquadName" aria-describedby="SquadNameHelp" ngModel minlength="3" required #SquadName="ngModel">
                     <div id="SquadNameHelp" class="form-text">Please enter the squad name</div>
                     <div *ngIf="SquadName.errors && (SquadName.dirty || SquadName.touched)">
                         <div id="SquadNameHelp" class="form-text" *ngIf="SquadName.errors['required']">Squad name is required</div>

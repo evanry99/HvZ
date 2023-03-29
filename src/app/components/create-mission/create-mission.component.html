@@ -31,7 +31,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputmissionName" class="form-label">Mission name</label>
-                    <input type="text" class="form-control" name="missionName" id="inputmissionName" aria-describedby="newmissionHelp" ngModel minlength="1" required #missionName="ngModel">
+                    <input type="text" class="form-control" name="missionName" maxLength="20" id="inputmissionName" aria-describedby="newmissionHelp" ngModel minlength="1" required #missionName="ngModel">
                     <div id="newMissionHelp" class="form-text">Please enter the name of the mission</div>
                     <div *ngIf="missionName.errors && (missionName.dirty || missionName.touched)">
                         <div id="newMissionHelp" class="form-text" *ngIf="missionName.errors['required']">Mission name is required</div>
