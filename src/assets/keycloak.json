@@ -1,8 +1,12 @@
 {
-  "realm": "HvZ",
-  "auth-server-url": "https://authhvz.azurewebsites.net/auth/",
+  "realm": "hvz-experis2023",
+  "auth-server-url": "https://lemur-4.cloud-iam.com/auth/",
   "ssl-required": "external",
   "resource": "HvZ-App",
-  "public-client": true,
-  "confidential-port": 0
+  "verify-token-audience": true,
+  "credentials": {
+    "secret": "QfesFOgmlZlji1Rad6Dom5KElVLqrTZv"
+  },
+  "confidential-port": 0,
+  "policy-enforcer": {}
 }
